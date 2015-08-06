@@ -1,0 +1,67 @@
+# makefile (Visual C++ 2005 Express Edition NMAKE utility) for Reconstruct applications
+
+EXEFILE  = reconstruct.exe
+HDRFILES = constants.h gbm.h classes.h operations.h globals.h reconstruct.h kube-gustavson-fft.h
+SRCFILES = contour.cpp nform.cpp adib.cpp image.cpp xmldata.cpp viewport.cpp section.cpp series.cpp kube-gustavson-fft.cpp\
+ vrmlobject.cpp vrmlobjects.cpp vrmlscene.cpp boissonnat.cpp sectionsinfo.cpp tformslifo.cpp threads.cpp palette.cpp\
+ program_menu.cpp series_menu.cpp section_menu.cpp domain_menu.cpp trace_menu.cpp objects_menu.cpp help_menu.cpp\
+ init.cpp end.cpp utility.cpp tools.cpp thumbnails.cpp keyboard.cpp mouse.cpp opengl.cpp globals.cpp reconstruct.cpp histogram.cpp 
+OBJFILES = contour.obj nform.obj adib.obj image.obj xmldata.obj viewport.obj section.obj series.obj kube-gustavson-fft.obj\
+ vrmlobject.obj vrmlobjects.obj vrmlscene.obj boissonnat.obj sectionsinfo.obj tformslifo.obj threads.obj palette.obj\
+ program_menu.obj series_menu.obj section_menu.obj domain_menu.obj trace_menu.obj objects_menu.obj help_menu.obj\
+ init.obj end.obj utility.obj tools.obj thumbnails.obj keyboard.obj mouse.obj opengl.obj globals.obj reconstruct.obj histogram.obj
+RCFILES = reconstruct.rc
+RESFILES = reconstruct.res
+
+# Use the GBM library compiled for MS VC tools. Also explicitly list all SDK .lib files used...
+LIBFILES = ngbm.lib user32.lib gdi32.lib opengl32.lib comdlg32.lib comctl32.lib version.lib htmlhelp.lib AdvAPI32.lib
+
+# the following definitions serve only to document all of files used by the application
+ICONS = large.ico section.ico small.ico
+CURSORS = cultiline.cur domain.cur ellipse.cur eraser.cur line.cur magnify.cur multiline.cur pencil.cur point.cur\
+ rectangle.cur xy.cur zoom.cur
+BITMAPS = arrow.bmp cultiline.bmp domain.bmp ellipse.bmp exclamation.bmp line.bmp magnify.bmp multiline.bmp pencil.bmp point.bmp\
+ reconstruct.bmp rectangle.bmp xyzoom.bmp
+
+# Define environment variables RECONSTRUCT_COMPILER, RECONSTRUCT_LINKER, RECONSTRUCT_RC, RECONSTRUCT_LIB, RECONSTRUCT_INCLUDE
+# to specify the location on your system of these files (as a quoted string),
+# e.g. set RECONSTRUCT_COMPILER="C:\Program Files\Microsoft Visual Studio 8\VC\bin\cl"
+# via Control Panel->System->Advanced->Environment Variables on a Windows XP machine
+# (You may need to logout before your environment variables will take effect.)
+# Additionally, define the path to the Windows Platform SDK in the environment variables INCLUDE and LIB
+# e.g. set INCLUDE="C:\Program Files\Microsoft Platform SDK\Include"
+# and set LIB="C:\Program Files\Microsoft Platform SDK\Lib"
+
+CFLAGS  = -c -O2 -MT -GA -I$(RECONSTRUCT_INCLUDE) -D_CRT_SECURE_NO_DEPRECATE -DWINVER=0x0400 -D_WIN32_WINNT=0x0400
+# -c   compile only, do not link
+# -MT  multithreading
+# -GA  Windows application
+# -Od  no optimizations for debug, but in final use -O2
+# -I   location of include files
+# -D   override value in Windows API include files to make compatible with NT 4.0 and disable deprecation warnings
+
+LFLAGS  = -OUT:$(EXEFILE) -INCREMENTAL:NO -LIBPATH:$(RECONSTRUCT_LIB) -LIBPATH:$(LIB)
+# disable incremental linking
+
+RFLAGS  = -I$(INCLUDE)
+# need to uncomment the include <windows.h> statement in reconstruct.rc for MS RC to recognize VK_F1, etc.
+
+# primary target is linking .exe application, dependent on .obj and .res
+$(EXEFILE) : $(OBJFILES) $(RESFILES)
+   $(RECONSTRUCT_LINKER) $(LFLAGS) $(OBJFILES) $(LIBFILES) $(RESFILES)
+
+# if any source files are newer than header files, recompile all sources
+$(OBJFILES) : $(HDRFILES)
+   $(RECONSTRUCT_COMPILER) $(CFLAGS) $(SRCFILES)
+
+# if any source file is newer than its object file, recompile just that one source
+.cpp.obj :
+   $(RECONSTRUCT_COMPILER) $(CFLAGS) $(SRCFILES)
+
+# if any .rc or header files are newer than .res files, recompile resources
+$(RESFILES) : $(RCFILES) $(HDRFILES)
+   $(RECONSTRUCT_RC) $(RFLAGS) $(RCFILES)
+ 
+clean :
+   del *.obj *.res *.bak
+

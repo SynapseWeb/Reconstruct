@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{48E04D5A-F19D-4B82-AACA-CF1A22D8F181}</ProjectGuid>
+    <RootNamespace>Reconstruct</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>-c -MT -GA -Od %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>ngbm.lib;comctl32.lib;opengl32.lib;version.lib;htmlhelp.lib;AdvAPI32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>-c -MT -GA -Od %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>ngbm.lib;comctl32.lib;opengl32.lib;version.lib;htmlhelp.lib;AdvAPI32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="adib.cpp" />
+    <ClCompile Include="boissonnat.cpp" />
+    <ClCompile Include="contour.cpp" />
+    <ClCompile Include="domain_menu.cpp" />
+    <ClCompile Include="end.cpp" />
+    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="help_menu.cpp" />
+    <ClCompile Include="histogram.cpp" />
+    <ClCompile Include="image.cpp" />
+    <ClCompile Include="init.cpp" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="kube-gustavson-fft.cpp" />
+    <ClCompile Include="mouse.cpp" />
+    <ClCompile Include="nform.cpp" />
+    <ClCompile Include="objects_menu.cpp" />
+    <ClCompile Include="opengl.cpp" />
+    <ClCompile Include="palette.cpp" />
+    <ClCompile Include="program_menu.cpp" />
+    <ClCompile Include="reconstruct.cpp" />
+    <ClCompile Include="section.cpp" />
+    <ClCompile Include="sectionsinfo.cpp" />
+    <ClCompile Include="section_menu.cpp" />
+    <ClCompile Include="series.cpp" />
+    <ClCompile Include="series_menu.cpp" />
+    <ClCompile Include="tformslifo.cpp" />
+    <ClCompile Include="threads.cpp" />
+    <ClCompile Include="thumbnails.cpp" />
+    <ClCompile Include="tools.cpp" />
+    <ClCompile Include="trace_menu.cpp" />
+    <ClCompile Include="utility.cpp" />
+    <ClCompile Include="viewport.cpp" />
+    <ClCompile Include="vrmlobject.cpp" />
+    <ClCompile Include="vrmlobjects.cpp" />
+    <ClCompile Include="vrmlscene.cpp" />
+    <ClCompile Include="xmldata.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="classes.h" />
+    <ClInclude Include="constants.h" />
+    <ClInclude Include="gbm.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="kube-gustavson-fft.h" />
+    <ClInclude Include="list.hpp" />
+    <ClInclude Include="operations.h" />
+    <ClInclude Include="reconstruct.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="arrow.bmp" />
+    <Image Include="cultiline.bmp" />
+    <Image Include="domain.bmp" />
+    <Image Include="ellipse.bmp" />
+    <Image Include="grid.bmp" />
+    <Image Include="line.bmp" />
+    <Image Include="lock.bmp" />
+    <Image Include="magnify.bmp" />
+    <Image Include="multiline.bmp" />
+    <Image Include="pencil.bmp" />
+    <Image Include="reconstruct.bmp" />
+    <Image Include="rectangle.bmp" />
+    <Image Include="scalpel.bmp" />
+    <Image Include="scissor.bmp" />
+    <Image Include="stamp.bmp" />
+    <Image Include="stipple.bmp" />
+    <Image Include="unlock.bmp" />
+    <Image Include="wildfire.bmp" />
+    <Image Include="xyzoom.bmp" />
+    <Image Include="zline.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="reconstruct.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\Desktop\Recon1100SRCFromJohnFiala\wait.ani" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
