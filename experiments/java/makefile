@@ -12,6 +12,5 @@ clean:
 	mv ZoomPanLib.class ZoomPanLib.class_saved
 	rm -f *.class
 	mv ZoomPanLib.class_saved ZoomPanLib.class
-	rm -f *.png
 	rm -f *~
 
