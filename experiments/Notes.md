@@ -4,3 +4,5 @@
 Early tests indicate that the Java implementation can handle the loading, zooming, and panning of large images very well!
 
 Work is still progressing on the CodeBlocks compiled version.
+
+The Blender version requires TKinter for its GUI. TKinter may not be in all unbundled versions of Blender.
