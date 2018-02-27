@@ -3,7 +3,7 @@
 
 This is one of the first demonstrations (Feb, 26th, 2018):
 
-![Early Demo](java/Screenshot_02262018_120642PM.png?raw=true "Early Demo")
+![Early Demo](Screenshot_02262018_120642PM.png?raw=true "Early Demo")
 
 The current version is able to open a single image via the File/Add menu option.
 
