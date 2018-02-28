@@ -24,7 +24,7 @@ class MyFileChooser extends JFileChooser {
 }
 
 
-public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMotionListener, MouseListener {
+public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMotionListener, MouseListener, KeyListener {
 
 	static int w=800, h=600;
 	
@@ -307,6 +307,46 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     super.mouseMoved ( e );
   }
 
+  JMenuItem move_menu_item = null;
+  JMenuItem draw_menu_item = null;
+
+  // KeyListener methods:
+
+  public void keyTyped ( KeyEvent e ) {
+    // System.out.println ( "Key: " + e );
+    if (Character.toUpperCase(e.getKeyChar()) == ' ') {
+      // Space bar toggles between drawing mode and move mode
+      drawing_mode = !drawing_mode;
+      if (drawing_mode) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+        setCursor ( current_cursor );
+        stroke_started = false;
+        if (draw_menu_item != null) {
+          draw_menu_item.setSelected(true);
+        }
+      } else {
+        current_cursor = b_cursor;
+        setCursor ( current_cursor );
+        stroke_started = false;
+        if (move_menu_item != null) {
+          move_menu_item.setSelected(true);
+        }
+      }
+    } else if (Character.toUpperCase(e.getKeyChar()) == 'P') {
+    }
+    repaint();
+  }
+  public void keyPressed ( KeyEvent e ) {
+    //System.out.println ( "Key Pressed" );
+    //super.keyPressed ( e );
+  }
+  public void keyReleased ( KeyEvent e ) {
+    //System.out.println ( "Key Released" );
+    //super.keyReleased ( e );
+  }
+
+
+  // ActionPerformed methods (mostly menu responses):
 
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
@@ -320,7 +360,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
         current_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
       */
-      setCursor ( b_cursor );
+      setCursor ( current_cursor );
 		  drawing_mode = false;
 		  stroke_started = false;
 		} else if (cmd.equalsIgnoreCase("Draw")) {
@@ -640,10 +680,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 
           JMenu mode_menu = new JMenu("Mode");
             bg = new ButtonGroup();
-            mode_menu.add ( mi = new JRadioButtonMenuItem("Move", true) );
+            mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", true) );
             mi.addActionListener(zp);
             bg.add ( mi );
-            mode_menu.add ( mi = new JRadioButtonMenuItem("Draw") );
+            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw") );
             mi.addActionListener(zp);
             bg.add ( mi );
             mode_menu.add ( mi = new JMenuItem("Dump") );
@@ -665,6 +705,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 		    }
 
 				f.add ( zp );
+        zp.addKeyListener ( zp );
 				f.pack();
 				f.setSize ( w, h );
 				f.setVisible ( true );
