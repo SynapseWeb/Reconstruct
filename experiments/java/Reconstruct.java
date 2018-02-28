@@ -154,7 +154,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
   }
 
 
-	Cursor current_custom_cursor = null;
+	Cursor current_cursor = null;
 	Cursor h_cursor = null;
 	Cursor v_cursor = null;
 	Cursor b_cursor = null;
@@ -257,16 +257,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       b_cursor = tk.createCustomCursor ( cursor_image, new Point(cursor_size/2,cursor_size/2), "Both" );
 
     }
-    if (current_custom_cursor == null) {
-      current_custom_cursor = h_cursor;
+    if (current_cursor == null) {
+      current_cursor = b_cursor;
       /*
-        setCursor ( Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR ) );
-        setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
-        setCursor ( Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR ) );
       */
-      current_custom_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
+      // current_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
     }
-    setCursor ( current_custom_cursor );
+    setCursor ( current_cursor );
   }
 
   public void mouseExited ( MouseEvent e ) {
@@ -316,13 +313,19 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 		System.out.println ( "ActionPerformed got \"" + cmd + "\"" );
 		
 		if (cmd.equalsIgnoreCase("Move")) {
-      current_custom_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
-      setCursor ( current_custom_cursor );
+      current_cursor = b_cursor;
+      /*
+        Alternative predefined cursors from java.awt.Cursor:
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
+      */
+      setCursor ( b_cursor );
 		  drawing_mode = false;
 		  stroke_started = false;
 		} else if (cmd.equalsIgnoreCase("Draw")) {
-      current_custom_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
-      setCursor ( current_custom_cursor );
+      current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+      setCursor ( current_cursor );
 		  drawing_mode = true;
 		  stroke_started = false;
 		} else if (cmd.equalsIgnoreCase("Dump")) {
