@@ -216,7 +216,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 	    strokes = new ArrayList();
 	    stroke  = null;
    	  repaint();
-		} else if (cmd.equalsIgnoreCase("Add")) {
+		} else if ( cmd.equalsIgnoreCase("Add") || cmd.equalsIgnoreCase("Images...") ) {
+
 			System.out.println ( "Opening new file ..." );
 			// String old_path = current_base_path;
 
@@ -225,8 +226,15 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 		  // FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
 		  // file_chooser.setFileFilter(filter);
 		  // data_set_chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		  int returnVal = file_chooser.showDialog(this, "Image File to Add");
+		  file_chooser.setMultiSelectionEnabled(true);
+		  int returnVal = file_chooser.showDialog(this, "Image Files to Add");
 		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
+		    File selected_files[] = file_chooser.getSelectedFiles();
+		    if (selected_files.length > 0) {
+		      for (int i=0; i<selected_files.length; i++) {
+            System.out.println ( "You chose this file: " + selected_files[i] );
+		      }
+		    }
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + file_chooser.getSelectedFile() );
         String file_path_and_name = "?Unknown?";
         try {
@@ -308,11 +316,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
             series_menu.addSeparator();
 
             JMenu export_menu = new JMenu("Export");
-              export_menu.add ( mi = new JMenuItem("Images...") );
+              export_menu.add ( mi = new JMenuItem("Images... ") );
               mi.addActionListener(zp);
-              export_menu.add ( mi = new JMenuItem("Lines...") );
+              export_menu.add ( mi = new JMenuItem("Lines... ") );
               mi.addActionListener(zp);
-              export_menu.add ( mi = new JMenuItem("Trace lists...") );
+              export_menu.add ( mi = new JMenuItem("Trace lists... ") );
               mi.addActionListener(zp);
             series_menu.add ( export_menu );
 
