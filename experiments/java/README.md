@@ -1,11 +1,15 @@
 # Reconstruct Java Experiments
-## This is an early Java prototype for some basic functionality.
+## This is an early Java prototype of basic functionality.
 
-This is one of the first Java demonstrations (February 26th, 2018):
+This is an early Java demonstration with minimal functionality (February 27th, 2018):
 
-![Early Demo](Screenshot_02262018_120642PM.png?raw=true "Early Demo")
+![Early Demo](Screenshot_02272018_105320PM.png?raw=true "Early Demo")
 
-The current version is able to open a single image via the File/Add menu option.
+This version uses the familiar menus from the earlier Reconstruct. Most of the menus are non-functional.
+
+This version does support importing a single image with the **Series/Import/Images...** option.
+
+This version supports switching between **Move Mode** and **Draw Mode** via the space bar. These modes are:
 
 **Move Mode:** The image can be zoomed with the mouse scrollwheel and panned with mouse click and drag.
 
