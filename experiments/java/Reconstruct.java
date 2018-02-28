@@ -24,7 +24,7 @@ class MyFileChooser extends JFileChooser {
 }
 
 
-public class ZoomPanDraw extends ZoomPanLib implements ActionListener, MouseMotionListener {
+public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMotionListener {
 
 	static int w=800, h=600;
 	
@@ -252,10 +252,10 @@ public class ZoomPanDraw extends ZoomPanLib implements ActionListener, MouseMoti
 		System.out.println ( "Use the mouse wheel to zoom, and drag to pan." );
 		javax.swing.SwingUtilities.invokeLater ( new Runnable() {
 			public void run() {
-			  JFrame f = new JFrame("Zoom/Pan Drawing Demonstration");
+			  JFrame f = new JFrame("Reconstruct Java Demonstration");
 				f.setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
 				
-        ZoomPanDraw zp = new ZoomPanDraw();
+        Reconstruct zp = new Reconstruct();
         /* Can't use args in here
         if (args.length > 0) {
           zp.current_directory = args[0];
