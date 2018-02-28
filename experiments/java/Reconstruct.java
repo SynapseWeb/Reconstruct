@@ -268,6 +268,230 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 				JMenuBar menu_bar = new JMenuBar();
           JMenuItem mi;
           ButtonGroup bg;
+
+          JMenu program_menu = new JMenu("Program");
+            JMenu windows_menu = new JMenu("Windows");
+              windows_menu.add ( mi = new JCheckBoxMenuItem("Tools window", true) );
+              mi.addActionListener(zp);
+              windows_menu.add ( mi = new JCheckBoxMenuItem("Status bar", true) );
+              mi.addActionListener(zp);
+            program_menu.add ( windows_menu );
+
+            program_menu.addSeparator();
+
+            JMenu debug_menu = new JMenu("Debug");
+              debug_menu.add ( mi = new JCheckBoxMenuItem("Logging", true) );
+              mi.addActionListener(zp);
+              debug_menu.add ( mi = new JMenuItem("Times") );
+              mi.addActionListener(zp);
+            program_menu.add ( debug_menu );
+
+            program_menu.add ( mi = new JMenuItem("Exit") );
+            mi.addActionListener(zp);
+            menu_bar.add ( program_menu );
+
+          JMenu series_menu = new JMenu("Series");
+            series_menu.add ( mi = new JMenuItem("Open...") );
+            mi.addActionListener(zp);
+            series_menu.add ( mi = new JMenuItem("Close") );
+            mi.addActionListener(zp);
+
+            series_menu.addSeparator();
+
+            series_menu.add ( mi = new JMenuItem("New...") );
+            mi.addActionListener(zp);
+            series_menu.add ( mi = new JMenuItem("Save") );
+            mi.addActionListener(zp);
+            series_menu.add ( mi = new JMenuItem("Options...") );
+            mi.addActionListener(zp);
+
+            series_menu.addSeparator();
+
+            JMenu export_menu = new JMenu("Export");
+              export_menu.add ( mi = new JMenuItem("Images...") );
+              mi.addActionListener(zp);
+              export_menu.add ( mi = new JMenuItem("Lines...") );
+              mi.addActionListener(zp);
+              export_menu.add ( mi = new JMenuItem("Trace lists...") );
+              mi.addActionListener(zp);
+            series_menu.add ( export_menu );
+
+            JMenu import_menu = new JMenu("Import");
+              import_menu.add ( mi = new JMenuItem("Images...") );
+              mi.addActionListener(zp);
+              import_menu.add ( mi = new JMenuItem("Lines...") );
+              mi.addActionListener(zp);
+              import_menu.add ( mi = new JMenuItem("Trace lists...") );
+              mi.addActionListener(zp);
+            series_menu.add ( import_menu );
+
+            menu_bar.add ( series_menu );
+
+          JMenu section_menu = new JMenu("Section");
+            section_menu.add ( mi = new JMenuItem("List Sections...") );
+            mi.addActionListener(zp);
+            section_menu.add ( mi = new JMenuItem("Thumbnails...") );
+            mi.addActionListener(zp);
+
+            section_menu.addSeparator();
+
+            section_menu.add ( mi = new JMenuItem("New...") );
+            mi.addActionListener(zp);
+            section_menu.add ( mi = new JMenuItem("Save") );
+            mi.addActionListener(zp);
+            section_menu.add ( mi = new JMenuItem("Thickness...") );
+            mi.addActionListener(zp);
+
+            section_menu.addSeparator();
+
+            section_menu.add ( mi = new JMenuItem("Undo") );
+            mi.addActionListener(zp);
+            section_menu.add ( mi = new JMenuItem("Redo") );
+            mi.addActionListener(zp);
+            section_menu.add ( mi = new JMenuItem("Reset") );
+            mi.addActionListener(zp);
+            section_menu.add ( mi = new JMenuItem("Blend") );
+            mi.addActionListener(zp);
+
+            JMenu zoom_menu = new JMenu("Zoom");
+              zoom_menu.add ( mi = new JMenuItem("Center") );
+              mi.addActionListener(zp);
+              zoom_menu.add ( mi = new JMenuItem("Last") );
+              mi.addActionListener(zp);
+              zoom_menu.add ( mi = new JMenuItem("Actual pixels") );
+              mi.addActionListener(zp);
+              zoom_menu.add ( mi = new JMenuItem("Magnification...") );
+              mi.addActionListener(zp);
+            section_menu.add ( zoom_menu );
+
+            JMenu movement_menu = new JMenu("Movement");
+              movement_menu.add ( mi = new JMenuItem("Unlock") );
+              mi.addActionListener(zp);
+              JMenu flip_menu = new JMenu("Flip");
+                flip_menu.add ( mi = new JMenuItem("Horizontally") );
+                mi.addActionListener(zp);
+                flip_menu.add ( mi = new JMenuItem("Vertically") );
+                mi.addActionListener(zp);
+              movement_menu.add ( flip_menu );
+              JMenu rotate_menu = new JMenu("Rotate");
+                rotate_menu.add ( mi = new JMenuItem("90 clockwise") );
+                mi.addActionListener(zp);
+                rotate_menu.add ( mi = new JMenuItem("90 counterclockwise") );
+                mi.addActionListener(zp);
+                rotate_menu.add ( mi = new JMenuItem("180") );
+                mi.addActionListener(zp);
+              movement_menu.add ( rotate_menu );
+              movement_menu.add ( mi = new JMenuItem("Type in...") );
+              mi.addActionListener(zp);
+              movement_menu.addSeparator();
+              movement_menu.add ( mi = new JMenuItem("By correlation") );
+              mi.addActionListener(zp);
+              movement_menu.addSeparator();
+              movement_menu.add ( mi = new JMenuItem("Repeat") );
+              mi.addActionListener(zp);
+              movement_menu.add ( mi = new JMenuItem("Propagate...") );
+              mi.addActionListener(zp);
+              movement_menu.addSeparator();
+              JMenu record_menu = new JMenu("Record");
+                record_menu.add ( mi = new JMenuItem("Start") );
+                mi.addActionListener(zp);
+                record_menu.addSeparator();
+                record_menu.add ( mi = new JMenuItem("from selected") );
+                mi.addActionListener(zp);
+              movement_menu.add ( record_menu );
+            section_menu.add ( movement_menu );
+
+            menu_bar.add ( section_menu );
+
+          JMenu domain_menu = new JMenu("Domain");
+            domain_menu.add ( mi = new JMenuItem("List image domains...") );
+            mi.addActionListener(zp);
+            domain_menu.add ( mi = new JMenuItem("Import image...") );
+            mi.addActionListener(zp);
+            domain_menu.addSeparator();
+            domain_menu.add ( mi = new JMenuItem("Merge front") );
+            mi.addActionListener(zp);
+            domain_menu.add ( mi = new JMenuItem("Merge rear") );
+            mi.addActionListener(zp);
+            domain_menu.add ( mi = new JMenuItem("Attributes...") );
+            mi.addActionListener(zp);
+            domain_menu.add ( mi = new JMenuItem("Reinitialize ->") );
+            mi.addActionListener(zp);
+            domain_menu.addSeparator();
+            domain_menu.add ( mi = new JMenuItem("Delete") );
+            mi.addActionListener(zp);
+          menu_bar.add ( domain_menu );
+
+
+          JMenu trace_menu = new JMenu("Trace");
+            trace_menu.add ( mi = new JMenuItem("List traces...") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Find...") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Select all") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Deselect all") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Zoom to") );
+            mi.addActionListener(zp);
+            trace_menu.addSeparator();
+            trace_menu.add ( mi = new JMenuItem("Attributes...") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Palette...") );
+            mi.addActionListener(zp);
+            trace_menu.addSeparator();
+            trace_menu.add ( mi = new JMenuItem("Cut") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Copy") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Paste") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Paste attributes") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Delete") );
+            mi.addActionListener(zp);
+            trace_menu.addSeparator();
+            trace_menu.add ( mi = new JMenuItem("Align Section") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Calibrate...") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Merge") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Reverse") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Simplify") );
+            mi.addActionListener(zp);
+            trace_menu.add ( mi = new JMenuItem("Smooth") );
+            mi.addActionListener(zp);
+          menu_bar.add ( trace_menu );
+
+          JMenu object_menu = new JMenu("Object");
+            object_menu.add ( mi = new JMenuItem("List Objects...") );
+            mi.addActionListener(zp);
+            object_menu.addSeparator();
+            object_menu.add ( mi = new JMenuItem("3D Scene...") );
+            mi.addActionListener(zp);
+            object_menu.add ( mi = new JMenuItem("Z-Traces...") );
+            mi.addActionListener(zp);
+            object_menu.add ( mi = new JMenuItem("Distances...") );
+            mi.addActionListener(zp);
+            menu_bar.add ( object_menu );
+
+          JMenu help_menu = new JMenu("Help");
+            help_menu.add ( mi = new JMenuItem("Manual...") );
+            mi.addActionListener(zp);
+            help_menu.add ( mi = new JMenuItem("Key commands...") );
+            mi.addActionListener(zp);
+            help_menu.add ( mi = new JMenuItem("Mouse clicks...") );
+            mi.addActionListener(zp);
+            help_menu.addSeparator();
+            help_menu.add ( mi = new JMenuItem("License...") );
+            mi.addActionListener(zp);
+            help_menu.add ( mi = new JMenuItem("Version...") );
+            mi.addActionListener(zp);
+            menu_bar.add ( help_menu );
+
+
           JMenu file_menu = new JMenu("File");
             file_menu.add ( mi = new JMenuItem("Next") );
             mi.addActionListener(zp);
@@ -280,6 +504,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
             file_menu.add ( mi = new JMenuItem("Exit") );
             mi.addActionListener(zp);
             menu_bar.add ( file_menu );
+
           JMenu mode_menu = new JMenu("Mode");
             bg = new ButtonGroup();
             mode_menu.add ( mi = new JRadioButtonMenuItem("Move", true) );
@@ -293,6 +518,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
             mode_menu.add ( mi = new JMenuItem("Clear") );
             mi.addActionListener(zp);
             menu_bar.add ( mode_menu );
+
 				f.setJMenuBar ( menu_bar );
 				
 				zp.setBackground ( new Color (0,0,0) );
