@@ -24,7 +24,7 @@ class MyFileChooser extends JFileChooser {
 }
 
 
-public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMotionListener {
+public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMotionListener, MouseListener {
 
 	static int w=800, h=600;
 	
@@ -153,9 +153,120 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     }
   }
 
+
+	Cursor current_custom_cursor = null;
+	Cursor h_cursor = null;
+	Cursor v_cursor = null;
+	Cursor b_cursor = null;
+	int cursor_size = 33;
+
+  /*
   public void mouseEntered ( MouseEvent e ) {
     // System.out.println ( "Mouse entered" );
     super.mouseEntered(e);
+  }
+  */
+
+  public void mouseEntered ( MouseEvent e ) {
+    if ( (h_cursor == null) || (v_cursor == null) || (b_cursor == null) ) {
+      Toolkit tk = Toolkit.getDefaultToolkit();
+      Graphics2D cg = null;
+      BufferedImage cursor_image = null;
+      Polygon p = null;
+      int h = cursor_size;
+      int w = cursor_size;
+
+      // Create the horizontal cursor
+      p = new Polygon();
+      p.addPoint ( 0, h/2 );
+      p.addPoint ( w/4, (h/2)-(h/4) );
+      p.addPoint ( w/4, (h/2)-(h/8) );
+      p.addPoint ( 3*w/4, (h/2)-(h/8) );
+      p.addPoint ( 3*w/4, (h/2)-(h/4) );
+      p.addPoint ( w-1, h/2 );
+      p.addPoint ( 3*w/4, (h/2)+(h/4) );
+      p.addPoint ( 3*w/4, (h/2)+(h/8) );
+      p.addPoint ( w/4, (h/2)+(h/8) );
+      p.addPoint ( w/4, (h/2)+(h/4) );
+
+      cursor_image = new BufferedImage(cursor_size,cursor_size,BufferedImage.TYPE_4BYTE_ABGR);
+      cg = cursor_image.createGraphics();
+      cg.setColor ( new Color(255,255,255) );
+      cg.fillPolygon ( p );
+      cg.setColor ( new Color(0,0,0) );
+      cg.drawPolygon ( p );
+
+      h_cursor = tk.createCustomCursor ( cursor_image, new Point(cursor_size/2,cursor_size/2), "Horizontal" );
+
+      // Create the vertical cursor
+      p = new Polygon();
+      p.addPoint ( w/2, 0 );
+      p.addPoint ( (w/2)+(w/4), h/4 );
+      p.addPoint ( (w/2)+(w/8), h/4 );
+      p.addPoint ( (w/2)+(w/8), 3*h/4 );
+      p.addPoint ( (w/2)+(w/4), 3*h/4 );
+      p.addPoint ( w/2, h-1 );
+      p.addPoint ( (w/2)-(w/4), 3*h/4 );
+      p.addPoint ( (w/2)-(w/8), 3*h/4 );
+      p.addPoint ( (w/2)-(w/8), h/4 );
+      p.addPoint ( (w/2)-(w/4), h/4 );
+
+      cursor_image = new BufferedImage(cursor_size,cursor_size,BufferedImage.TYPE_4BYTE_ABGR);
+      cg = cursor_image.createGraphics();
+      cg.setColor ( new Color(255,255,255) );
+      cg.fillPolygon ( p );
+      cg.setColor ( new Color(0,0,0) );
+      cg.drawPolygon ( p );
+
+      v_cursor = tk.createCustomCursor ( cursor_image, new Point(cursor_size/2,cursor_size/2), "Vertical" );
+
+      // Create the both cursor
+      p = new Polygon();
+      p.addPoint ( 0, h/2 );
+      p.addPoint ( w/4, (h/2)-(h/4) );
+      p.addPoint ( w/4, (h/2)-(h/8) );
+      p.addPoint ( (w/2)-(w/8), (h/2)-(h/8) );
+      p.addPoint ( (w/2)-(w/8), h/4 );
+      p.addPoint ( (w/2)-(w/4), h/4 );
+      p.addPoint ( w/2, 0 );
+      p.addPoint ( (w/2)+(w/4), h/4 );
+      p.addPoint ( (w/2)+(w/8), h/4 );
+      p.addPoint ( (w/2)+(w/8), (h/2)-(h/8) );
+      p.addPoint ( (w/2)+(w/4), (h/2)-(h/8) );
+      p.addPoint ( (w/2)+(w/4), (h/2)-(h/4) );
+      p.addPoint ( w-1, h/2 );
+      p.addPoint ( (w/2)+(w/4), (h/2)+(h/4) );
+      p.addPoint ( (w/2)+(w/4), (h/2)+(h/8) );
+      p.addPoint ( (w/2)+(w/8), (h/2)+(h/8) );
+      p.addPoint ( (w/2)+(w/8), 3*h/4 );
+      p.addPoint ( (w/2)+(w/4), 3*h/4 );
+      p.addPoint ( w/2, h-1 );
+      p.addPoint ( (w/2)-(w/4), 3*h/4 );
+      p.addPoint ( (w/2)-(w/8), 3*h/4 );
+      p.addPoint ( (w/2)-(w/8), (h/2)+(h/8) );
+      p.addPoint ( (w/2)-(w/4), (h/2)+(h/8) );
+      p.addPoint ( (w/2)-(w/4), (h/2)+(h/4) );
+
+      cursor_image = new BufferedImage(cursor_size,cursor_size,BufferedImage.TYPE_4BYTE_ABGR);
+      cg = cursor_image.createGraphics();
+      cg.setColor ( new Color(255,255,255) );
+      cg.fillPolygon ( p );
+      cg.setColor ( new Color(0,0,0) );
+      cg.drawPolygon ( p );
+
+      b_cursor = tk.createCustomCursor ( cursor_image, new Point(cursor_size/2,cursor_size/2), "Both" );
+
+    }
+    if (current_custom_cursor == null) {
+      current_custom_cursor = h_cursor;
+      /*
+        setCursor ( Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR ) );
+        setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
+        setCursor ( Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR ) );
+      */
+      current_custom_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
+    }
+    setCursor ( current_custom_cursor );
   }
 
   public void mouseExited ( MouseEvent e ) {
@@ -205,9 +316,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 		System.out.println ( "ActionPerformed got \"" + cmd + "\"" );
 		
 		if (cmd.equalsIgnoreCase("Move")) {
+      current_custom_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
+      setCursor ( current_custom_cursor );
 		  drawing_mode = false;
 		  stroke_started = false;
 		} else if (cmd.equalsIgnoreCase("Draw")) {
+      current_custom_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+      setCursor ( current_custom_cursor );
 		  drawing_mode = true;
 		  stroke_started = false;
 		} else if (cmd.equalsIgnoreCase("Dump")) {
@@ -291,6 +406,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
               debug_menu.add ( mi = new JCheckBoxMenuItem("Logging", true) );
               mi.addActionListener(zp);
               debug_menu.add ( mi = new JMenuItem("Times") );
+              mi.addActionListener(zp);
+              debug_menu.addSeparator();
+              debug_menu.add ( mi = new JMenuItem("Dump") );
+              mi.addActionListener(zp);
+              debug_menu.add ( mi = new JMenuItem("Clear") );
               mi.addActionListener(zp);
             program_menu.add ( debug_menu );
 
@@ -500,6 +620,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
             menu_bar.add ( help_menu );
 
 
+          /*
           JMenu file_menu = new JMenu("File");
             file_menu.add ( mi = new JMenuItem("Next") );
             mi.addActionListener(zp);
@@ -512,6 +633,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
             file_menu.add ( mi = new JMenuItem("Exit") );
             mi.addActionListener(zp);
             menu_bar.add ( file_menu );
+          */
 
           JMenu mode_menu = new JMenu("Mode");
             bg = new ButtonGroup();
