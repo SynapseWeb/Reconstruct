@@ -26,4 +26,6 @@ This version supports switching between **Move Mode** and **Draw Mode** via the 
 * All traces can be printed to parent console with "**Program / Debug / Dump**".
 * All traces can be cleared with "**Program / Debug / Clear**".
 * The "Mode" menu item can also be used to switch modes, print traces, and clear traces.
+* The "Center Drawing" mode acts like a sewing machine or jigsaw where the "work" is moved
+  under the center drawing point (cross hair).
 
