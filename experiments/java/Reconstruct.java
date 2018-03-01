@@ -99,7 +99,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
   		//g.drawImage ( image_frame, (win_w-img_w)/2, (win_h-img_h)/2, img_w, img_h, this );
     }
 
-		g.setColor ( new Color ( 200, 0, 0 ) );
+    g.setColor ( new Color ( 200, 0, 0 ) );
     for (int i=0; i<strokes.size(); i++) {
       // System.out.println ( " Stroke " + i );
       ArrayList s = (ArrayList)(strokes.get(i));
@@ -128,50 +128,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 	Cursor b_cursor = null;
 	int cursor_size = 33;
 
-  public Polygon horiz_cursor_poly() {
-    Polygon p = new Polygon();
-    p.addPoint ( 0, h/2 );
-    p.addPoint ( w/4, (h/2)-(h/4) );
-    p.addPoint ( w/4, (h/2)-(h/8) );
-    p.addPoint ( 3*w/4, (h/2)-(h/8) );
-    p.addPoint ( 3*w/4, (h/2)-(h/4) );
-    p.addPoint ( w-1, h/2 );
-    p.addPoint ( 3*w/4, (h/2)+(h/4) );
-    p.addPoint ( 3*w/4, (h/2)+(h/8) );
-    p.addPoint ( w/4, (h/2)+(h/8) );
-    p.addPoint ( w/4, (h/2)+(h/4) );
-    return ( p );
-  }
-
-  public Polygon both_cursor_poly() {
-    Polygon p = new Polygon();
-    p.addPoint ( 0, h/2 );
-    p.addPoint ( w/4, (h/2)-(h/4) );
-    p.addPoint ( w/4, (h/2)-(h/8) );
-    p.addPoint ( (w/2)-(w/8), (h/2)-(h/8) );
-    p.addPoint ( (w/2)-(w/8), h/4 );
-    p.addPoint ( (w/2)-(w/4), h/4 );
-    p.addPoint ( w/2, 0 );
-    p.addPoint ( (w/2)+(w/4), h/4 );
-    p.addPoint ( (w/2)+(w/8), h/4 );
-    p.addPoint ( (w/2)+(w/8), (h/2)-(h/8) );
-    p.addPoint ( (w/2)+(w/4), (h/2)-(h/8) );
-    p.addPoint ( (w/2)+(w/4), (h/2)-(h/4) );
-    p.addPoint ( w-1, h/2 );
-    p.addPoint ( (w/2)+(w/4), (h/2)+(h/4) );
-    p.addPoint ( (w/2)+(w/4), (h/2)+(h/8) );
-    p.addPoint ( (w/2)+(w/8), (h/2)+(h/8) );
-    p.addPoint ( (w/2)+(w/8), 3*h/4 );
-    p.addPoint ( (w/2)+(w/4), 3*h/4 );
-    p.addPoint ( w/2, h-1 );
-    p.addPoint ( (w/2)-(w/4), 3*h/4 );
-    p.addPoint ( (w/2)-(w/8), 3*h/4 );
-    p.addPoint ( (w/2)-(w/8), (h/2)+(h/8) );
-    p.addPoint ( (w/2)-(w/4), (h/2)+(h/8) );
-    p.addPoint ( (w/2)-(w/4), (h/2)+(h/4) );
-    return ( p );
-  }
-
   public void mouseEntered ( MouseEvent e ) {
     if ( (h_cursor == null) || (v_cursor == null) || (b_cursor == null) ) {
       Toolkit tk = Toolkit.getDefaultToolkit();
@@ -182,7 +138,17 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       int w = cursor_size;
 
       // Create the horizontal cursor
-      p = horiz_cursor_poly();
+      p = new Polygon();
+      p.addPoint ( 0, h/2 );
+      p.addPoint ( w/4, (h/2)-(h/4) );
+      p.addPoint ( w/4, (h/2)-(h/8) );
+      p.addPoint ( 3*w/4, (h/2)-(h/8) );
+      p.addPoint ( 3*w/4, (h/2)-(h/4) );
+      p.addPoint ( w-1, h/2 );
+      p.addPoint ( 3*w/4, (h/2)+(h/4) );
+      p.addPoint ( 3*w/4, (h/2)+(h/8) );
+      p.addPoint ( w/4, (h/2)+(h/8) );
+      p.addPoint ( w/4, (h/2)+(h/4) );
 
       cursor_image = new BufferedImage(cursor_size,cursor_size,BufferedImage.TYPE_4BYTE_ABGR);
       cg = cursor_image.createGraphics();
@@ -216,7 +182,59 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       v_cursor = tk.createCustomCursor ( cursor_image, new Point(cursor_size/2,cursor_size/2), "Vertical" );
 
       // Create the both cursor
-      p = both_cursor_poly();
+
+      int cw2 = w/2;   // Cursor width / 2
+      int ch2 = h/2;   // Cursor height / 2
+
+      int clw = w/12;  // Arrow line width / 2
+      int caw = w/6;   // Arrow head width / 2
+      int cal = (int)(w/3.5);   // Arrow head length
+
+      p = new Polygon();
+      p.addPoint (       -cw2,           0 );  // Left Point
+
+      p.addPoint ( -(cw2-cal),         caw );  // Left arrow lower outside corner
+      p.addPoint ( -(cw2-cal),         clw );  // Left arrow lower inside corner
+
+      p.addPoint (       -clw,         clw );  // Left/Bottom corner
+
+      p.addPoint (       -clw,     ch2-cal );  // Bottom arrow left inside corner
+      p.addPoint (       -caw,     ch2-cal );  // Bottom arrow left outside corner
+
+      p.addPoint (          0,         ch2 );  // Bottom Point
+
+      p.addPoint (        caw,     ch2-cal );  // Bottom arrow right outside corner
+      p.addPoint (        clw,     ch2-cal );  // Bottom arrow right inside corner
+
+      p.addPoint (        clw,         clw );  // Right/Bottom corner
+
+      p.addPoint (  (cw2-cal),         clw );  // Right arrow lower inside corner
+      p.addPoint (  (cw2-cal),         caw );  // Right arrow lower outside corner
+
+      p.addPoint (        cw2,           0 );  // Right Point
+
+      p.addPoint (  (cw2-cal),        -caw );  // Right arrow upper outside corner
+      p.addPoint (  (cw2-cal),        -clw );  // Right arrow upper inside corner
+
+      p.addPoint (        clw,        -clw );  // Right/Top corner
+
+      p.addPoint (        clw,  -(ch2-cal) );  // Top arrow right inside corner
+      p.addPoint (        caw,  -(ch2-cal) );  // Top arrow right outside corner
+
+      p.addPoint (          0,        -ch2 );  // Top Point
+
+      p.addPoint (       -caw,  -(ch2-cal) );  // Top arrow left outside corner
+      p.addPoint (       -clw,  -(ch2-cal) );  // Top arrow left inside corner
+
+      p.addPoint (       -clw,        -clw );  // Left/Top corner
+
+      p.addPoint ( -(cw2-cal),        -clw );  // Left arrow upper inside corner
+      p.addPoint ( -(cw2-cal),        -caw );  // Left arrow upper outside corner
+
+      p.addPoint (       -cw2,           0 );  // Left Point
+
+
+      p.translate ( w/2, h/2 );
 
       cursor_image = new BufferedImage(cursor_size,cursor_size,BufferedImage.TYPE_4BYTE_ABGR);
       cg = cursor_image.createGraphics();
@@ -316,15 +334,15 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     }
     /*
     return;
-	  // System.out.println ( "Mouse dragged by " + e.getX() + "," + e.getY() );
-	  if (!x_locked) {
-	    mouse_dragging_offset_x = e.getX() - mouse_down_x;
-	  }
-	  if (!y_locked) {
-  	  mouse_dragging_offset_y = e.getY() - mouse_down_y;
-  	}
-	  repaint();
-	  */
+    // System.out.println ( "Mouse dragged by " + e.getX() + "," + e.getY() );
+    if (!x_locked) {
+      mouse_dragging_offset_x = e.getX() - mouse_down_x;
+    }
+    if (!y_locked) {
+      mouse_dragging_offset_y = e.getY() - mouse_down_y;
+    }
+    repaint();
+    */
   }
 
   public void mouseMoved ( MouseEvent e ) {
@@ -411,7 +429,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 		} else if (cmd.equalsIgnoreCase("Clear")) {
 	    strokes = new ArrayList();
 	    stroke  = null;
-   	  repaint();
+	    repaint();
 		} else if ( cmd.equalsIgnoreCase("Add") || cmd.equalsIgnoreCase("Images...") ) {
 
 			System.out.println ( "Opening new file ..." );
@@ -437,7 +455,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
           file_path_and_name = "" + file_chooser.getSelectedFile();
           File image_file = new File ( file_path_and_name );
           this.image_frame = ImageIO.read(image_file);
-	        repaint();
+          repaint();
         } catch (Exception oe) {
 	        this.image_frame = null;
 	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
