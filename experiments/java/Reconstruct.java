@@ -351,6 +351,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 
   JMenuItem move_menu_item = null;
   JMenuItem draw_menu_item = null;
+  JMenuItem center_draw_menu_item = null;
 
   // KeyListener methods:
 
@@ -416,13 +417,16 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
       }
       setCursor ( current_cursor );
-		  center_draw = false;
+		  // center_draw = false;
 		  drawing_mode = true;
 		  stroke_started = false;
 		  repaint();
 		} else if (cmd.equalsIgnoreCase("Center Drawing")) {
-		  center_draw = true;
-		  drawing_mode = true;
+		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+		  center_draw = item.getState();
+		  if (drawing_mode) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+      }
 		  repaint();
 		} else if (cmd.equalsIgnoreCase("Dump")) {
 		  dump_strokes();
@@ -736,15 +740,16 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 
           JMenu mode_menu = new JMenu("Mode");
             bg = new ButtonGroup();
-            mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", zp.drawing_mode) );
+            System.out.println ( "Initializing Drawing Mode with drawing_mode: "  + zp.drawing_mode );
+            mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", !zp.drawing_mode) );
             mi.addActionListener(zp);
             bg.add ( mi );
-            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw", !zp.drawing_mode) );
+            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw", zp.drawing_mode) );
             mi.addActionListener(zp);
             bg.add ( mi );
-            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Center Drawing", zp.center_draw) );
+            System.out.println ( "Initializing Center Drawing check box with: "  + zp.center_draw );
+            mode_menu.add ( zp.center_draw_menu_item = mi = new JCheckBoxMenuItem("Center Drawing", zp.center_draw) );
             mi.addActionListener(zp);
-            bg.add ( mi );
             mode_menu.add ( mi = new JMenuItem("Dump") );
             mi.addActionListener(zp);
             mode_menu.add ( mi = new JMenuItem("Clear") );
@@ -768,6 +773,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 				f.pack();
 				f.setSize ( w, h );
 				f.setVisible ( true );
+			  // Request the focus to make the drawing window responsive to keyboard commands without any clicking required
+				zp.requestFocus();
 			}
 		} );
 	}
