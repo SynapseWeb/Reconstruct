@@ -29,6 +29,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 	static int w=800, h=600;
 	
 	boolean drawing_mode = false;
+  boolean center_draw = false;
 	boolean stroke_started = false;
   BufferedImage image_frame = null;
   String current_directory = "";
@@ -105,54 +106,21 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       draw_stroke ( g, s );
     }
     if (stroke != null) {
-  		g.setColor ( new Color ( 255, 0, 0 ) );
+      g.setColor ( new Color ( 255, 0, 0 ) );
       draw_stroke ( g, stroke );
+    }
+    if (center_draw) {
+      g.setColor ( new Color ( 255, 255, 255 ) );
+      int cx = getSize().width / 2;
+      int cy = getSize().height / 2;
+      g.drawLine ( cx-10, cy, cx+10, cy );
+      g.drawLine ( cx, cy-10, cx, cy+10 );
     }
 	}
 
 
   //  MouseListener methods:
   
-  public void mouseClicked ( MouseEvent e ) {
-    // System.out.println ( "Mouse clicked" );
-    super.mouseClicked(e);
-  }
-
-  public void mousePressed ( MouseEvent e ) {
-    // System.out.println ( "Mouse pressed" );
-    super.mousePressed(e);
-    if (drawing_mode == true) {
-      if (stroke != null) {
-        // System.out.println ( "Saving previous stroke" );
-        strokes.add ( stroke );
-      }
-      // System.out.println ( "Making new stroke" );
-      stroke  = new ArrayList(100);
-      double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
-      // System.out.println ( "Adding point " + p[0] + "," + p[1] );
-      stroke.add ( p );
-  	  repaint();
-    }
-  }
-
-  public void mouseReleased ( MouseEvent e ) {
-    // System.out.println ( "Mouse released" );
-    if (drawing_mode == false) {
-      super.mouseReleased(e);
-    } else {
-      if (stroke != null) {
-        double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
-        // System.out.println ( "Adding point " + p[0] + "," + p[1] );
-        stroke.add ( p );
-        // System.out.println ( "Adding active stroke to strokes list" );
-        strokes.add ( stroke );
-        // System.out.println ( "Setting stroke to null" );
-        stroke = null;
-    	  repaint();
-      }
-    }
-  }
-
 
 	Cursor current_cursor = null;
 	Cursor h_cursor = null;
@@ -160,12 +128,49 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 	Cursor b_cursor = null;
 	int cursor_size = 33;
 
-  /*
-  public void mouseEntered ( MouseEvent e ) {
-    // System.out.println ( "Mouse entered" );
-    super.mouseEntered(e);
+  public Polygon horiz_cursor_poly() {
+    Polygon p = new Polygon();
+    p.addPoint ( 0, h/2 );
+    p.addPoint ( w/4, (h/2)-(h/4) );
+    p.addPoint ( w/4, (h/2)-(h/8) );
+    p.addPoint ( 3*w/4, (h/2)-(h/8) );
+    p.addPoint ( 3*w/4, (h/2)-(h/4) );
+    p.addPoint ( w-1, h/2 );
+    p.addPoint ( 3*w/4, (h/2)+(h/4) );
+    p.addPoint ( 3*w/4, (h/2)+(h/8) );
+    p.addPoint ( w/4, (h/2)+(h/8) );
+    p.addPoint ( w/4, (h/2)+(h/4) );
+    return ( p );
   }
-  */
+
+  public Polygon both_cursor_poly() {
+    Polygon p = new Polygon();
+    p.addPoint ( 0, h/2 );
+    p.addPoint ( w/4, (h/2)-(h/4) );
+    p.addPoint ( w/4, (h/2)-(h/8) );
+    p.addPoint ( (w/2)-(w/8), (h/2)-(h/8) );
+    p.addPoint ( (w/2)-(w/8), h/4 );
+    p.addPoint ( (w/2)-(w/4), h/4 );
+    p.addPoint ( w/2, 0 );
+    p.addPoint ( (w/2)+(w/4), h/4 );
+    p.addPoint ( (w/2)+(w/8), h/4 );
+    p.addPoint ( (w/2)+(w/8), (h/2)-(h/8) );
+    p.addPoint ( (w/2)+(w/4), (h/2)-(h/8) );
+    p.addPoint ( (w/2)+(w/4), (h/2)-(h/4) );
+    p.addPoint ( w-1, h/2 );
+    p.addPoint ( (w/2)+(w/4), (h/2)+(h/4) );
+    p.addPoint ( (w/2)+(w/4), (h/2)+(h/8) );
+    p.addPoint ( (w/2)+(w/8), (h/2)+(h/8) );
+    p.addPoint ( (w/2)+(w/8), 3*h/4 );
+    p.addPoint ( (w/2)+(w/4), 3*h/4 );
+    p.addPoint ( w/2, h-1 );
+    p.addPoint ( (w/2)-(w/4), 3*h/4 );
+    p.addPoint ( (w/2)-(w/8), 3*h/4 );
+    p.addPoint ( (w/2)-(w/8), (h/2)+(h/8) );
+    p.addPoint ( (w/2)-(w/4), (h/2)+(h/8) );
+    p.addPoint ( (w/2)-(w/4), (h/2)+(h/4) );
+    return ( p );
+  }
 
   public void mouseEntered ( MouseEvent e ) {
     if ( (h_cursor == null) || (v_cursor == null) || (b_cursor == null) ) {
@@ -177,17 +182,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       int w = cursor_size;
 
       // Create the horizontal cursor
-      p = new Polygon();
-      p.addPoint ( 0, h/2 );
-      p.addPoint ( w/4, (h/2)-(h/4) );
-      p.addPoint ( w/4, (h/2)-(h/8) );
-      p.addPoint ( 3*w/4, (h/2)-(h/8) );
-      p.addPoint ( 3*w/4, (h/2)-(h/4) );
-      p.addPoint ( w-1, h/2 );
-      p.addPoint ( 3*w/4, (h/2)+(h/4) );
-      p.addPoint ( 3*w/4, (h/2)+(h/8) );
-      p.addPoint ( w/4, (h/2)+(h/8) );
-      p.addPoint ( w/4, (h/2)+(h/4) );
+      p = horiz_cursor_poly();
 
       cursor_image = new BufferedImage(cursor_size,cursor_size,BufferedImage.TYPE_4BYTE_ABGR);
       cg = cursor_image.createGraphics();
@@ -221,31 +216,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       v_cursor = tk.createCustomCursor ( cursor_image, new Point(cursor_size/2,cursor_size/2), "Vertical" );
 
       // Create the both cursor
-      p = new Polygon();
-      p.addPoint ( 0, h/2 );
-      p.addPoint ( w/4, (h/2)-(h/4) );
-      p.addPoint ( w/4, (h/2)-(h/8) );
-      p.addPoint ( (w/2)-(w/8), (h/2)-(h/8) );
-      p.addPoint ( (w/2)-(w/8), h/4 );
-      p.addPoint ( (w/2)-(w/4), h/4 );
-      p.addPoint ( w/2, 0 );
-      p.addPoint ( (w/2)+(w/4), h/4 );
-      p.addPoint ( (w/2)+(w/8), h/4 );
-      p.addPoint ( (w/2)+(w/8), (h/2)-(h/8) );
-      p.addPoint ( (w/2)+(w/4), (h/2)-(h/8) );
-      p.addPoint ( (w/2)+(w/4), (h/2)-(h/4) );
-      p.addPoint ( w-1, h/2 );
-      p.addPoint ( (w/2)+(w/4), (h/2)+(h/4) );
-      p.addPoint ( (w/2)+(w/4), (h/2)+(h/8) );
-      p.addPoint ( (w/2)+(w/8), (h/2)+(h/8) );
-      p.addPoint ( (w/2)+(w/8), 3*h/4 );
-      p.addPoint ( (w/2)+(w/4), 3*h/4 );
-      p.addPoint ( w/2, h-1 );
-      p.addPoint ( (w/2)-(w/4), 3*h/4 );
-      p.addPoint ( (w/2)-(w/8), 3*h/4 );
-      p.addPoint ( (w/2)-(w/8), (h/2)+(h/8) );
-      p.addPoint ( (w/2)-(w/4), (h/2)+(h/8) );
-      p.addPoint ( (w/2)-(w/4), (h/2)+(h/4) );
+      p = both_cursor_poly();
 
       cursor_image = new BufferedImage(cursor_size,cursor_size,BufferedImage.TYPE_4BYTE_ABGR);
       cg = cursor_image.createGraphics();
@@ -259,8 +230,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     }
     if (current_cursor == null) {
       current_cursor = b_cursor;
-      /*
-      */
       // current_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
     }
     setCursor ( current_cursor );
@@ -271,6 +240,54 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     super.mouseExited(e);
   }
 
+  public void mouseClicked ( MouseEvent e ) {
+    // System.out.println ( "Mouse clicked" );
+    super.mouseClicked(e);
+  }
+
+  public void mousePressed ( MouseEvent e ) {
+    // System.out.println ( "Mouse pressed" );
+    super.mousePressed(e);
+    if (drawing_mode == true) {
+      if (stroke != null) {
+        // System.out.println ( "Saving previous stroke" );
+        strokes.add ( stroke );
+      }
+      // System.out.println ( "Making new stroke" );
+      stroke  = new ArrayList(100);
+      double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
+      if (center_draw) {
+        p[0] = px_to_x(getSize().width / 2);
+        p[1] = py_to_y(getSize().height / 2);
+      }
+      // System.out.println ( "Adding point " + p[0] + "," + p[1] );
+      stroke.add ( p );
+      repaint();
+    }
+  }
+
+  public void mouseReleased ( MouseEvent e ) {
+    // System.out.println ( "Mouse released" );
+    if (drawing_mode == false) {
+      super.mouseReleased(e);
+    } else {
+      if (stroke != null) {
+        double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
+        if (center_draw) {
+          p[0] = px_to_x(getSize().width / 2);
+          p[1] = py_to_y(getSize().height / 2);
+        }
+        // System.out.println ( "Adding point " + p[0] + "," + p[1] );
+        stroke.add ( p );
+        // System.out.println ( "Adding active stroke to strokes list" );
+        strokes.add ( stroke );
+        // System.out.println ( "Setting stroke to null" );
+        stroke = null;
+        repaint();
+      }
+    }
+  }
+
 
   // MouseMotionListener methods:
 
@@ -279,15 +296,22 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     if (drawing_mode == false) {
       super.mouseDragged(e);
     } else {
+      if (center_draw) {
+        super.mouseDragged(e);
+      }
       if (stroke == null) {
         // System.out.println ( "stroke was null, making new array" );
         stroke  = new ArrayList(100);
       }
       if (stroke != null) {
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
+        if (center_draw) {
+          p[0] = px_to_x(getSize().width / 2);
+          p[1] = py_to_y(getSize().height / 2);
+        }
         // System.out.println ( "Adding point " + p[0] + "," + p[1] );
         stroke.add ( p );
-    	  repaint();
+        repaint();
       }
     }
     /*
@@ -319,6 +343,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       drawing_mode = !drawing_mode;
       if (drawing_mode) {
         current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+        if (center_draw) {
+          current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+        }
         setCursor ( current_cursor );
         stroke_started = false;
         if (draw_menu_item != null) {
@@ -361,13 +388,24 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
         current_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
       */
       setCursor ( current_cursor );
+		  //center_draw = false;
 		  drawing_mode = false;
 		  stroke_started = false;
+		  repaint();
 		} else if (cmd.equalsIgnoreCase("Draw")) {
       current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+      if (center_draw) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+      }
       setCursor ( current_cursor );
+		  center_draw = false;
 		  drawing_mode = true;
 		  stroke_started = false;
+		  repaint();
+		} else if (cmd.equalsIgnoreCase("Center Drawing")) {
+		  center_draw = true;
+		  drawing_mode = true;
+		  repaint();
 		} else if (cmd.equalsIgnoreCase("Dump")) {
 		  dump_strokes();
 		} else if (cmd.equalsIgnoreCase("Clear")) {
@@ -415,7 +453,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 	  for (int i=0; i<args.length; i++) {
 		  System.out.println ( "Arg[" + i + "] = \"" + args[i] + "\"" );
 		}
-		System.out.println ( "Use the mouse wheel to zoom, and drag to pan." );
+		System.out.println ( "Reconstruct: Use the mouse wheel to zoom, and drag to pan." );
 		javax.swing.SwingUtilities.invokeLater ( new Runnable() {
 			public void run() {
 			  JFrame f = new JFrame("Reconstruct Java Demonstration");
@@ -680,10 +718,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 
           JMenu mode_menu = new JMenu("Mode");
             bg = new ButtonGroup();
-            mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", true) );
+            mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", zp.drawing_mode) );
             mi.addActionListener(zp);
             bg.add ( mi );
-            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw") );
+            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw", !zp.drawing_mode) );
+            mi.addActionListener(zp);
+            bg.add ( mi );
+            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Center Drawing", zp.center_draw) );
             mi.addActionListener(zp);
             bg.add ( mi );
             mode_menu.add ( mi = new JMenuItem("Dump") );
