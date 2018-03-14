@@ -29,3 +29,7 @@ Reconstruct was created with funding, in part, from the National Institutes of H
 Permission to use, copy, and redistribute Reconstruct is granted without fee under the terms of the GNU General Public License version 2 as published by the Free Software Foundation. 
 
 (This software is distributed in the hope that it will be useful, but without any warranty, including the implied warranty of merchantibility or fitness for any particular purpose. For details read the terms of the GNU General Public License when installing the software.)
+
+* **[Java Experimental Version](experiments/java)**
+* **[CodeBlocks C++ Experiments](experiments/codeblocks)**
+* **[Blender Experiments](experiments/blender)**
