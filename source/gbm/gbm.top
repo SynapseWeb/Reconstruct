@@ -1,0 +1,123 @@
+Generalised Bitmap Module
+
+/*...sdocumentation:0:*/
+/*...Vgbm\46\htm \45\ user manual:0:*/
+/*...e*/
+/*...splatform specific makefiles:0:*/
+/*...Vunix\47\makefile    \45\ UNIX version of makefile:0:*/
+/*...Vunix\47\makeijgo    \45\ UNIX makefile for IJG:0:*/
+/*...Vunix\47\jmorecfg\46\h  \45\ UNIX configuration of IJG:0:*/
+
+/*...Vos2\47\makefile     \45\ 32 bit OS\47\2 version of makefile:0:*/
+/*...Vos2\47\makeijgo     \45\ 32 bit OS\47\2 makefile for IJG:0:*/
+/*...Vos2\47\jmorecfg\46\h   \45\ 32 bit OS\47\2 configuration of IJG:0:*/
+/*...Vos2\47\gbm\46\def      \45\ 32 bit OS\47\2 module definition file for GBM\46\DLL:0:*/
+
+/*...Vwin32\47\makefile   \45\ Win32 version of Makefile:0:*/
+/*...Vwin32\47\makeijgo   \45\ Win32 makefile for IJG:0:*/
+/*...Vwin32\47\jmorecfg\46\h \45\ Win32 configuration of IJG:0:*/
+
+/*...Vdos32\47\makefile   \45\ 32 bit DOS version of Makefile:0:*/
+/*...Vdos32\47\makeijgo   \45\ 32 bit DOS makefile for IJG:0:*/
+/*...Vdos32\47\jmorecfg\46\h \45\ 32 bit DOS configuration of IJG:0:*/
+/*...e*/
+/*...sfile format library:0:*/
+/*...Vgbmhelp\46\h:0:*/
+/*...Vgbmhelp\46\c     \45\ assorted helpers:0:*/
+
+/*...Vgbmpgm\46\h:0:*/
+/*...Vgbmpgm\46\c      \45\ Poskanzers Portable Greymap:0:*/
+
+/*...Vgbmppm\46\h:0:*/
+/*...Vgbmppm\46\c      \45\ Poskanzers Portable Pixel Map:0:*/
+
+/*...Vgbmbmp\46\h:0:*/
+/*...Vgbmbmp\46\c      \45\ OS\47\2 1\46\1\44\ 1\46\2\44\ 2\46\0 \47\ Windows 3\46\0 bitmap:0:*/
+
+/*...Vgbmtga\46\h:0:*/
+/*...Vgbmtga\46\c      \45\ Targa \47\ Vista:0:*/
+
+/*...Vgbmkps\46\h:0:*/
+/*...Vgbmkps\46\c      \45\ IBM KIPS:0:*/
+
+/*...Vgbmiax\46\h:0:*/
+/*...Vgbmiax\46\c      \45\ IBM Image Access eXecutive:0:*/
+
+/*...Vgbmpcx\46\h:0:*/
+/*...Vgbmpcx\46\c      \45\ ZSoft PC Paintbrush:0:*/
+
+/*...Vgbmtif\46\h:0:*/
+/*...Vgbmtif\46\c      \45\ Microsoft\47\Aldus Tagged Image File Format:0:*/
+/*...Vgbmtifh\46\h:0:*/
+/*...Vgbmtifh\46\c:0:*/
+
+/*...Vgbmlbm\46\h:0:*/
+/*...Vgbmlbm\46\c      \45\ Amiga IFF \47\ ILBM format:0:*/
+
+/*...Vgbmvid\46\h:0:*/
+/*...Vgbmvid\46\c      \45\ YUV12C M\45\Motion Frame Buffer:0:*/
+
+/*...Vgbmgif\46\h:0:*/
+/*...Vgbmgif\46\c      \45\ CompuServe Graphics Interchange Format:0:*/
+
+/*...Vgbmxbm\46\h:0:*/
+/*...Vgbmxbm\46\c      \45\ X Bitmaps:0:*/
+
+/*...Vgbmspr\46\h:0:*/
+/*...Vgbmspr\46\c      \45\ RiscOS Sprites:0:*/
+
+/*...Vgbmpsg\46\h:0:*/
+/*...Vgbmpsg\46\c      \45\ IBM PSEGs:0:*/
+
+/*...Vgbmgem\46\h:0:*/
+/*...Vgbmgem\46\c      \45\ GEM Raster:0:*/
+
+/*...Vgbmcvp\46\h:0:*/
+/*...Vgbmcvp\46\c      \45\ Portrait:0:*/
+
+/*...Vgbmjpg\46\h:0:*/
+/*...Vgbmjpg\46\c      \45\ JPEG via Independant JPEG 6a:0:*/
+
+/*...Vgbm\46\h         \45\ interface to general bitmap library:0:*/
+/*...Vgbm\46\c         \45\ general bitmap library:0:*/
+/*...e*/
+/*...simage manipulation libraries:0:*/
+/*...Vgbmmir\46\h:0:*/
+/*...Vgbmmir\46\c      \45\ reflection code:0:*/
+
+/*...Vgbmrect\46\h:0:*/
+/*...Vgbmrect\46\c     \45\ subrectangle extraction code:0:*/
+
+/*...Vgbmscale\46\h:0:*/
+/*...Vgbmscale\46\c    \45\ scaling code:0:*/
+
+/*...Vgbmerr\46\h:0:*/
+/*...Vgbmerr\46\c      \45\ error diffusion code:0:*/
+
+/*...Vgbmtrunc\46\h:0:*/
+/*...Vgbmtrunc\46\c    \45\ truncate to lower bits per pixel code:0:*/
+
+/*...Vgbmht\46\h:0:*/
+/*...Vgbmht\46\c       \45\ halftoner:0:*/
+
+/*...Vgbmhist\46\h:0:*/
+/*...Vgbmhist\46\c     \45\ frequency of use palette mapper:0:*/
+
+/*...Vgbmmcut\46\h:0:*/
+/*...Vgbmmcut\46\c     \45\ median cut palette mapper:0:*/
+/*...e*/
+/*...stest programs:0:*/
+/*...Vgbmhdr\46\c      \45\ display header of bitmap files:0:*/
+
+/*...Vgbmref\46\c      \45\ testcase for reflection code and main GBM library:0:*/
+
+/*...Vgbmsub\46\c      \45\ testcase for subrectangle code and main GBM library:0:*/
+
+/*...Vgbmsize\46\c     \45\ testcase for scaling code and main GBM library:0:*/
+
+/*...Vgbmbpp\46\c      \45\ change bits per pixel in a file:0:*/
+
+/*...Vgbmcpal\46\c     \45\ map to common palette:0:*/
+
+/*...Vgbmgamma\46\c    \45\ gamma correction:0:*/
+/*...e*/
