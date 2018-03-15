@@ -1,5 +1,5 @@
 # GitHub Notes
-## This is a place for notes about using GitHub
+
 
 ### Notification Settings - to get email on changes
 
