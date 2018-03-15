@@ -297,7 +297,15 @@ gbmgamma.o:	gbmgamma.c gbm.h
 #
 
 clean:
-		@rm -f *.o
+		rm -f *.o
+		rm -f *.a
+		rm -f gbmbpp
+		rm -f gbmcpal
+		rm -f gbmgamma
+		rm -f gbmhdr
+		rm -f gbmref
+		rm -f gbmsize
+		rm -f gbmsub
 
 #
 
