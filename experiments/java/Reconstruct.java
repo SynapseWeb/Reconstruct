@@ -32,6 +32,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
   boolean center_draw = false;
 	boolean stroke_started = false;
   BufferedImage image_frame = null;
+  BufferedImage image_frames[] = null;
   String current_directory = "";
   MyFileChooser file_chooser = null;
 
@@ -379,15 +380,43 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
         }
       }
     } else if (Character.toUpperCase(e.getKeyChar()) == 'P') {
+    } else {
+      // System.out.println ( "KeyEvent = " + e );
     }
     repaint();
   }
   public void keyPressed ( KeyEvent e ) {
-    //System.out.println ( "Key Pressed" );
+    // System.out.println ( "Key Pressed, e = " + e );
+    if ( (e.getKeyCode() == 33) || (e.getKeyCode() == 34) ) {
+      // Figure out if there's anything to do
+      if (this.image_frames.length > 1) {
+        // Find the current index
+        int current_index = -1;
+        for (int i=0; i<this.image_frames.length; i++) {
+          if (this.image_frame == this.image_frames[i]) {
+            current_index = i;
+            break;
+          }
+        }
+        // System.out.println ( "Current image is " + current_index );
+        int delta = 0;
+        if (e.getKeyCode() == 33) {
+          // System.out.println ( "Page Up with " + this.image_frames.length + " frames" );
+          delta = 1;
+        } else if (e.getKeyCode() == 34) {
+          // System.out.println ( "Page Down with " + this.image_frames.length + " frames" );
+          delta = -1;
+        }
+        if ((current_index+delta >= 0) && (current_index+delta < this.image_frames.length)) {
+          this.image_frame = this.image_frames[current_index+delta];
+          repaint();
+        }
+      }
+    }
     //super.keyPressed ( e );
   }
   public void keyReleased ( KeyEvent e ) {
-    //System.out.println ( "Key Released" );
+    // System.out.println ( "Key Released" );
     //super.keyReleased ( e );
   }
 
@@ -458,14 +487,29 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
         try {
           file_path_and_name = "" + file_chooser.getSelectedFile();
           File image_file = new File ( file_path_and_name );
-          this.image_frame = ImageIO.read(image_file);
+          BufferedImage new_image;
+          new_image = ImageIO.read(image_file);
+          this.image_frame = new_image;
+
+          if (this.image_frames == null) {
+            this.image_frames = new BufferedImage[1];
+          } else {
+            BufferedImage temp[] = new BufferedImage[this.image_frames.length+1];
+            for (int i=0; i<this.image_frames.length; i++) {
+              temp[i] = this.image_frames[i];
+            }
+            this.image_frames = temp;
+          }
+          this.image_frames[this.image_frames.length-1] = this.image_frame;
           repaint();
         } catch (Exception oe) {
-	        this.image_frame = null;
+	        // this.image_frame = null;
 	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
 	        repaint();
         }
 		  }
+		} else if (cmd.equalsIgnoreCase("List Sections...")) {
+		  System.out.println ( "Sections: ..." );
 		} else if (cmd.equalsIgnoreCase("Exit")) {
 			System.exit ( 0 );
 		}
