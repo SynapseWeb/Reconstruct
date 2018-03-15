@@ -63,3 +63,25 @@
 2018-03-13 - Added a log file to keep a running track of changes
 
 2018-03-13 - Added links to experimental versions and updated Log.md
+
+2018-03-13 - Added newline between entries to keep separate.
+
+2018-03-13 - Added several test images from the MCell "Organelle" model.
+
+2018-03-14 - Updated with the 2008 Wish List
+
+2018-03-14 - Disabled execute permission from source and image files.
+
+2018-03-14 - Merge branch 'master' of https://github.com/SynapseWeb/Reconstruct
+
+2018-03-14 - Added all of the GBM (Generalized Bit Map) files ... may need for TIFF
+
+2018-03-14 - Modified the gbm makefile "clean" option to remove binaries.
+
+2018-03-14 - Added a define of JPEG to force building the JPEG code.
+
+2018-03-14 - Added support for multiple images as a plain Java array.
+
+2018-03-14 - Added an experiments/documents/github section for GitHub Settings
+
+2018-03-14 - Added GitHub Notes to front page of Reconstruct repository, and updated README.
