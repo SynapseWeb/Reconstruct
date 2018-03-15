@@ -4,6 +4,9 @@
 # UNIX
 #
 
+
+JPEG = JPEG
+
 ifdef JPEG
 IJG =		jpeg-6a
 CJPEG =		-DIJG -I$(IJG)
@@ -306,6 +309,7 @@ clean:
 		rm -f gbmref
 		rm -f gbmsize
 		rm -f gbmsub
+		rm -f jpeg-6a/*.o
 
 #
 
