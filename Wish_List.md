@@ -108,6 +108,62 @@ when it would be easier to just copy the relevant data over into a master excel 
 
 *************************
 
+## **October 14, 2008 Wish List**
+
+**Refactoring RECONSTRUCT TM  -- Wish list**
+
+Modify the Simplify function to prevent trace expansion
+
+Approach for smoothing the 3D representation (splines or NURBS)
+
+Program the zoom feature as a shortcut with the mouse rather than as a framed region of 
+interest to zoom. Also, consider a shortcut for unzooming.
+
+Programming of auto-segmentation features
+
+
+**Reconstruct Users’ Group 
+Unsolicited suggestions for enhancements to RECONSTRUCTTM program:**
+
+Consider programming so mouse can be used to align sections.  Also, color code 
+adjacent sections to facilitate alignment (User Group Message #270).
+
+Import files from photoshop so traces made prior to import could be used in Reconstruct (User Group Message #253).
+
+Numbering sections in thumbnails (User Group Message #155).
+
+Feature to allow export of 3D objects to known scale (User Group Message #139).
+
+Selective renaming of traces (#111/112). KS notes this is already possible
+
+Create an application to make surfaces smoother (#94). 
+
+Modify the WildFire tool to allow color coding within an object group (#65).
+
+Modify point tool to draw a box around the items one wants to select, and 
+then choose to hide or show the traces for the boxed cluster. (#22).
+
+Mouse or keyboard shortcuts for selecting traces, while using a drawing 
+tool (#164). KS notes this is already possible
+
+Consider making hue scale a circular scale.
+
+To have the Autotracing window constantly open, so that one can
+quickly change and test new Wildfire parameters without having to
+open-close-open this window all the time
+
+One extremely useful implementation would be: from a manual trace, to
+have the program read RGB values of all the pixel and feed them into
+the Widfire parameters limits
+
+For manual tracing: to have a tool that could select the outside of a
+pixel when you click on that pixel at high zoom.  (#213).
+
+ 
+
+
+*************************
+
 **On Sun, Feb 18, 2018 at 12:30 PM, Kristen Harris <kmh2249@gmail.com> wrote:**
 
 Dear Bob,
