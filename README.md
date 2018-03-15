@@ -1,4 +1,7 @@
 # Reconstruct
+
+![Reconstruct Logo](experiments/documents/github/reconstructlogo.gif?raw=true "Reconstruct Logo")
+
 Here at GitHub is the original Source code for Reconstruct - which was last compiled in 2007 and the 
 Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
 
