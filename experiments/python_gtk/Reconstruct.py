@@ -75,17 +75,6 @@ def step_callback(zpa):
   zpa.get_drawing_area().queue_draw()
   return True
 
-def back_callback(zpa):
-  state_history = zpa.user_data['state_history']
-  display_time_index = zpa.user_data['display_time_index']
-  if ( display_time_index+len(state_history) ) > 0:
-    # It's OK to step backwards
-    display_time_index += -1
-    zpa.user_data['display_time_index'] = display_time_index
-    print ( "Display buffered data for index " + str(display_time_index) )
-  zpa.get_drawing_area().queue_draw()
-  return True
-
 
 def step_in_callback(zpa):
   diff_2d_sim = zpa.user_data['diff_2d_sim']
@@ -196,10 +185,10 @@ def main():
 
   # Create a top-level GTK window
   window = gtk.Window ( gtk.WINDOW_TOPLEVEL )
-  window.set_title ( "2D Diffusion" )
+  window.set_title ( "Reconstruct Python GTK Demonstration" )
 
   # Create a zoom/pan area to hold all of the drawing
-  zpa = app_window.zoom_pan_area(window,600,500,"2D Diffusion")
+  zpa = app_window.zoom_pan_area(window,600,500,"Reconstruct Python GTK Demonstration")
   zpa.user_data = { 
                     'diff_2d_sim'        : diff_2d_sim(),
                     'state_history'      : [],
@@ -227,10 +216,35 @@ def main():
   menu_bar = gtk.MenuBar()
   vbox.pack_start(menu_bar, expand=False, fill=False, padding=0)
 
+  # Create a "Program" menu
+  (program_menu, program_item) = zpa.add_menu ( "_Program" )
+
+  # Create a "Series" menu
+  (series_menu, series_item) = zpa.add_menu ( "_Series" )
+
+  # Create a "Section" menu
+  (section_menu, section_item) = zpa.add_menu ( "_Section" )
+
+  # Create a "Domain" menu
+  (domain_menu, domain_item) = zpa.add_menu ( "_Domain" )
+
+  # Create a "Trace" menu
+  (trace_menu, trace_item) = zpa.add_menu ( "_Trace" )
+
+  # Create a "Object" menu
+  (object_menu, object_item) = zpa.add_menu ( "_Object" )
+
+  # Create a "Help" menu
+  (help_menu, help_item) = zpa.add_menu ( "_Help" )
+
+  # Create a "Mode" menu
+  (mode_menu, mode_item) = zpa.add_menu ( "_Mode" )
+
   # Create an "Options" menu
   (options_menu, options_item) = zpa.add_menu ( "_Options" )
   if True: # An easy way to indent and still be legal Python
     zpa.add_menu_item ( options_menu, menu_callback, "Toggle Legend", ("ToggleLegend",zpa) )
+
 
   # Create a "Speed" menu
   (speed_menu, speed_item) = zpa.add_menu ( "_Speed" )
@@ -240,6 +254,15 @@ def main():
     zpa.add_menu_item ( speed_menu, menu_callback, "Slow",   ("Slow",zpa ) )
 
   # Append the menus to the menu bar itself
+  menu_bar.append ( program_item )
+  menu_bar.append ( series_item )
+  menu_bar.append ( section_item )
+  menu_bar.append ( domain_item )
+  menu_bar.append ( trace_item )
+  menu_bar.append ( object_item )
+  menu_bar.append ( help_item )
+  menu_bar.append ( mode_item )
+
   menu_bar.append ( options_item )
   menu_bar.append ( speed_item )
 
@@ -277,11 +300,6 @@ def main():
   step_button.connect_object ( "clicked", step_callback, zpa )
   step_button.show()
 
-  back_button = gtk.Button("Back")
-  hbox.pack_start ( back_button, True, True, 0 )
-  back_button.connect_object ( "clicked", back_callback, zpa )
-  back_button.show()
-
   run_button = gtk.Button("Run")
   hbox.pack_start ( run_button, True, True, 0 )
   run_button.connect_object ( "clicked", run_callback, zpa )
@@ -296,18 +314,6 @@ def main():
   hbox.pack_start ( dump_button, True, True, 0 )
   dump_button.connect_object ( "clicked", dump_callback, zpa )
   dump_button.show()
-
-  """ # These bypass the buffering and shouldn't be used until fixed.
-  step_in_button = gtk.Button("Step In")
-  hbox.pack_start ( step_in_button, True, True, 0 )
-  step_in_button.connect_object ( "clicked", step_in_callback, zpa )
-  step_in_button.show()
-
-  step_10_button = gtk.Button("Step 10")
-  hbox.pack_start ( step_10_button, True, True, 0 )
-  step_10_button.connect_object ( "clicked", step_10_callback, zpa )
-  step_10_button.show()
-  """
 
   reset_button = gtk.Button("Reset")
   hbox.pack_start ( reset_button, True, True, 0 )
