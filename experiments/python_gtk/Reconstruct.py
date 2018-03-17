@@ -9,9 +9,6 @@ import gobject
 import gtk
 
 import app_window
-import scheduler
-import location
-import sim_2d
 
 
 def expose_callback ( widget, event, zpa ):
@@ -29,9 +26,6 @@ def expose_callback ( widget, event, zpa ):
   # Clear the screen with black
   gc.foreground = colormap.alloc_color(0,0,0)
   drawable.draw_rectangle(gc, True, 0, 0, width, height)
-  # Buffer the original value if the history is empty
-  if len(state_history) == 0:
-    buffer_state(zpa)
   # Draw the current state referenced by display_time_index
   t = 0
   if len(state_history) > 0:
@@ -73,52 +67,11 @@ def expose_callback ( widget, event, zpa ):
   return False
 
 
-# Buffer the state for redrawing when the simulation goes backward or foreward
-def buffer_state(zpa):
-  diff_2d_sim = zpa.user_data['diff_2d_sim']
-  state_history = zpa.user_data['state_history']
-  display_time_index = zpa.user_data['display_time_index']
-  current_state = {}
-  #print ( "Buffering state " )
-  # Save the current molecule positions for this time
-  current_state['mols'] = []
-  for m in diff_2d_sim.mols:
-    m_draw = {'name':m.species.name, 'x':m.pt.x, 'y':m.pt.y, 'r':2, 'c':m.species.color}
-    if issubclass ( m.pt.__class__, location.point_radius ):
-      m_draw['r'] = m.pt.r
-    current_state['mols'].append ( m_draw )
-  # Save the history of detected collisions for this time
-  current_state['cols'] = []
-  for coll in diff_2d_sim.collisions:
-    current_state['cols'].append ( { 'x':coll[0], 'y':coll[1] } )
-  current_state['objs'] = []
-  for obj in diff_2d_sim.objects:
-    #print ( "Buffering object " + obj.name )
-    current_state['objs'].append ( { 'name':obj.name, 'x':obj.x, 'y':obj.y, 'c':obj.color, 'points':[p for p in obj.points], 'faces':[f for f in obj.faces] } )
-  current_state['t'] = diff_2d_sim.t
-
-  state_history.append ( current_state )
-
 def step_callback(zpa):
   diff_2d_sim = zpa.user_data['diff_2d_sim']
   state_history = zpa.user_data['state_history']
   display_time_index = zpa.user_data['display_time_index']
-  if len(state_history) == 0:
-    buffer_state(zpa)  # Save the original state
-  if display_time_index < -1:
-    # The history is already buffered
-    display_time_index += 1
-    zpa.user_data['display_time_index'] = display_time_index
-    print ( "Display buffered data for index " + str(display_time_index) )
-  else:
-    # Buffer the history and step
-    if diff_2d_sim.scheduler.items_left() > 0:
-      print ( "Display new data" )
-      diff_2d_sim.step()
-      buffer_state(zpa)
-    else:
-      print ( "No events scheduled, cannot advance time." )
-      zpa.user_data['running'] = False
+  diff_2d_sim.step()
   zpa.get_drawing_area().queue_draw()
   return True
 
@@ -152,7 +105,7 @@ def dump_callback(zpa):
 
 def reset_callback(zpa):
   # This creates a new simulation
-  zpa.user_data['diff_2d_sim'] = sim_2d.diff_2d_sim()
+  zpa.user_data['diff_2d_sim'] = diff_2d_sim()
   zpa.user_data['state_history'] = []
   zpa.user_data['display_time_index'] = -1
   zpa.get_drawing_area().queue_draw()
@@ -207,6 +160,36 @@ def menu_callback ( widget, data=None ):
       zpa.queue_draw()
   return True
 
+# Minimized stub of the previous 2D Simulation
+class diff_2d_sim:
+  def __init__ ( self ):
+    print ( " Constructing a new minimal simulation" )
+    self.mols = []
+    self.objects = []
+    self.collisions = []
+
+    # Set some simulation values
+    self.t = 0
+    self.dt = 2
+
+  def diffuse ( self ):
+    print ( "Start diffuse" )
+    print ( "End diffuse" )
+
+  def step ( self ):
+    print ( "Before run(1): t=" + str(self.t) )
+    self.t += self.dt
+    print ( "After run(1): t=" + str(self.t) )
+
+  def step_in ( self ):
+    print ( "Before step_in(): t=" + str(self.t) )
+    self.t += self.dt
+    print ( "After step_in(): t=" + str(self.t) )
+
+  def print_self ( self ):
+    print ( "t = " + str(self.t) )
+
+
 
 # Create the window and connect the events
 def main():
@@ -218,7 +201,7 @@ def main():
   # Create a zoom/pan area to hold all of the drawing
   zpa = app_window.zoom_pan_area(window,600,500,"2D Diffusion")
   zpa.user_data = { 
-                    'diff_2d_sim'        : sim_2d.diff_2d_sim(),
+                    'diff_2d_sim'        : diff_2d_sim(),
                     'state_history'      : [],
                     'display_time_index' : -1,
                     'running'            : False,
