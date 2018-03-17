@@ -28,6 +28,55 @@ def expose_callback ( drawing_area, event, zpa ):
   # Draw the current state referenced by display_time_index
   t = 0
 
+  if zpa.user_data['image_frame']:
+
+    """
+    def draw_pixbuf(gc, pixbuf, src_x, src_y, dest_x, dest_y, width=-1, height=-1, dither=gtk.gdk.RGB_DITHER_NORMAL, x_dither=0, y_dither=0)
+
+      gc : a gtk.gdk.GC, used for clipping, or None
+      pixbuf : a gtk.gdk.Pixbuf
+      src_x : Source X coordinate within pixbuf.
+      src_y : Source Y coordinate within pixbuf.
+      dest_x : Destination X coordinate within drawable.
+      dest_y : Destination Y coordinate within drawable.
+      width : Width of region to render, in pixels, or -1 to use pixbuf width. Must be specified in PyGTK 2.2.
+      height : Height of region to render, in pixels, or -1 to use pixbuf height. Must be specified in PyGTK 2.2
+      dither : Dithering mode for GdkRGB.
+      x_dither : X offset for dither.
+      y_dither : Y offset for dither.
+
+    The draw_pixbuf() method renders a rectangular portion of a gtk.gdk.Pixbuf specified by pixbuf
+    to the drawable using the gtk.gdk.GC specified by gc. The portion of pixbuf that is rendered is
+    specified by the origin point (src_x src_y) and the width and height arguments. pixbuf is rendered
+    to the location in the drawable specified by (dest_x dest_y). dither specifies the dithering mode a
+    s one of:
+
+      gtk.gdk.RGB_DITHER_NONE 	  Never use dithering.
+
+      gtk.gdk.RGB_DITHER_NORMAL   Use dithering in 8 bits per pixel (and below) only.
+
+      gtk.gdk.RGB_DITHER_MAX	    Use dithering in 16 bits per pixel and below.
+
+    The destination drawable must have a colormap. All windows have a colormap, however, pixmaps only have
+    colormap by default if they were created with a non-None window argument. Otherwise a colormap must be
+    set on them with the gtk.gdk.Drawable.set_colormap() method.
+
+    On older X servers, rendering pixbufs with an alpha channel involves round trips to the X server, and
+    may be somewhat slow. The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
+    """
+    pix_buf = zpa.user_data['image_frame']
+    pbw = pix_buf.get_width()
+    pbh = pix_buf.get_height()
+    scale_w = zpa.ww(pbw) / pbw
+    scale_h = zpa.wh(pbh) / pbh
+    #scaled_image = pix_buf.scale_simple( int(pbw*scale_w), int(pbh*scale_h), gtk.gdk.INTERP_BILINEAR )
+    scaled_image = pix_buf.scale_simple( int(pbw*scale_w), int(pbh*scale_h), gtk.gdk.INTERP_NEAREST )
+    drawable.draw_pixbuf ( gc, scaled_image, 0, 0, zpa.wxi(0), zpa.wyi(0), -1, -1, gtk.gdk.RGB_DITHER_NONE )
+
+    # print ( "Zoom Scale = " + str(zpa.zoom_scale) )
+
+    # __import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
+
   # Draw objects (from the original example)
   for obj in zpa.user_data['diff_2d_sim'].objects:
     #print ( "Drawing object " + o['name'] )
@@ -157,8 +206,8 @@ class diff_2d_sim:
   def __init__ ( self ):
     print ( " Constructing a new minimal simulation" )
     self.objects = [
-        point_face_object ( "Triangle 1", x=30, y=0, points=[[0,100], [50,-10], [-50,-10]] ),
-        point_face_object ( "Square 1", x=-50, y=0, points=[[-90,-90], [-90,90], [90,90], [90,-90]] )
+        point_face_object ( "Triangle 1", x=80, y=0, points=[[0,100], [50,-10], [-50,-10]] ),
+        point_face_object ( "Square 1", x=0, y=0, points=[[-90,-90], [-90,90], [90,90], [90,-90]] )
       ]
     # Set some simulation values
     self.t = 0
@@ -399,8 +448,9 @@ def main():
   reset_button.connect_object ( "clicked", reset_callback, zpa )
   reset_button.show()
 
-  zpa.user_data['image_frame'] = gtk.Image()
-  zpa.user_data['image_frame'].set_from_file ( "test.png" )
+
+
+  zpa.user_data['image_frame'] = gtk.gdk.pixbuf_new_from_file ( "test.png" )
 
 
   # Show the main window
