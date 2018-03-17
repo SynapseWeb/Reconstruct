@@ -13,7 +13,6 @@ import app_window
 
 def expose_callback ( widget, event, zpa ):
   diff_2d_sim = zpa.user_data['diff_2d_sim']
-  state_history = zpa.user_data['state_history']
   display_time_index = zpa.user_data['display_time_index']
   x, y, width, height = event.area  # This is the area of the portion newly exposed
   width, height = widget.window.get_size()  # This is the area of the entire window
@@ -28,28 +27,17 @@ def expose_callback ( widget, event, zpa ):
   drawable.draw_rectangle(gc, True, 0, 0, width, height)
   # Draw the current state referenced by display_time_index
   t = 0
-  if len(state_history) > 0:
-    current_state = state_history[display_time_index]
-    t = current_state['t']
-    for m in current_state['mols']:
-      gc.foreground = colormap.alloc_color(int(65535*m['c'][0]),int(65535*m['c'][1]),int(65535*m['c'][2]))
-      px = m['x']
-      py = m['y']
-      drawable.draw_arc(gc, True, zpa.wxi(px)-m['r'], zpa.wyi(py)-m['r'], 2*m['r'], 2*m['r'], 0, 360*64)
-    gc.foreground = colormap.alloc_color(60000, 60000, 60000)
-    for coll in current_state['cols']:
-      px = coll['x']
-      py = coll['y']
-      drawable.draw_rectangle(gc, True, zpa.wxi(px), zpa.wyi(py), 3, 3)
-    for o in current_state['objs']:
-      #print ( "Drawing object " + o['name'] )
-      gc.foreground = colormap.alloc_color(int(65535*o['c'][0]),int(65535*o['c'][1]),int(65535*o['c'][2]))
-      cx = o['x']
-      cy = o['y']
-      for f in o['faces']:
-        p1 = ( cx+o['x']+o['points'][f[0]][0], cy+o['y']+o['points'][f[0]][1] )
-        p2 = ( cx+o['x']+o['points'][f[1]][0], cy+o['y']+o['points'][f[1]][1] )
-        drawable.draw_line ( gc, zpa.wxi(p1[0]), zpa.wyi(p1[1]), zpa.wxi(p2[0]), zpa.wyi(p2[1]) )
+
+  for obj in zpa.user_data['diff_2d_sim'].objects:
+    #print ( "Drawing object " + o['name'] )
+    o = { 'name':obj.name, 'x':obj.x, 'y':obj.y, 'c':obj.color, 'points':[p for p in obj.points], 'faces':[f for f in obj.faces] }
+    gc.foreground = colormap.alloc_color(int(65535*o['c'][0]),int(65535*o['c'][1]),int(65535*o['c'][2]))
+    cx = o['x']
+    cy = o['y']
+    for f in o['faces']:
+      p1 = ( cx+o['x']+o['points'][f[0]][0], cy+o['y']+o['points'][f[0]][1] )
+      p2 = ( cx+o['x']+o['points'][f[1]][0], cy+o['y']+o['points'][f[1]][1] )
+      drawable.draw_line ( gc, zpa.wxi(p1[0]), zpa.wyi(p1[1]), zpa.wxi(p2[0]), zpa.wyi(p2[1]) )
 
   if zpa.user_data['show_legend']:
     # Draw the current time (seconds) to show something that doesn't zoom or pan
@@ -69,7 +57,6 @@ def expose_callback ( widget, event, zpa ):
 
 def step_callback(zpa):
   diff_2d_sim = zpa.user_data['diff_2d_sim']
-  state_history = zpa.user_data['state_history']
   display_time_index = zpa.user_data['display_time_index']
   diff_2d_sim.step()
   zpa.get_drawing_area().queue_draw()
@@ -95,7 +82,6 @@ def dump_callback(zpa):
 def reset_callback(zpa):
   # This creates a new simulation
   zpa.user_data['diff_2d_sim'] = diff_2d_sim()
-  zpa.user_data['state_history'] = []
   zpa.user_data['display_time_index'] = -1
   zpa.get_drawing_area().queue_draw()
 
@@ -132,13 +118,7 @@ def menu_callback ( widget, data=None ):
     # Any tuple passed is assumed to be: (command, zpa)
     command = data[0]
     zpa = data[1]
-    if command == "Spiral":
-      zpa.user_data['option'] = command
-      zpa.queue_draw()
-    elif command == "Rect":
-      zpa.user_data['option'] = command
-      zpa.queue_draw()
-    elif command == "Fast":
+    if command == "Fast":
       zpa.user_data['frame_delay'] = 0.01
     elif command == "Med":
       zpa.user_data['frame_delay'] = 0.1
@@ -152,13 +132,33 @@ def menu_callback ( widget, data=None ):
   return True
 
 # Minimized stub of the previous 2D Simulation
+class point_face_object:
+  def __init__( self, name="", x=0, y=0, color=(32000,32000,32000), points=[], faces=[] ):
+    self.name = name
+    self.color = color
+    self.points = [ p for p in points ]
+    self.faces = [ f for f in faces ]
+    self.x = x
+    self.y = y
+    if (len(points) > 0) and (len(faces) == 0):
+      # Make faces for the points
+      for i in range(len(self.points)):
+        print ( "  Making face with " + str(i) + "," + str((i+1)%len(self.points)) )
+        self.faces.append ( (i, (i+1)%len(self.points)) )
+  def print_self ( self ):
+    print ( "Object " + self.name + ": x,y = (" + str(self.x) + "," + str(self.y) )
+    for point in self.points:
+      print ( "  " + str(point) )
+    for face in self.faces:
+      print ( "  " + str(face) )
+
 class diff_2d_sim:
   def __init__ ( self ):
     print ( " Constructing a new minimal simulation" )
-    self.mols = []
-    self.objects = []
-    self.collisions = []
-
+    self.objects = [
+        point_face_object ( "Triangle 1", x=30, y=0, points=[[0,100], [50,-10], [-50,-10]] ),
+        point_face_object ( "Square 1", x=-50, y=0, points=[[-90,-90], [-90,90], [90,90], [90,-90]] )
+      ]
     # Set some simulation values
     self.t = 0
     self.dt = 2
@@ -192,8 +192,9 @@ def main():
   # Create a zoom/pan area to hold all of the drawing
   zpa = app_window.zoom_pan_area(window,720,540,"Reconstruct Python GTK Demonstration")
   zpa.user_data = { 
+                    'image_frame'        : None,
+                    'image_frames'       : [],
                     'diff_2d_sim'        : diff_2d_sim(),
-                    'state_history'      : [],
                     'display_time_index' : -1,
                     'running'            : False,
                     'last_update'        : -1,
@@ -396,6 +397,10 @@ def main():
   hbox.pack_start ( reset_button, True, True, 0 )
   reset_button.connect_object ( "clicked", reset_callback, zpa )
   reset_button.show()
+
+  zpa.user_data['image_frame'] = gtk.Image()
+  zpa.user_data['image_frame'].set_from_file ( "test.png" )
+
 
   # Show the main window
   window.show()
