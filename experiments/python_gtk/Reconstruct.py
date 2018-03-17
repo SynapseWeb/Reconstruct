@@ -11,15 +11,15 @@ import gtk
 import app_window
 
 
-def expose_callback ( widget, event, zpa ):
+def expose_callback ( drawing_area, event, zpa ):
   diff_2d_sim = zpa.user_data['diff_2d_sim']
   display_time_index = zpa.user_data['display_time_index']
   x, y, width, height = event.area  # This is the area of the portion newly exposed
-  width, height = widget.window.get_size()  # This is the area of the entire window
-  x, y = widget.window.get_origin()
-  drawable = widget.window
-  colormap = widget.get_colormap()
-  gc = widget.get_style().fg_gc[gtk.STATE_NORMAL]
+  width, height = drawing_area.window.get_size()  # This is the area of the entire window
+  x, y = drawing_area.window.get_origin()
+  drawable = drawing_area.window
+  colormap = drawing_area.get_colormap()
+  gc = drawing_area.get_style().fg_gc[gtk.STATE_NORMAL]
   # Save the current color
   old_fg = gc.foreground
   # Clear the screen with black
@@ -28,6 +28,7 @@ def expose_callback ( widget, event, zpa ):
   # Draw the current state referenced by display_time_index
   t = 0
 
+  # Draw objects (from the original example)
   for obj in zpa.user_data['diff_2d_sim'].objects:
     #print ( "Drawing object " + o['name'] )
     o = { 'name':obj.name, 'x':obj.x, 'y':obj.y, 'c':obj.color, 'points':[p for p in obj.points], 'faces':[f for f in obj.faces] }
