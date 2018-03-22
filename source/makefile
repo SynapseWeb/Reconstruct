@@ -1,4 +1,4 @@
-# makefile (Borland C++ 5.5 Make utility) for Reconstruct application
+# makefile (from Borland C++ 5.5 to MinGW) for Reconstruct application
 
 EXEFILE  = reconstruct.exe
 HDRFILES = constants.h gbm.h classes.h operations.h globals.h reconstruct.h kube-gustavson-fft.h

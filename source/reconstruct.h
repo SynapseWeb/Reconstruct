@@ -21,6 +21,17 @@
 // -+- change: Added histogram.cpp
 // modified 11/2/06 by Ju Lu (julu@fas.harvard.edu)
 // -+- change: Added automatictrace.cpp
+// modified 3/21/18 by Bob Kuczewski (bobkuczewski@salk.edu)
+// -+- change: Added functions missing in MinGW compiler: min, max
+
+
+template <class T> const T& max (const T& a, const T& b) {
+	return (a<b)?b:a;
+}
+
+template <class T> const T& min (const T& a, const T& b) {
+	return (a>b)?b:a;
+}
 
 //#define _CRT_SECURE_NO_DEPRECATE 1	// turn off MS VC warnings
 
