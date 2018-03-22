@@ -48,8 +48,10 @@ void CmHelpReconstruct( void )		// open WinHelp for User's Manual
 
 	strcpy(pathend,"\\manual.chm\0");		// specify path to help file
 
+	/*
 	if ( !HtmlHelp(appWnd, mpath, HH_DISPLAY_TOPIC, NULL ) )
 		ErrMsgOK( ERRMSG_RUN_FAILED, mpath );
+	*/
 }
 
 void CmHelpKeyTable( void )			// open Key Command quick reference guide
@@ -66,8 +68,10 @@ void CmHelpKeyTable( void )			// open Key Command quick reference guide
 
 	strcpy(pathend,"\\keycmds.chm\0");			// specify path to help file
 
+	/*
 	if ( !HtmlHelp(appWnd, mpath, HH_DISPLAY_TOPIC, NULL ) )
 		ErrMsgOK( ERRMSG_RUN_FAILED, mpath );
+	*/
 }
 
 void CmHelpMouse( void )			// open mouse command quick reference guide
@@ -84,8 +88,9 @@ void CmHelpMouse( void )			// open mouse command quick reference guide
 
 	strcpy(pathend,"\\mousecmds.chm\0");		// specify path to help file
 
-	if ( !HtmlHelp(appWnd, mpath, HH_DISPLAY_TOPIC, NULL ) )
+	/* if ( !HtmlHelp(appWnd, mpath, HH_DISPLAY_TOPIC, NULL ) )
 		ErrMsgOK( ERRMSG_RUN_FAILED, mpath );
+	*/
 }
 
 void CmHelpLicense( void )			// display info about GNU General Public License
