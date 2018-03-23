@@ -6,8 +6,8 @@ Ver=2
 ObjFiles=
 Includes=
 Libs=
-PrivateResource=
-ResourceIncludes=
+PrivateResource=Reconstruct_private.rc
+ResourceIncludes=C:\Users\bob\proj\DevCPP\Reconstruct\src\source
 MakeIncludes=
 Compiler=-fpermissive_@@_
 CppCompiler=-fpermissive_@@_
@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000001000000000000000
-UnitCount=43
+UnitCount=44
 
 [VersionInfo]
 Major=1
@@ -476,6 +476,15 @@ CompileCpp=1
 Folder=
 Compile=1
 Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit44]
+FileName=reconstruct.rc
+Folder=Resources
+Compile=1
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

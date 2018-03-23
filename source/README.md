@@ -1,11 +1,16 @@
-# Reconstruct
+# Reconstruct 1.1.0.1
+
+## This version has been modified to be compiled with MinGW 4.9.2
+### This version may be compiled with:  mingw32-make -f makefile_raw
+### The help system is currently disabled.
+
 Here at GitHub is the original Source code for Reconstruct - which was last compiled in 2007 and the 
 Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
 Software
 
 Reconstruct Download
 
-Reconstruct Version 1.1.0.0 
+Reconstruct Version 1.1.0.1
  with Help Manual and example.ser (7.38MB) 
  [August 20, 2007]               
     

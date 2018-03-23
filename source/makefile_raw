@@ -4,12 +4,12 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-RES      = Reconstruct_private.res
+RES      = reconstruct.res
 OBJ      = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
 LINKOBJ  = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -lopengl32 ../../../gbm/gbm.a "../../../../../../../Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib/libcomctl32.a" "../../../../../../../Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib/libversion.a" "../../../../../../../Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib/htmlhelp.lib"
-INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
-CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+LIBS     = -L"C:/devcpp/MinGW64/lib" -L"C:/devcpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -lopengl32 gbm.a "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libcomctl32.a" "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libversion.a" "htmlhelp.lib"
+INCS     = -I"C:/devcpp/MinGW64/include" -I"C:/devcpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/devcpp/MinGW64/include" -I"C:/devcpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = Reconstruct.exe
 CXXFLAGS = $(CXXINCS) -w -fpermissive
 CFLAGS   = $(INCS) -w -fpermissive
@@ -130,6 +130,5 @@ vrmlscene.o: vrmlscene.cpp
 xmldata.o: xmldata.cpp
 	$(CPP) -c xmldata.cpp -o xmldata.o $(CXXFLAGS)
 
-Reconstruct_private.res: Reconstruct_private.rc reconstruct.rc
-	$(WINDRES) -i Reconstruct_private.rc --input-format=rc -o Reconstruct_private.res -O coff  --include-dir C:/Users/bob/proj/DevCPP/RECONS~1/src/source
-
+reconstruct.res: reconstruct_min_ok.rc
+	$(WINDRES) -i reconstruct_min_ok.rc --input-format=rc -o reconstruct.res -O coff
