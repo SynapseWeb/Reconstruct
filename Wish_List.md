@@ -1,5 +1,16 @@
 # Reconstruct Wish List
 
+## Top Suggestions
+
+* **1. Add a key to hide/unhide all traces without picking a domain**
+
+* **2. Add support for an Object Comment**
+
+* **3. Add versioning support for traces (date/ID)**
+
+* **4. Add support for viewing a section/location from 3D representation**
+
+
 ## Report of bugs found and features requested in Reconstruct 
 
 ## Please use the following format:
