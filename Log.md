@@ -1,78 +1,80 @@
 # Log
-### Generated with: git log --date=short --pretty=format:"* %ad ==> %s"
+### Generated with: git log --date=short --pretty=format:"* %ad ==> %s (%h)"
 
-* 2018-03-22 ==> Update Wish_List.md
-* 2018-03-21 ==> Merge branch 'master' of gitlab.snl.salk.edu:Reconstruct/Reconstruct
-* 2018-03-21 ==> First version to run (but not yet usable)
-* 2018-03-21 ==> First version to run (but not yet usable)
-* 2018-03-19 ==> Merge branch 'master' of https://github.com/SynapseWeb/Reconstruct
-* 2018-03-16 ==> Python: Image scaling works, but can be slow for high zoom.
-* 2018-03-16 ==> Python: Change "widget" to "drawing_area" to improve clarity of code.
-* 2018-03-16 ==> Python Version: Began adding drawing back into Reconstruct.py
-* 2018-03-16 ==> Added all top-level menus with stubs (submenus not added yet).
-* 2018-03-16 ==> Updated title bar and top level menus. Removed more simulation code.
-* 2018-03-16 ==> Added a stub 2D simulation just to get it to run without errors.
-* 2018-03-16 ==> Renamed gui.py to Reconstruct.py
-* 2018-03-16 ==> Started with gui.py and app_window.py from Framework_Zero source files.
-* 2018-03-14 ==> Added a better image for the home page.
-* 2018-03-14 ==> Added the brainto3d.jpg image from SynapseWeb site.
-* 2018-03-14 ==> Added the actual logo file for the front page.
-* 2018-03-14 ==> Reformatted the main page and added a link to a logo
-* 2018-03-14 ==> Updated the README.md file to better match the current SynapseWeb page.
-* 2018-03-14 ==> Update Log.md
-* 2018-03-14 ==> Update README.md
-* 2018-03-14 ==> Added GitHub Notes to front page of Reconstruct repository.
-* 2018-03-14 ==> Added an experiments/documents/github section for GitHub Settings
-* 2018-03-14 ==> Added support for multiple images as a plain Java array.
-* 2018-03-14 ==> Added a define of JPEG to force building the JPEG code.
-* 2018-03-14 ==> Modified the gbm makefile "clean" option to remove binaries.
-* 2018-03-14 ==> Added all of the GBM (Generalized Bit Map) files ... may need for TIFF
-* 2018-03-14 ==> Merge branch 'master' of https://github.com/SynapseWeb/Reconstruct
-* 2018-03-14 ==> Disabled execute permission from source and image files.
-* 2018-03-14 ==> Updated with the 2008 Wish List
-* 2018-03-13 ==> Added several test images from the MCell "Organelle" model.
-* 2018-03-13 ==> Added newline between entries to keep separate.
-* 2018-03-13 ==> Update Log.md
-* 2018-03-13 ==> Added links to experimental versions
-* 2018-03-13 ==> Added a log file to keep a running track of changes
-* 2018-03-13 ==> Created "Wish_List.md" to keep requests together with the code
-* 2018-03-13 ==> Moved all of the previous top-level files into the source directory.
-* 2018-03-13 ==> Added notes from Parker 2017 PDF
-* 2018-03-13 ==> Update Notes.md
-* 2018-02-28 ==> Added "Use" note for "Center Drawing" mode in documentation.
-* 2018-02-28 ==> Updated the modes to better handle the center drawing mode.
-* 2018-02-28 ==> Improved cursor by centering at origin and then translating
-* 2018-02-28 ==> Added Center Drawing mode and attempted cursor improvements
-* 2018-02-27 ==> Added some instructions to the Java version.
-* 2018-02-27 ==> Merge branch 'experiments' of https://github.com/SynapseWeb/Reconstruct into experiments
-* 2018-02-27 ==> Added some updates to the readme files, and moved old to history.md.
-* 2018-02-27 ==> Added Reconstruct.jar to the git repository to make it easier to use.
-* 2018-02-27 ==> Implemented space bar for switching between move and draw modes.
-* 2018-02-27 ==> Used the "both" custom cursor as the default for moving.
-* 2018-02-27 ==> Used cursor shape to indicate move (hand) or draw (crosshair) modes.
-* 2018-02-27 ==> Attached the File/Add menu to the Series/Import/Images... menu.
-* 2018-02-27 ==> Added Reconstruct Menus (almost all)
-* 2018-02-27 ==> Copied "ZoomPanDraw.java" to "Reconstruct.java" and changed title.
-* 2018-02-27 ==> Update Notes.md
-* 2018-02-27 ==> Update Notes.md
-* 2018-02-27 ==> Update Notes.md
-* 2018-02-27 ==> Update Notes.md
-* 2018-02-27 ==> Added a Notes.md file to the experiments directory.
-* 2018-02-27 ==> Added a Notes.md file to test whether GitHub will display.
-* 2018-02-26 ==> Added overview images for different experimental subprojects.
-* 2018-02-26 ==> Minor improvements to the java experiments readme file.
-* 2018-02-26 ==> Changed image reference in the java README.md file.
-* 2018-02-26 ==> Updating README.md files.
-* 2018-02-26 ==> Added a readme file for the Reconstruct experiments section.
-* 2018-02-26 ==> Added a file chooser dialog box to allow opening a file.
-* 2018-02-26 ==> Added a screenshot and updated makefile to not delete all png files.
-* 2018-02-26 ==> Added a java version built over the weekend.
-* 2018-02-23 ==> Added a new line to separate the OpenGL Sample image from text.
-* 2018-02-23 ==> Added some of the images from recent work.
-* 2018-02-22 ==> Added the organelle model images used for the initial demonstration.
-* 2018-02-22 ==> Added an image of the OpenGLTest along with a README.md for the project.
-* 2018-02-22 ==> Added OpenGLTest.exe and its sha1sum.
-* 2018-02-22 ==> Added the Object Tracer for Blender in a new "experiments" branch.
-* 2015-08-05 ==> Update README.md
-* 2015-08-05 ==> initial commit
-* 2015-08-05 ==> Initial commit
+* 2018-03-22 ==> Improved the subheader of the log file. (0402fd4)
+* 2018-03-22 ==> Automate with: git log --date=short --pretty=format:"* %ad ==> %s" (bbfb64d)
+* 2018-03-22 ==> Update Wish_List.md (5f7366c)
+* 2018-03-21 ==> Merge branch 'master' of gitlab.snl.salk.edu:Reconstruct/Reconstruct (9290407)
+* 2018-03-21 ==> First version to run (but not yet usable) (9fb8b3a)
+* 2018-03-21 ==> First version to run (but not yet usable) (11500ea)
+* 2018-03-19 ==> Merge branch 'master' of https://github.com/SynapseWeb/Reconstruct (950c9c7)
+* 2018-03-16 ==> Python: Image scaling works, but can be slow for high zoom. (ca85b2f)
+* 2018-03-16 ==> Python: Change "widget" to "drawing_area" to improve clarity of code. (64000d3)
+* 2018-03-16 ==> Python Version: Began adding drawing back into Reconstruct.py (216c5cb)
+* 2018-03-16 ==> Added all top-level menus with stubs (submenus not added yet). (e032312)
+* 2018-03-16 ==> Updated title bar and top level menus. Removed more simulation code. (3681ece)
+* 2018-03-16 ==> Added a stub 2D simulation just to get it to run without errors. (626396e)
+* 2018-03-16 ==> Renamed gui.py to Reconstruct.py (abf23f9)
+* 2018-03-16 ==> Started with gui.py and app_window.py from Framework_Zero source files. (d8d32ff)
+* 2018-03-14 ==> Added a better image for the home page. (b765f74)
+* 2018-03-14 ==> Added the brainto3d.jpg image from SynapseWeb site. (1d8c9d4)
+* 2018-03-14 ==> Added the actual logo file for the front page. (8d7bdfb)
+* 2018-03-14 ==> Reformatted the main page and added a link to a logo (1c1f634)
+* 2018-03-14 ==> Updated the README.md file to better match the current SynapseWeb page. (17df5df)
+* 2018-03-14 ==> Update Log.md (cefe24b)
+* 2018-03-14 ==> Update README.md (7680104)
+* 2018-03-14 ==> Added GitHub Notes to front page of Reconstruct repository. (8881484)
+* 2018-03-14 ==> Added an experiments/documents/github section for GitHub Settings (e57fc2e)
+* 2018-03-14 ==> Added support for multiple images as a plain Java array. (871ae1c)
+* 2018-03-14 ==> Added a define of JPEG to force building the JPEG code. (d10cb2d)
+* 2018-03-14 ==> Modified the gbm makefile "clean" option to remove binaries. (a9947bb)
+* 2018-03-14 ==> Added all of the GBM (Generalized Bit Map) files ... may need for TIFF (28ce8d6)
+* 2018-03-14 ==> Merge branch 'master' of https://github.com/SynapseWeb/Reconstruct (40aab36)
+* 2018-03-14 ==> Disabled execute permission from source and image files. (f9e6925)
+* 2018-03-14 ==> Updated with the 2008 Wish List (57a8002)
+* 2018-03-13 ==> Added several test images from the MCell "Organelle" model. (7153c88)
+* 2018-03-13 ==> Added newline between entries to keep separate. (031bc8b)
+* 2018-03-13 ==> Update Log.md (435f342)
+* 2018-03-13 ==> Added links to experimental versions (ff8a028)
+* 2018-03-13 ==> Added a log file to keep a running track of changes (f020823)
+* 2018-03-13 ==> Created "Wish_List.md" to keep requests together with the code (e7e6247)
+* 2018-03-13 ==> Moved all of the previous top-level files into the source directory. (075001d)
+* 2018-03-13 ==> Added notes from Parker 2017 PDF (df3837c)
+* 2018-03-13 ==> Update Notes.md (a2ae6d5)
+* 2018-02-28 ==> Added "Use" note for "Center Drawing" mode in documentation. (b672acf)
+* 2018-02-28 ==> Updated the modes to better handle the center drawing mode. (3a65eb4)
+* 2018-02-28 ==> Improved cursor by centering at origin and then translating (d406f3e)
+* 2018-02-28 ==> Added Center Drawing mode and attempted cursor improvements (af86d7b)
+* 2018-02-27 ==> Added some instructions to the Java version. (b5df3fc)
+* 2018-02-27 ==> Merge branch 'experiments' of https://github.com/SynapseWeb/Reconstruct into experiments (743a2e1)
+* 2018-02-27 ==> Added some updates to the readme files, and moved old to history.md. (190a093)
+* 2018-02-27 ==> Added Reconstruct.jar to the git repository to make it easier to use. (3f06ea0)
+* 2018-02-27 ==> Implemented space bar for switching between move and draw modes. (bb0874f)
+* 2018-02-27 ==> Used the "both" custom cursor as the default for moving. (5cfded7)
+* 2018-02-27 ==> Used cursor shape to indicate move (hand) or draw (crosshair) modes. (b5feffa)
+* 2018-02-27 ==> Attached the File/Add menu to the Series/Import/Images... menu. (24dfa2d)
+* 2018-02-27 ==> Added Reconstruct Menus (almost all) (121bbf7)
+* 2018-02-27 ==> Copied "ZoomPanDraw.java" to "Reconstruct.java" and changed title. (7b0333d)
+* 2018-02-27 ==> Update Notes.md (286f16c)
+* 2018-02-27 ==> Update Notes.md (7556f7f)
+* 2018-02-27 ==> Update Notes.md (e466213)
+* 2018-02-27 ==> Update Notes.md (8d5fd7d)
+* 2018-02-27 ==> Added a Notes.md file to the experiments directory. (ee8ce5c)
+* 2018-02-27 ==> Added a Notes.md file to test whether GitHub will display. (a69c2dc)
+* 2018-02-26 ==> Added overview images for different experimental subprojects. (98ebf36)
+* 2018-02-26 ==> Minor improvements to the java experiments readme file. (0418847)
+* 2018-02-26 ==> Changed image reference in the java README.md file. (772aeb7)
+* 2018-02-26 ==> Updating README.md files. (0347d4a)
+* 2018-02-26 ==> Added a readme file for the Reconstruct experiments section. (0ef2e0d)
+* 2018-02-26 ==> Added a file chooser dialog box to allow opening a file. (2755f22)
+* 2018-02-26 ==> Added a screenshot and updated makefile to not delete all png files. (3089968)
+* 2018-02-26 ==> Added a java version built over the weekend. (f9a6c81)
+* 2018-02-23 ==> Added a new line to separate the OpenGL Sample image from text. (93ff732)
+* 2018-02-23 ==> Added some of the images from recent work. (d382811)
+* 2018-02-22 ==> Added the organelle model images used for the initial demonstration. (cb11adf)
+* 2018-02-22 ==> Added an image of the OpenGLTest along with a README.md for the project. (f9d10f2)
+* 2018-02-22 ==> Added OpenGLTest.exe and its sha1sum. (14e82ad)
+* 2018-02-22 ==> Added the Object Tracer for Blender in a new "experiments" branch. (7e72bfb)
+* 2015-08-05 ==> Update README.md (760d1e3)
+* 2015-08-05 ==> initial commit (a269533)
+* 2015-08-05 ==> Initial commit (4365cca)
