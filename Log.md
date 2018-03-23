@@ -1,5 +1,5 @@
 # Log
-###  (git log --date=short --pretty=format:"* %ad ==> %s")
+### Generated with: git log --date=short --pretty=format:"* %ad ==> %s"
 
 * 2018-03-22 ==> Update Wish_List.md
 * 2018-03-21 ==> Merge branch 'master' of gitlab.snl.salk.edu:Reconstruct/Reconstruct
