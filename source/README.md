@@ -1,4 +1,4 @@
-# Reconstruct 1.1.0.1
+# Reconstruct 1.2.0.0
 
 ## This version has been modified to be compiled with MinGW 4.9.2
 ### This version may be compiled with:  mingw32-make -f makefile_raw
@@ -10,13 +10,13 @@ Software
 
 Reconstruct Download
 
-Reconstruct Version 1.1.0.1
+Reconstruct Version 1.1.0.0
  with Help Manual and example.ser (7.38MB) 
  [August 20, 2007]               
     
 
 System Requirements:
-Microsoft Windows (XP/Vista/7/8)
+Microsoft Windows (XP/Vista/7/8/10)
 Pentium processor
 10 Mb of disk space for program files
 at least 128 Mb of RAM
