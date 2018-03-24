@@ -34,6 +34,16 @@
 #include "reconstruct.h"
 #include <htmlhelp.h>	// not needed for WinHelp so added 11/08/06 for html help system
 
+void SpawnProcessSimple ( char *cmd ) {
+    // LPSTR szCmd[] = _tcsdup(TEXT("\"hh manual.chm\""));
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ZeroMemory ( &si, sizeof(si) );
+    ZeroMemory ( &pi, sizeof(pi) );
+    si.cb = sizeof(si);
+    CreateProcess ( NULL, cmd, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi );
+}
+
 void CmHelpReconstruct( void )		// open WinHelp for User's Manual
 {
 	char mpath[MAX_PATH], *c, *pathend;
@@ -52,6 +62,8 @@ void CmHelpReconstruct( void )		// open WinHelp for User's Manual
 	if ( !HtmlHelp(appWnd, mpath, HH_DISPLAY_TOPIC, NULL ) )
 		ErrMsgOK( ERRMSG_RUN_FAILED, mpath );
 	*/
+	// Since HtmlHelp fails the linking step, try another way (may require Reconstruct to be started in .exe folder)
+    SpawnProcessSimple ( "hh manual.chm" );
 }
 
 void CmHelpKeyTable( void )			// open Key Command quick reference guide
@@ -72,6 +84,8 @@ void CmHelpKeyTable( void )			// open Key Command quick reference guide
 	if ( !HtmlHelp(appWnd, mpath, HH_DISPLAY_TOPIC, NULL ) )
 		ErrMsgOK( ERRMSG_RUN_FAILED, mpath );
 	*/
+	// Since HtmlHelp fails the linking step, try another way (may require Reconstruct to be started in .exe folder)
+    SpawnProcessSimple ( "hh keycmds.chm" );
 }
 
 void CmHelpMouse( void )			// open mouse command quick reference guide
@@ -91,6 +105,8 @@ void CmHelpMouse( void )			// open mouse command quick reference guide
 	/* if ( !HtmlHelp(appWnd, mpath, HH_DISPLAY_TOPIC, NULL ) )
 		ErrMsgOK( ERRMSG_RUN_FAILED, mpath );
 	*/
+	// Since HtmlHelp fails the linking step, try another way (may require Reconstruct to be started in .exe folder)
+    SpawnProcessSimple ( "hh mousecmds.chm" );
 }
 
 void CmHelpLicense( void )			// display info about GNU General Public License
