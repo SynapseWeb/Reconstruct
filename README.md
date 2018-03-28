@@ -13,7 +13,7 @@ Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
 
 * **[Reconstruct 1.1.0.1 (64-bit)](https://sites.cns.utexas.edu/sites/default/files/synapseweb/files/recon1101win64.exe)**
 
-* **[Development Version (64-bit)](https://github.com/SynapseWeb/Reconstruct/blob/master/source/Reconstruct.exe)**
+* **[Development Version (64-bit)](https://github.com/SynapseWeb/Reconstruct/blob/master/source/Reconstruct.exe)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/source/sha1sum.txt))
 
 
 with Help Manual and example.ser (7.38MB) 
