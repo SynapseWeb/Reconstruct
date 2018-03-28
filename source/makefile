@@ -1,86 +1,149 @@
-# makefile (from Borland C++ 5.5 to MinGW) for Reconstruct application
+# Project: Reconstruct
+# Makefile created by Dev-C++ 5.11 and modified manually
 
-EXEFILE  = reconstruct.exe
-HDRFILES = constants.h gbm.h classes.h operations.h globals.h reconstruct.h kube-gustavson-fft.h
-SRCFILES = contour.cpp nform.cpp adib.cpp image.cpp xmldata.cpp viewport.cpp section.cpp series.cpp kube-gustavson-fft.cpp\
- vrmlobject.cpp vrmlobjects.cpp vrmlscene.cpp boissonnat.cpp sectionsinfo.cpp tformslifo.cpp threads.cpp palette.cpp\
- program_menu.cpp series_menu.cpp section_menu.cpp domain_menu.cpp trace_menu.cpp objects_menu.cpp help_menu.cpp\
- init.cpp end.cpp utility.cpp tools.cpp thumbnails.cpp keyboard.cpp mouse.cpp opengl.cpp globals.cpp reconstruct.cpp histogram.cpp
-OBJFILES = contour.obj nform.obj adib.obj image.obj xmldata.obj viewport.obj section.obj series.obj kube-gustavson-fft.obj\
- vrmlobject.obj vrmlobjects.obj vrmlscene.obj boissonnat.obj sectionsinfo.obj tformslifo.obj threads.obj palette.obj\
- program_menu.obj series_menu.obj section_menu.obj domain_menu.obj trace_menu.obj objects_menu.obj help_menu.obj\
- init.obj end.obj utility.obj tools.obj thumbnails.obj keyboard.obj mouse.obj opengl.obj globals.obj reconstruct.obj histogram.obj
+SUBDIRS = gbm
 
-RCFILES = reconstruct.rc
-RESFILES = reconstruct.res
-LIBFILES = gbm.lib
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+RES      = reconstruct.res
+# GBMOBJ   = gbm.o gbmbmp.o gbmcvp.o gbmgem.o gbmgif.o gbmhelp.o gbmiax.o gbmjpg.o gbmkps.o gbmlbm.o gbmpcx.o gbmpgm.o gbmppm.o gbmpsg.o gbmspr.o gbmtga.o gbmtif.o gbmtifh.o gbmvid.o gbmxbm.o
+GBMLIB   = gbm/gbm.a
+OBJ      = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
+LINKOBJ  = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
+LIBS     = -L"C:/devcpp/MinGW64/lib" -L"C:/devcpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -lopengl32 "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libcomctl32.a" "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libversion.a" "htmlhelp.lib"
+INCS     = -I"C:/devcpp/MinGW64/include" -I"C:/devcpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"C:/devcpp/MinGW64/include" -I"C:/devcpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = Reconstruct.exe
+CXXFLAGS = $(CXXINCS) -w -fpermissive
+CFLAGS   = $(INCS) -w -fpermissive
+RM       = rm.exe -f
 
-# the following definitions serve only to document all of files used by the application
-ICONS = large.ico section.ico small.ico
-CURSORS = cultiline.cur domain.cur ellipse.cur eraser.cur line.cur magnify.cur multiline.cur pencil.cur point.cur\
- rectangle.cur xy.cur zoom.cur
-BITMAPS = arrow.bmp cultiline.bmp domain.bmp ellipse.bmp exclamation.bmp line.bmp magnify.bmp multiline.bmp pencil.bmp point.bmp\
- reconstruct.bmp rectangle.bmp xyzoom.bmp
-HELPFILES = manual.chm keycmds.chm mousecmds.chm
+.PHONY: all all-before all-after clean clean-custom
 
-# Define environment variables RECONSTRUCT_COMPILER, _LINKER, _RC, _LIB, _INCLUDE
-# to specify the location on your system of these files (as a quoted string),
-# e.g. define RECONSTRUCT_COMPILER="C:\Program Files\Borland\Bcc55\bin\bcc32" etc.
-# via Control Panel->System->Advanced->Environment Variables on a Windows XP machine
-# (You may need to logout before your environment variables will take effect.)
+all: all-before $(BIN) all-after
 
-CFLAGS  = -c -tWM -tW -O2 -H -I$(RECONSTRUCT_INCLUDE) -L$(RECONSTRUCT_LIB) -DWINVER=0x0400 -D_WIN32_WINNT=0x0400
-# -c   compile only, do not link
-# -tWM multithreading
-# -tW  Windows application
-# -Od  no optimizations, for debug but in final use -O2
-# -H   generate and use precompiled headers
-# -I   location of include files
-# -L   location of libraries
-# -D   override value in Windows API include files to make compatible with NT 4.0
+clean: clean-custom
+	${RM} $(OBJ) $(BIN) $(GBMLIB)
+	${RM} gbm/*.o
 
-LFLAGS  = -aa -c -x -Gn -L$(RECONSTRUCT_LIB)
-# -aa  Win32 application
-# -c   case sensitive symbols
-# -x   suppress map file creation
-# -Gn  disable incremental linking
-# -L   location of libraries
+.PHONY: subdirs $(SUBDIRS)
+subdirs: makefile $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@
 
-RFLAGS  = /r /nw
-# for GoRC Resource Compiler:
-# /r	generate .res output
-# /nw	suppress warning messages
-# RFLAGS  = -r -x -32
-# -r   do not link resources
-# -x   ignore INCLUDE environment variable
-# -32  build 32-bit resources
+$(GBMLIB): subdirs
 
-STDOBJS = c0w32.obj
-# c0w32.obj   startup code for Win32 GUI .exe
+#$(GBMLIB): $(GBMOBJ) subdirs
+#	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-STDLIBS = import32.lib cw32mt.lib htmlhelp.lib
-# import32.lib   Windows API 
-# cw32mt.lib	 static multithreaded run-time libraries
-# htmlhelp.lib created in the BCC55\LIB folder by using the command:
-#    ..\bin\implib htmlhelp.lib C:\Windows\System32\hhctrl.ocx
+$(BIN): $(OBJ) $(GBMLIB)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS) $(GBMLIB)
 
+adib.o: adib.cpp
+	$(CPP) -c adib.cpp -o adib.o $(CXXFLAGS)
 
-# primary target is linking .exe application, dependent on .obj and .res
-$(EXEFILE) : $(OBJFILES) $(RESFILES)
-   $(RECONSTRUCT_LINKER) $(LFLAGS) $(OBJFILES) $(STDOBJS), $(EXEFILE), , $(LIBFILES) $(STDLIBS), , $(RESFILES)
+boissonnat.o: boissonnat.cpp
+	$(CPP) -c boissonnat.cpp -o boissonnat.o $(CXXFLAGS)
 
-# if any source files are newer than header files, recompile all sources
-$(OBJFILES) : $(HDRFILES)
-#  echo Using $(RECONSTRUCT_COMPILER) to compile
-   $(RECONSTRUCT_COMPILER) $(CFLAGS) $(SRCFILES)
+contour.o: contour.cpp
+	$(CPP) -c contour.cpp -o contour.o $(CXXFLAGS)
 
-# if any source file is newer than its object file, recompile just that one source
-.cpp.obj :
-   $(RECONSTRUCT_COMPILER) $(CFLAGS) $(SRCFILES)
+domain_menu.o: domain_menu.cpp
+	$(CPP) -c domain_menu.cpp -o domain_menu.o $(CXXFLAGS)
 
-# if any .rc or header files are newer than .res files, recompile resources
-$(RESFILES) : $(RCFILES) $(HDRFILES)
-   $(RECONSTRUCT_RC) $(RFLAGS) $(RCFILES)
+end.o: end.cpp
+	$(CPP) -c end.cpp -o end.o $(CXXFLAGS)
 
-clean :
-   del *.obj *.res *.tds *.bak
+globals.o: globals.cpp
+	$(CPP) -c globals.cpp -o globals.o $(CXXFLAGS)
+
+help_menu.o: help_menu.cpp
+	$(CPP) -c help_menu.cpp -o help_menu.o $(CXXFLAGS)
+
+histogram.o: histogram.cpp
+	$(CPP) -c histogram.cpp -o histogram.o $(CXXFLAGS)
+
+image.o: image.cpp
+	$(CPP) -c image.cpp -o image.o $(CXXFLAGS)
+
+init.o: init.cpp
+	$(CPP) -c init.cpp -o init.o $(CXXFLAGS)
+
+keyboard.o: keyboard.cpp
+	$(CPP) -c keyboard.cpp -o keyboard.o $(CXXFLAGS)
+
+kube-gustavson-fft.o: kube-gustavson-fft.cpp
+	$(CPP) -c kube-gustavson-fft.cpp -o kube-gustavson-fft.o $(CXXFLAGS)
+
+mouse.o: mouse.cpp
+	$(CPP) -c mouse.cpp -o mouse.o $(CXXFLAGS)
+
+nform.o: nform.cpp
+	$(CPP) -c nform.cpp -o nform.o $(CXXFLAGS)
+
+objects_menu.o: objects_menu.cpp
+	$(CPP) -c objects_menu.cpp -o objects_menu.o $(CXXFLAGS)
+
+opengl.o: opengl.cpp
+	$(CPP) -c opengl.cpp -o opengl.o $(CXXFLAGS)
+
+palette.o: palette.cpp
+	$(CPP) -c palette.cpp -o palette.o $(CXXFLAGS)
+
+program_menu.o: program_menu.cpp
+	$(CPP) -c program_menu.cpp -o program_menu.o $(CXXFLAGS)
+
+reconstruct.o: reconstruct.cpp
+	$(CPP) -c reconstruct.cpp -o reconstruct.o $(CXXFLAGS)
+
+section.o: section.cpp
+	$(CPP) -c section.cpp -o section.o $(CXXFLAGS)
+
+section_menu.o: section_menu.cpp
+	$(CPP) -c section_menu.cpp -o section_menu.o $(CXXFLAGS)
+
+sectionsinfo.o: sectionsinfo.cpp
+	$(CPP) -c sectionsinfo.cpp -o sectionsinfo.o $(CXXFLAGS)
+
+series.o: series.cpp
+	$(CPP) -c series.cpp -o series.o $(CXXFLAGS)
+
+series_menu.o: series_menu.cpp
+	$(CPP) -c series_menu.cpp -o series_menu.o $(CXXFLAGS)
+
+tformslifo.o: tformslifo.cpp
+	$(CPP) -c tformslifo.cpp -o tformslifo.o $(CXXFLAGS)
+
+threads.o: threads.cpp
+	$(CPP) -c threads.cpp -o threads.o $(CXXFLAGS)
+
+thumbnails.o: thumbnails.cpp
+	$(CPP) -c thumbnails.cpp -o thumbnails.o $(CXXFLAGS)
+
+tools.o: tools.cpp
+	$(CPP) -c tools.cpp -o tools.o $(CXXFLAGS)
+
+trace_menu.o: trace_menu.cpp
+	$(CPP) -c trace_menu.cpp -o trace_menu.o $(CXXFLAGS)
+
+utility.o: utility.cpp
+	$(CPP) -c utility.cpp -o utility.o $(CXXFLAGS)
+
+viewport.o: viewport.cpp
+	$(CPP) -c viewport.cpp -o viewport.o $(CXXFLAGS)
+
+vrmlobject.o: vrmlobject.cpp
+	$(CPP) -c vrmlobject.cpp -o vrmlobject.o $(CXXFLAGS)
+
+vrmlobjects.o: vrmlobjects.cpp
+	$(CPP) -c vrmlobjects.cpp -o vrmlobjects.o $(CXXFLAGS)
+
+vrmlscene.o: vrmlscene.cpp
+	$(CPP) -c vrmlscene.cpp -o vrmlscene.o $(CXXFLAGS)
+
+xmldata.o: xmldata.cpp
+	$(CPP) -c xmldata.cpp -o xmldata.o $(CXXFLAGS)
+
+reconstruct.res: reconstruct_min_ok.rc
+	$(WINDRES) -i reconstruct_min_ok.rc --input-format=rc -o reconstruct.res -O coff
