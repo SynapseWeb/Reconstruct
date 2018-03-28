@@ -21,7 +21,10 @@ RM       = rm.exe -f
 
 .PHONY: all all-before all-after clean clean-custom
 
-all: all-before $(BIN) all-after
+all: all-before $(BIN) all-after sha1sum.txt
+
+sha1sum.txt: $(BIN)
+	sha1sum Reconstruct.exe > sha1sum.txt
 
 clean: clean-custom
 	${RM} $(OBJ) $(BIN) $(GBMLIB)
