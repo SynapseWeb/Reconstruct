@@ -4,6 +4,9 @@
 # UNIX
 #
 
+
+JPEG = JPEG
+
 ifdef JPEG
 IJG =		jpeg-6a
 CJPEG =		-DIJG -I$(IJG)
@@ -55,7 +58,7 @@ USE_AR =	arm-apple-darwin-ar
 USE_RANLIB =	arm-apple-darwin-ranlib
 USE_STRIP =	arm-apple-darwin-strip
 else
-CC =		gcc
+CC =		cc
 CFLAGS =	-c -O -DUNIX -DLINUX $(CJPEG)
 endif
 endif
@@ -74,9 +77,6 @@ endif
 
 #
 
-gbm.a:		gbm.o gbmpgm.o gbmppm.o gbmbmp.o gbmtga.o gbmkps.o gbmiax.o gbmpcx.o gbmtif.o gbmtifh.o gbmlbm.o gbmvid.o gbmgif.o gbmxbm.o gbmspr.o gbmpsg.o gbmgem.o gbmcvp.o gbmjpg.o gbmhelp.o $(IJGOBJ)
-		$(USE_AR) ru gbm.a gbm.o gbmpgm.o gbmppm.o gbmbmp.o gbmtga.o gbmkps.o gbmiax.o gbmpcx.o gbmtif.o gbmtifh.o gbmlbm.o gbmvid.o gbmgif.o gbmxbm.o gbmspr.o gbmpsg.o gbmgem.o gbmcvp.o gbmjpg.o gbmhelp.o $(IJGOBJ)
-
 all:		ijg gbm.a gbmhdr \
 		gbmmir.a gbmref \
 		gbmrect.a gbmsub \
@@ -93,7 +93,7 @@ ifdef JPEG
 		cp $(IJG)/jconfig.doc $(IJG)/jconfig.h
 		cp makeijgo $(IJG)
 		cp jmorecfg.h $(IJG)
-		(cd $(IJG) && mingw32-make CC=$(CC) -f makeijgo)
+		(cd $(IJG) && make CC=$(CC) -f makeijgo)
 else
 		@echo No JPEG support
 endif
@@ -121,6 +121,8 @@ else
 IJGOBJ =
 endif
 
+gbm.a:		gbm.o gbmpgm.o gbmppm.o gbmbmp.o gbmtga.o gbmkps.o gbmiax.o gbmpcx.o gbmtif.o gbmtifh.o gbmlbm.o gbmvid.o gbmgif.o gbmxbm.o gbmspr.o gbmpsg.o gbmgem.o gbmcvp.o gbmjpg.o gbmhelp.o $(IJGOBJ)
+		$(USE_AR) ru gbm.a gbm.o gbmpgm.o gbmppm.o gbmbmp.o gbmtga.o gbmkps.o gbmiax.o gbmpcx.o gbmtif.o gbmtifh.o gbmlbm.o gbmvid.o gbmgif.o gbmxbm.o gbmspr.o gbmpsg.o gbmgem.o gbmcvp.o gbmjpg.o gbmhelp.o $(IJGOBJ)
 ifdef USE_RANLIB
 		$(USE_RANLIB) gbm.a
 endif
@@ -298,7 +300,16 @@ gbmgamma.o:	gbmgamma.c gbm.h
 #
 
 clean:
-		@rm -f *.o
+		rm -f *.o
+		rm -f *.a
+		rm -f gbmbpp
+		rm -f gbmcpal
+		rm -f gbmgamma
+		rm -f gbmhdr
+		rm -f gbmref
+		rm -f gbmsize
+		rm -f gbmsub
+		rm -f jpeg-6a/*.o
 
 #
 

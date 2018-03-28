@@ -1,12 +1,14 @@
 # Project: Reconstruct
 # Makefile created by Dev-C++ 5.11 and modified manually
 
+SUBDIRS = gbm
+
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = reconstruct.res
-GBMOBJ   = gbm.o gbmbmp.o gbmcvp.o gbmgem.o gbmgif.o gbmhelp.o gbmiax.o gbmjpg.o gbmkps.o gbmlbm.o gbmpcx.o gbmpgm.o gbmppm.o gbmpsg.o gbmspr.o gbmtga.o gbmtif.o gbmtifh.o gbmvid.o gbmxbm.o
-GBMLIB   = gbm.a
+# GBMOBJ   = gbm.o gbmbmp.o gbmcvp.o gbmgem.o gbmgif.o gbmhelp.o gbmiax.o gbmjpg.o gbmkps.o gbmlbm.o gbmpcx.o gbmpgm.o gbmppm.o gbmpsg.o gbmspr.o gbmtga.o gbmtif.o gbmtifh.o gbmvid.o gbmxbm.o
+GBMLIB   = gbm/gbm.a
 OBJ      = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
 LINKOBJ  = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
 LIBS     = -L"C:/devcpp/MinGW64/lib" -L"C:/devcpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -lopengl32 "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libcomctl32.a" "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libversion.a" "htmlhelp.lib"
@@ -23,8 +25,19 @@ all: all-before $(BIN) all-after
 
 clean: clean-custom
 	${RM} $(OBJ) $(BIN) $(GBMLIB)
+	${RM} gbm/*.o
 
-$(BIN): $(OBJ)
+.PHONY: subdirs $(SUBDIRS)
+subdirs: makefile_raw $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@
+
+$(GBMLIB): subdirs
+
+#$(GBMLIB): $(GBMOBJ) subdirs
+#	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+$(BIN): $(OBJ) $(GBMLIB)
 	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS) $(GBMLIB)
 
 adib.o: adib.cpp
