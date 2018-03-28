@@ -13,6 +13,9 @@ Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
 
 * **[Reconstruct 1.1.0.0 (64-bit)](https://sites.cns.utexas.edu/sites/default/files/synapseweb/files/recon1101win64.exe)**
 
+* **[Development Version (64-bit)](https://github.com/SynapseWeb/Reconstruct/blob/master/source/Reconstruct.exe)**
+
+
 with Help Manual and example.ser (7.38MB) 
 [Version 1.1.0.0 August 20, 2007]               
     
