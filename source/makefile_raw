@@ -1,13 +1,15 @@
 # Project: Reconstruct
-# Makefile created by Dev-C++ 5.11
+# Makefile created by Dev-C++ 5.11 and modified manually
 
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
 RES      = reconstruct.res
+GBMOBJ   = gbm.o gbmbmp.o gbmcvp.o gbmgem.o gbmgif.o gbmhelp.o gbmiax.o gbmjpg.o gbmkps.o gbmlbm.o gbmpcx.o gbmpgm.o gbmppm.o gbmpsg.o gbmspr.o gbmtga.o gbmtif.o gbmtifh.o gbmvid.o gbmxbm.o
+GBMLIB   = gbm.a
 OBJ      = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
 LINKOBJ  = adib.o boissonnat.o contour.o domain_menu.o end.o globals.o help_menu.o histogram.o image.o init.o keyboard.o kube-gustavson-fft.o mouse.o nform.o objects_menu.o opengl.o palette.o program_menu.o reconstruct.o section.o section_menu.o sectionsinfo.o series.o series_menu.o tformslifo.o threads.o thumbnails.o tools.o trace_menu.o utility.o viewport.o vrmlobject.o vrmlobjects.o vrmlscene.o xmldata.o $(RES)
-LIBS     = -L"C:/devcpp/MinGW64/lib" -L"C:/devcpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -lopengl32 gbm.a "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libcomctl32.a" "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libversion.a" "htmlhelp.lib"
+LIBS     = -L"C:/devcpp/MinGW64/lib" -L"C:/devcpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -lopengl32 "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libcomctl32.a" "C:/devcpp/MinGW64/x86_64-w64-mingw32/lib/libversion.a" "htmlhelp.lib"
 INCS     = -I"C:/devcpp/MinGW64/include" -I"C:/devcpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/devcpp/MinGW64/include" -I"C:/devcpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/devcpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = Reconstruct.exe
@@ -20,10 +22,10 @@ RM       = rm.exe -f
 all: all-before $(BIN) all-after
 
 clean: clean-custom
-	${RM} $(OBJ) $(BIN)
+	${RM} $(OBJ) $(BIN) $(GBMLIB)
 
 $(BIN): $(OBJ)
-	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS) $(GBMLIB)
 
 adib.o: adib.cpp
 	$(CPP) -c adib.cpp -o adib.o $(CXXFLAGS)
