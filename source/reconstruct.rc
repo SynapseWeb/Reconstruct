@@ -109,8 +109,9 @@
 // modified 7/16/07 by JCF (fiala@bu.edu)
 // -+- change: Added dialog components for color channel modifications in Contrast Dialog.
 
-//#include <windows.h>  // remove when compiling with non-Microsoft resource compiler only
+#include <windows.h>  // remove when compiling with non-Microsoft resource compiler only
 #include "constants.h"
+// #include "reconstruct.h"
 
 ALargeIcon	ICON "large.ico"
 ASmallIcon	ICON "small.ico"
@@ -181,7 +182,7 @@ MainMenu MENU
 			BEGIN
 			MENUITEM "&Tools window", CM_TOOLBAR
 			MENUITEM "&Status bar", CM_STATUSBAR
-			END
+	    	END
 		MENUITEM SEPARATOR
 		POPUP "&Debug"
 			BEGIN
@@ -327,7 +328,8 @@ MainMenu MENU
 		MENUITEM "&License...", CM_HELPLICENSE
 		MENUITEM "&Version...", CM_HELPABOUT
 		END
-	END
+
+    END
 
 SectionListMenu MENU  
  	BEGIN 
@@ -345,7 +347,7 @@ SectionListMenu MENU
 		MENUITEM "&Unlock", CM_UNLOCKSECTIONS
 		MENUITEM SEPARATOR
 		MENUITEM "&Color/Contrast...", CM_MODIFYCONTRAST
-		MENUITEM "&Pixel Size..." CM_MODIFYPIXELSIZE
+		MENUITEM "&Pixel Size...", CM_MODIFYPIXELSIZE
 		MENUITEM "&Thickness...", CM_MODIFYTHICKNESS
 		MENUITEM "Shift &Numbering...", CM_RENUMBERSECTIONS
 		MENUITEM "&Reverse Order...", CM_REVERSESECTIONS
@@ -379,8 +381,8 @@ DomainListMenu MENU
 		END
 	END
 
-TraceListMenu MENU  
- 	BEGIN 
+TraceListMenu MENU
+	BEGIN
 	MENUITEM "&Select", CM_SELECTTRACES
 	POPUP "&List"
 		BEGIN
@@ -400,8 +402,8 @@ TraceListMenu MENU
 		END
 	END
 
-ObjectListMenu MENU  
- 	BEGIN
+ObjectListMenu MENU
+	BEGIN
 	POPUP "&Scene"
 		BEGIN
 		MENUITEM "&Add to scene\tEnter", CM_OBJECTTOSCENE
@@ -437,7 +439,7 @@ ObjectListMenu MENU
 	MENUITEM "Find &1st!", CM_FINDOBJECTNAMED
 	END
 
-3DMenu MENU  
+T3DMenu MENU  
  	BEGIN
 	POPUP "&Scene"
 		BEGIN
@@ -461,7 +463,7 @@ ObjectListMenu MENU
 		MENUITEM "&Spin", CM_ANIMATE, CHECKED
 		MENUITEM "&Orthographic", CM_ORTHOGRAPHIC
 		MENUITEM "Rotatio&n...", CM_SPINSPEED
-		MENUITEM "&Background..." CM_BACKGROUND
+		MENUITEM "&Background...", CM_BACKGROUND
 		END
 	MENUITEM "&Info", CM_INFOSCENE
 	END
@@ -508,7 +510,6 @@ DistanceListMenu MENU
 		MENUITEM "Sa&ve...", CM_SAVELIST
 		END
 	END
-
 
 FunctionKeyAccels ACCELERATORS	// use accelerator table to translate F keys so that noone
 	BEGIN							// else can reinterpret them as special functions
@@ -702,7 +703,7 @@ BEGIN
  AUTOCHECKBOX "Use F5-F8 keys for deformations instead of slants.", ID_DEFORMKEYS, 25, 46, 175, 10 
  CTEXT "Keystroke", -1, 50, 60, 36, 10
  CTEXT "+ Shift", -1, 90, 60, 36, 10
- cTEXT "+ Control", -1, 130, 60, 36, 10
+ CTEXT "+ Control", -1, 130, 60, 36, 10
  RTEXT "Rotate", -1, 5, 72, 40, 23
  EDITTEXT ID_THETA, 50, 70, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
  EDITTEXT ID_THETASHFT, 90, 70, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
@@ -1116,6 +1117,7 @@ BEGIN
  PUSHBUTTON "Cancel", IDCANCEL, 110, 72, 33, 14
 END
 
+
 CalibrateSections DIALOG 0, 0, 184, 80
 STYLE DS_CENTER
 CAPTION "Set Pixel Size on All Domains"
@@ -1306,12 +1308,11 @@ Progress DIALOG 0, 0, 100, 48
 STYLE DS_CENTER	| DS_NOIDLEMSG | WS_VISIBLE
 CAPTION "Progress"
 FONT 8, "MS Sans Serif"
-	BEGIN
+BEGIN
 	ICON "WaitIcon", ID_MSGICON, 10, 10, 32, 32
 	CTEXT "", ID_MSGTXT, 42, 10, 55, 20
 	DEFPUSHBUTTON "Abort", IDOK, 35, 32, 30, 12
-	END
-
+END
 
 Splash DIALOG 0, 0, 256, 80
 STYLE DS_CENTER	| DS_NOIDLEMSG | WS_VISIBLE
@@ -1346,8 +1347,9 @@ FONT 8, "MS Sans Serif"
 	DEFPUSHBUTTON "OK", IDOK, 110, 150, 36, 14
 	END
 
+
 1 VERSIONINFO
-FILEVERSION 1, 2, 0, 1
+FILEVERSION 1, 2, 0, 2
 FILEOS 4
 FILETYPE 1
 	BEGIN

@@ -150,5 +150,5 @@ vrmlscene.o: vrmlscene.cpp makefile
 xmldata.o: xmldata.cpp makefile
 	$(CPP) -c xmldata.cpp -o xmldata.o $(CXXFLAGS)
 
-reconstruct.res: reconstruct_min_ok.rc makefile
-	$(WINDRES) -i reconstruct_min_ok.rc --input-format=rc -o reconstruct.res -O coff
+reconstruct.res: reconstruct.rc makefile
+	$(WINDRES) -i reconstruct.rc --input-format=rc -o reconstruct.res -O coff
