@@ -4,6 +4,8 @@
 # UNIX
 #
 
+JPEG = 1
+
 ifdef JPEG
 IJG =		jpeg-6a
 CJPEG =		-DIJG -I$(IJG)
