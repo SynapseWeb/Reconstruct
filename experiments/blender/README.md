@@ -1,8 +1,13 @@
 # Blender Implementations
 ## 
+Animation of Blender's Bezier Curves and Grease Pencil on top of a Background Image:
 
-The initial Blender implementation was written to eventually duplicate
-the 2016 Workshop demostration used by CellBlender:
+![BezierGrease](Blender_Image_Sequence.gif?raw=true "Bezier Curve / Grease Pencil")
+
+##
+
+The initial Blender implementation was written as a TKinter external application
+to eventually duplicate the 2016 Workshop demostration used by CellBlender:
 
 ![CellBlenderModel](organelle_mcell.gif?raw=true "CellBlender Model")
 
