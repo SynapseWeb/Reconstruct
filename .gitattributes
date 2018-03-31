@@ -1,0 +1,27 @@
+*.exe binary
+*.ico binary
+*.ICO binary
+*.cur binary
+*.bmp binary
+*.ani binary
+*.lib binary
+*.zip binary
+*.o   binary
+*.chm binary
+*.res binary
+*.dev text
+*.layout text
+*.c   text
+*.h   text
+*.cpp text
+*.hpp text
+*.txt text
+*.md  text
+*.rc  text
+LICENSE text
+makefile text
+Makefile.win text
+makefile_borland text
+makefile_mingw text
+nmakefile text
+
