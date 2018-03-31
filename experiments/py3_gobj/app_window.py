@@ -44,10 +44,14 @@
 
 import math
 
-import pygtk
-pygtk.require('2.0')
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk as gtk
+
+#import pygtk
+#pygtk.require('2.0')
 import gobject
-import gtk
+#import gtk
 
 # There was no way to pass the zoom/pan window
 # into the mouse scroll callback. So it was made
@@ -191,7 +195,7 @@ class zoom_pan_area:
     item.show()
     return (menu, item)
 
-  def add_menu_item ( self, parent, callback, label, data, key=None, mask=gtk.gdk.CONTROL_MASK, ):
+  def add_menu_item ( self, parent, callback, label, data, key=None ): #, mask=gtk.gdk.CONTROL_MASK ):
     item = gtk.MenuItem(label=label)
     item.connect ( "activate", callback, data )
     if key != None:
