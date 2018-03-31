@@ -66,7 +66,7 @@ class zoom_pan_area:
     self.name = name
     self.set_defaults()
     self.drawing_area = gtk.DrawingArea()
-    self.drawing_area.set_flags ( gtk.CAN_FOCUS )
+    # self.drawing_area.set_flags ( gtk.CAN_FOCUS )
     self.drawing_area.set_size_request(win_width,win_height)
 
     # self.drawing_area.connect ( "expose_event", expose_callback, self )
@@ -76,6 +76,7 @@ class zoom_pan_area:
     self.drawing_area.connect ( "button_release_event", button_release_callback )
     self.drawing_area.connect ( "motion_notify_event", mouse_motion_callback )
 
+    '''
     self.drawing_area.set_events ( gtk.gdk.EXPOSURE_MASK
                                  | gtk.gdk.ENTER_NOTIFY_MASK
                                  | gtk.gdk.LEAVE_NOTIFY_MASK
@@ -84,6 +85,7 @@ class zoom_pan_area:
                                  | gtk.gdk.BUTTON_RELEASE_MASK
                                  | gtk.gdk.POINTER_MOTION_MASK
                                  | gtk.gdk.POINTER_MOTION_HINT_MASK )
+    '''
 
     self.accel_group = gtk.AccelGroup()
     self.window.add_accel_group(self.accel_group)
