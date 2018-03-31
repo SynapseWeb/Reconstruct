@@ -1,3 +1,9 @@
+# Set default behavior as git deciding what to do
+
+* text=auto
+
+# Define binary file patterns
+
 *.exe binary
 *.ico binary
 *.ICO binary
@@ -9,8 +15,20 @@
 *.o   binary
 *.chm binary
 *.res binary
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.tif binary
+*.tiff binary
+*.jar binary
+*.class binary
+
+# Define text file patterns
+
 *.dev text
 *.layout text
+
 *.c   text
 *.h   text
 *.cpp text
@@ -18,6 +36,11 @@
 *.txt text
 *.md  text
 *.rc  text
+*.py  text
+*.java text
+
+# Define explicit text files
+
 LICENSE text
 makefile text
 Makefile.win text
