@@ -41,7 +41,21 @@ void SpawnProcessSimple ( char *cmd ) {
     ZeroMemory ( &si, sizeof(si) );
     ZeroMemory ( &pi, sizeof(pi) );
     si.cb = sizeof(si);
-    CreateProcess ( NULL, cmd, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi );
+    // Get the path of this executable
+    HMODULE hModule = GetModuleHandle(NULL);
+    char exe[MAX_PATH+1];
+    GetModuleFileName ( hModule, exe, MAX_PATH );
+
+    //printf ( "Cmd = %s\n", cmd );
+    //printf ( "Exe = %s\n", exe );
+    char path[MAX_PATH+1];
+    strcpy ( path, exe );
+    // Chop off the "/Reconstruct.exe" part (hard coded for now!!)
+    path[strlen(path)-16] = '\0';
+    //printf ( "Path = %s\n", path );
+
+    //              App   Cmd  Psec  Tsec  InhH   F  Env   Dir    SInf Pinf
+    CreateProcess ( NULL, cmd, NULL, NULL, FALSE, 0, NULL, path, &si, &pi );
 }
 
 void CmHelpReconstruct( void )		// open WinHelp for User's Manual
