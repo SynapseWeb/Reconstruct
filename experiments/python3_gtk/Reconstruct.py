@@ -135,11 +135,11 @@ class MyWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
         Gtk.Window.__init__(self, title="MenuBar Example", application=app)
-        self.set_default_size(500, 200)
+        self.set_default_size(720, 540)
         self.set_border_width ( 10 )
 
         self.draw_area = Gtk.DrawingArea()
-        self.draw_area.connect ( "draw", self.draw )
+        self.draw_area.connect ( "draw", self.draw_callback )
         self.draw_area.set_events ( Gdk.EventMask.BUTTON_PRESS_MASK )
         self.add ( self.draw_area )
 
@@ -166,7 +166,7 @@ class MyWindow(Gtk.ApplicationWindow):
         self.angle = self.spin.get_value_as_int()
         self.draw_area.queue_draw()
 
-    def draw ( self, draw_area, cr ):
+    def draw_callback ( self, draw_area, cr ):
         cr.set_line_width(10)
         cr.set_source_rgba ( 0.5, 0.0, 0.0, 1.0 )
         w = self.draw_area.get_allocated_width()
@@ -192,22 +192,18 @@ class MyWindow(Gtk.ApplicationWindow):
         # Note that we set the state of the action!
         action.set_state(parameter)
 
-    # callback function for about (see the AboutDialog example)
     def about_callback(self, action, parameter):
-        # a  Gtk.AboutDialog
         aboutdialog = Gtk.AboutDialog()
 
-        # lists of authors and documenters (will be used later)
-        authors = ["GNOME Documentation Team"]
-        documenters = ["GNOME Documentation Team"]
+        authors = ["SynapseWeb Team"]
+        documenters = ["SynapseWeb Team"]
 
-        # we fill in the aboutdialog
-        aboutdialog.set_program_name("MenuBar Example")
-        aboutdialog.set_copyright("Copyright \xa9 2012 GNOME Documentation Team")
+        aboutdialog.set_program_name("Reconstruct Python3 GTK Demo")
+        aboutdialog.set_copyright("Copyright \xa9 2018")
         aboutdialog.set_authors(authors)
         aboutdialog.set_documenters(documenters)
-        aboutdialog.set_website("http://developer.gnome.org")
-        aboutdialog.set_website_label("GNOME Developer Website")
+        aboutdialog.set_website("http://sites.cns.utexas.edu/synapseweb")
+        aboutdialog.set_website_label("SynapseWeb Portal")
 
         # to close the aboutdialog when "close" is clicked we connect the
         # "response" signal to on_close
@@ -215,7 +211,7 @@ class MyWindow(Gtk.ApplicationWindow):
         # show the aboutdialog
         aboutdialog.show()
 
-    # a callback function to destroy the aboutdialog
+    # Callback function to destroy the aboutdialog
     def on_close(self, action, parameter):
         action.destroy()
 
@@ -260,7 +256,7 @@ class MyApplication(Gtk.Application):
             # builder.add_from_file("menubar.ui")
             builder.add_from_string(MENU_XML)
         except:
-            print("file not found")
+            print("Unable to load the Menu Definition XML")
             sys.exit()
 
         # we use the method Gtk.Application.set_menubar(menubar) to add the menubar
