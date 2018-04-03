@@ -673,7 +673,7 @@ class MyWindow(Gtk.ApplicationWindow):
         documenters = ["SynapseWeb Team"]
 
         aboutdialog.set_program_name("Reconstruct Python3 GTK Demo")
-        aboutdialog.set_copyright("Copyright \xa9 2018")
+        aboutdialog.set_copyright("Copyright \u00a9 2018")
         aboutdialog.set_authors(authors)
         aboutdialog.set_documenters(documenters)
         aboutdialog.set_website("http://sites.cns.utexas.edu/synapseweb")
