@@ -23,11 +23,11 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Tools Window</attribute>
-              <attribute name="action">app.awesome</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Status Bar</attribute>
-              <attribute name="action">app.cool</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
       </submenu>
@@ -37,9 +37,11 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Logging</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Times</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
           <section>
@@ -90,11 +92,11 @@ MENU_XML = """
               <section>
                 <item>
                   <attribute name="label">_Check 1</attribute>
-                  <attribute name="action">app.awesome</attribute>
+                  <attribute name="action">win.generic_window</attribute>
                 </item>
                 <item>
                   <attribute name="label">_Check 2</attribute>
-                  <attribute name="action">app.cool</attribute>
+                  <attribute name="action">win.generic_window</attribute>
                 </item>
               </section>
             </submenu>
@@ -112,25 +114,25 @@ MENU_XML = """
       <section>
         <item>
           <attribute name="label">Open...</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Close</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="label">New...</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Save</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Options... Ctrl+o</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
@@ -139,12 +141,15 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Images...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Lines...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Trace lists...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
         </submenu>
@@ -153,12 +158,15 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Images...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Lines...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Series...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
         </submenu>
@@ -170,25 +178,25 @@ MENU_XML = """
       <section>
         <item>
           <attribute name="label">List sections...</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Thumbnails...</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="label">New...</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Save</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Thickness...</attribute>
-          <attribute name="action">app.new</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
@@ -197,15 +205,19 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Center</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Last</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Actual pixels</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Magnification...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
         </submenu>
@@ -214,43 +226,53 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Unlock</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <submenu>
               <attribute name="label">Flip</attribute>
               <item>
                 <attribute name="label">Horizontally</attribute>
+                <attribute name="action">win.generic_window</attribute>
               </item>
               <item>
                 <attribute name="label">Vertically</attribute>
+                <attribute name="action">win.generic_window</attribute>
               </item>
             </submenu>
             <submenu>
               <attribute name="label">Rotate</attribute>
               <item>
                 <attribute name="label">90&#176; clockwise</attribute>
+                <attribute name="action">win.generic_window</attribute>
               </item>
               <item>
                 <attribute name="label">90&#176; counterclockwise</attribute>
+                <attribute name="action">win.generic_window</attribute>
               </item>
               <item>
                 <attribute name="label">180&#176;</attribute>
+                <attribute name="action">win.generic_window</attribute>
               </item>
             </submenu>
             <item>
               <attribute name="label">Type in...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
           <section>
             <item>
               <attribute name="label">By correlation</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
           <section>
             <item>
               <attribute name="label">Repeat</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Propagate...</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
           <section>
@@ -258,9 +280,11 @@ MENU_XML = """
               <attribute name="label">Record</attribute>
               <item>
                 <attribute name="label">Start</attribute>
+                <attribute name="action">win.generic_window</attribute>
               </item>
               <item>
                 <attribute name="label">from selected</attribute>
+                <attribute name="action">win.generic_window</attribute>
               </item>
             </submenu>
           </section>
@@ -273,29 +297,36 @@ MENU_XML = """
       <section>
         <item>
           <attribute name="label">List image domains...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Import image...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="label">Merge front</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Merge rear</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Attributes...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <submenu>
           <attribute name="label">Reinitialize</attribute>
           <section>
             <item>
               <attribute name="label">Reinitialize Unknown_1</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Reinitialize Unknown_2</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
         </submenu>
@@ -303,6 +334,7 @@ MENU_XML = """
       <section>
         <item>
           <attribute name="label">Delete Del</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
     </submenu>
@@ -312,43 +344,55 @@ MENU_XML = """
       <section>
         <item>
           <attribute name="label">List traces...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Find...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Select all</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Deselect all</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Zoom to</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="label">Attributes...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Palette...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="label">Cut</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Copy</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Paste</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Paste attributes</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Delete</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
@@ -357,26 +401,33 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Align Section Unknown_1</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
             <item>
               <attribute name="label">Align Section Unknown_2</attribute>
+              <attribute name="action">win.generic_window</attribute>
             </item>
           </section>
         </submenu>
         <item>
           <attribute name="label">Calibrate...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Merge</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Reverse</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Simplify</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Smooth</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
     </submenu>
@@ -386,17 +437,21 @@ MENU_XML = """
       <section>
         <item>
           <attribute name="label">List objects...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="label">3D Scene...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Z-Traces...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
         <item>
           <attribute name="label">Distances...</attribute>
+          <attribute name="action">win.generic_window</attribute>
         </item>
       </section>
     </submenu>
@@ -450,7 +505,7 @@ MENU_XML = """
 class MyWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
-        Gtk.Window.__init__(self, title="MenuBar Example", application=app)
+        Gtk.Window.__init__(self, title="Reconstruct Python3 Gtk+", application=app)
         self.set_default_size(720, 540)
         self.set_border_width ( 10 )
 
@@ -461,13 +516,9 @@ class MyWindow(Gtk.ApplicationWindow):
 
         self.angle = 270
 
-        copy_action = Gio.SimpleAction.new("copy", None)        # action without a state created (name, parameter type)
-        copy_action.connect("activate", self.copy_callback)        # connected with the callback function
-        self.add_action(copy_action)        # added to the window
-
-        paste_action = Gio.SimpleAction.new("paste", None)        # action without a state created (name, parameter type)
-        paste_action.connect("activate", self.paste_callback)        # connected with the callback function
-        self.add_action(paste_action)        # added to the window
+        generic_window_action = Gio.SimpleAction.new("generic_window", None)        # action without a state created (name, parameter type)
+        generic_window_action.connect("activate", self.generic_window_callback)     # connected with the callback function
+        self.add_action(generic_window_action)                                      # added to the window
 
         shape_action = Gio.SimpleAction.new_stateful("shape", GLib.VariantType.new('s'), GLib.Variant.new_string('triangle')) # action with a state created (name, parameter type, initial state)
         shape_action.connect("activate", self.shape_callback)        # connected to the callback function
@@ -497,11 +548,8 @@ class MyWindow(Gtk.ApplicationWindow):
         cr.fill()
 
 
-    def copy_callback(self, action, parameter):
-        print("\"Copy\" activated")
-
-    def paste_callback(self, action, parameter):
-        print("\"Paste\" activated")
+    def generic_window_callback(self, action, parameter):
+        print("\"Generic Window\" activated")
 
     def shape_callback(self, action, parameter):
         print("Shape is set to", parameter.get_string())
@@ -558,11 +606,11 @@ class MyApplication(Gtk.Application):
         self.add_action(state_action)                           # action added to the application
 
         awesome_action = Gio.SimpleAction.new_stateful("awesome", None, GLib.Variant.new_boolean(False))        # action with a state created
-        awesome_action.connect("activate", self.awesome_callback)     # action connected to the callback function
+        awesome_action.connect("activate", self.tools_window_callback)     # action connected to the callback function
         self.add_action(awesome_action)                               # action added to the application
 
         cool_action = Gio.SimpleAction.new_stateful("cool", None, GLib.Variant.new_boolean(False))  # action with a state created
-        cool_action.connect("activate", self.cool_callback)        # action connected to the callback function
+        cool_action.connect("activate", self.status_bar_callback)        # action connected to the callback function
         self.add_action(cool_action)                               # action added to the application
 
 
@@ -593,19 +641,19 @@ class MyApplication(Gtk.Application):
         print("State is set to", parameter.get_string())
         action.set_state(parameter)
 
-    def awesome_callback(self, action, parameter):
+    def tools_window_callback(self, action, parameter):
         action.set_state(GLib.Variant.new_boolean(not action.get_state()))
         if action.get_state().get_boolean() is True:
-            print("You checked \"Awesome\" or \"Cool\"")
+            print("You checked \"Tools Window\"")
         else:
-            print("You unchecked \"Awesome\" or \"Cool\"")
+            print("You unchecked \"Tools Window\"")
 
-    def cool_callback(self, action, parameter):
+    def status_bar_callback(self, action, parameter):
         action.set_state(GLib.Variant.new_boolean(not action.get_state()))
         if action.get_state().get_boolean() is True:
-            print("You checked \"Cool\"")
+            print("You checked \"Status Bar\"")
         else:
-            print("You unchecked \"Cool\"")
+            print("You unchecked \"Status Bar\"")
 
 
 app = MyApplication()
