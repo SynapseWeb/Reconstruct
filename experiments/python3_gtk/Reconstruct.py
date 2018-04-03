@@ -18,7 +18,6 @@ MENU_XML = """
 
     <submenu>
       <attribute name="label">_Program</attribute>
-
       <submenu>
         <attribute name="label">Windows</attribute>
           <section>
@@ -32,17 +31,80 @@ MENU_XML = """
             </item>
           </section>
       </submenu>
-
       <section>
-        <item>
+        <submenu>
           <attribute name="label">Debug</attribute>
-        </item>
+          <section>
+            <item>
+              <attribute name="label">Logging</attribute>
+            </item>
+            <item>
+              <attribute name="label">Times</attribute>
+            </item>
+          </section>
+          <section>
+            <submenu>
+              <attribute name="label">_Choice Testing</attribute>
+              <submenu>
+                <attribute name="label">_Shapes</attribute>
+                  <section>
+                    <item>
+                      <attribute name="label">_Line</attribute>
+                      <attribute name="action">win.shape</attribute>
+                      <attribute name="target">line</attribute>
+                    </item>
+                    <item>
+                      <attribute name="label">_Triangle</attribute>
+                      <attribute name="action">win.shape</attribute>
+                      <attribute name="target">triangle</attribute>
+                    </item>
+                    <item>
+                      <attribute name="label">_Square</attribute>
+                      <attribute name="action">win.shape</attribute>
+                      <attribute name="target">square</attribute>
+                    </item>
+                    <item>
+                      <attribute name="label">_Polygon</attribute>
+                      <attribute name="action">win.shape</attribute>
+                      <attribute name="target">polygon</attribute>
+                    </item>
+                    <item>
+                      <attribute name="label">_Circle</attribute>
+                      <attribute name="action">win.shape</attribute>
+                      <attribute name="target">circle</attribute>
+                    </item>
+                  </section>
+              </submenu>
+              <section>
+                <item>
+                  <attribute name="label">_On</attribute>
+                  <attribute name="action">app.state</attribute>
+                  <attribute name="target">on</attribute>
+                </item>
+                <item>
+                  <attribute name="label">_Off</attribute>
+                  <attribute name="action">app.state</attribute>
+                  <attribute name="target">off</attribute>
+                </item>
+              </section>
+              <section>
+                <item>
+                  <attribute name="label">_Check 1</attribute>
+                  <attribute name="action">app.awesome</attribute>
+                </item>
+                <item>
+                  <attribute name="label">_Check 2</attribute>
+                  <attribute name="action">app.cool</attribute>
+                </item>
+              </section>
+            </submenu>
+          </section>
+        </submenu>
         <item>
           <attribute name="label">Exit</attribute>
           <attribute name="action">app.quit</attribute>
         </item>
       </section>
-
     </submenu>
 
     <submenu>
@@ -54,188 +116,314 @@ MENU_XML = """
         </item>
         <item>
           <attribute name="label">Close</attribute>
-          <attribute name="action">app.quit</attribute>
+          <attribute name="action">app.new</attribute>
         </item>
+      </section>
+      <section>
         <item>
           <attribute name="label">New...</attribute>
-          <attribute name="action">app.quit</attribute>
+          <attribute name="action">app.new</attribute>
         </item>
         <item>
           <attribute name="label">Save</attribute>
-          <attribute name="action">app.quit</attribute>
+          <attribute name="action">app.new</attribute>
         </item>
         <item>
           <attribute name="label">Options... Ctrl+o</attribute>
-          <attribute name="action">app.quit</attribute>
+          <attribute name="action">app.new</attribute>
         </item>
-        <item>
-          <attribute name="label">Export &gt;</attribute>
-          <attribute name="action">app.quit</attribute>
-        </item>
-        <item>
-          <attribute name="label">Import &gt;</attribute>
-          <attribute name="action">app.quit</attribute>
-        </item>
+      </section>
+      <section>
+        <submenu>
+          <attribute name="label">Export</attribute>
+          <section>
+            <item>
+              <attribute name="label">Images...</attribute>
+            </item>
+            <item>
+              <attribute name="label">Lines...</attribute>
+            </item>
+            <item>
+              <attribute name="label">Trace lists...</attribute>
+            </item>
+          </section>
+        </submenu>
+        <submenu>
+          <attribute name="label">Import</attribute>
+          <section>
+            <item>
+              <attribute name="label">Images...</attribute>
+            </item>
+            <item>
+              <attribute name="label">Lines...</attribute>
+            </item>
+            <item>
+              <attribute name="label">Series...</attribute>
+            </item>
+          </section>
+        </submenu>
       </section>
     </submenu>
 
-
-
-
-
-
     <submenu>
-      <attribute name="label">Testing -&gt; </attribute>
+      <attribute name="label">Section</attribute>
       <section>
         <item>
-          <attribute name="label">_New</attribute>
+          <attribute name="label">List sections...</attribute>
           <attribute name="action">app.new</attribute>
         </item>
         <item>
-          <attribute name="label">_Quit</attribute>
-          <attribute name="action">app.quit</attribute>
+          <attribute name="label">Thumbnails...</attribute>
+          <attribute name="action">app.new</attribute>
         </item>
       </section>
-      <submenu>
-        <attribute name="label">Windows</attribute>
-          <section>
-            <item>
-              <attribute name="label">Status Bar</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">line</attribute>
-            </item>
-            <item>
-              <attribute name="label">_Line</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">line</attribute>
-            </item>
-            <item>
-              <attribute name="label">_Triangle</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">triangle</attribute>
-            </item>
-            <item>
-              <attribute name="label">_Square</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">square</attribute>
-            </item>
-            <item>
-              <attribute name="label">_Polygon</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">polygon</attribute>
-            </item>
-            <item>
-              <attribute name="label">_Circle</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">circle</attribute>
-            </item>
-          </section>
-      </submenu>
-
       <section>
         <item>
-          <attribute name="label">Debug</attribute>
-        </item>
-        <item>
-          <attribute name="label">Exit</attribute>
-          <attribute name="action">app.quit</attribute>
-        </item>
-      </section>
-
-    </submenu>
-
-    <submenu>
-      <attribute name="label">_File</attribute>
-      <section>
-        <item>
-          <attribute name="label">_New</attribute>
+          <attribute name="label">New...</attribute>
           <attribute name="action">app.new</attribute>
         </item>
         <item>
-          <attribute name="label">_Quit</attribute>
-          <attribute name="action">app.quit</attribute>
+          <attribute name="label">Save</attribute>
+          <attribute name="action">app.new</attribute>
+        </item>
+        <item>
+          <attribute name="label">Thickness...</attribute>
+          <attribute name="action">app.new</attribute>
         </item>
       </section>
-    </submenu>
-
-    <submenu>
-      <attribute name="label">_Edit</attribute>
       <section>
-        <item>
-          <attribute name="label">_Copy</attribute>
-          <attribute name="action">win.copy</attribute>
-        </item>
-        <item>
-          <attribute name="label">_Paste</attribute>
-          <attribute name="action">win.paste</attribute>
-        </item>
-      </section>
-    </submenu>
-
-    <submenu>
-      <attribute name="label">_Choices</attribute>
-      <submenu>
-        <attribute name="label">_Shapes</attribute>
+        <submenu>
+          <attribute name="label">Zoom</attribute>
           <section>
             <item>
-              <attribute name="label">_Line</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">line</attribute>
+              <attribute name="label">Center</attribute>
             </item>
             <item>
-              <attribute name="label">_Triangle</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">triangle</attribute>
+              <attribute name="label">Last</attribute>
             </item>
             <item>
-              <attribute name="label">_Square</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">square</attribute>
+              <attribute name="label">Actual pixels</attribute>
             </item>
             <item>
-              <attribute name="label">_Polygon</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">polygon</attribute>
-            </item>
-            <item>
-              <attribute name="label">_Circle</attribute>
-              <attribute name="action">win.shape</attribute>
-              <attribute name="target">circle</attribute>
+              <attribute name="label">Magnification...</attribute>
             </item>
           </section>
-      </submenu>
-
-      <section>
-        <item>
-          <attribute name="label">_On</attribute>
-          <attribute name="action">app.state</attribute>
-          <attribute name="target">on</attribute>
-        </item>
-        <item>
-          <attribute name="label">_Off</attribute>
-          <attribute name="action">app.state</attribute>
-          <attribute name="target">off</attribute>
-        </item>
+        </submenu>
+        <submenu>
+          <attribute name="label">Movement</attribute>
+          <section>
+            <item>
+              <attribute name="label">Unlock</attribute>
+            </item>
+            <submenu>
+              <attribute name="label">Flip</attribute>
+              <item>
+                <attribute name="label">Horizontally</attribute>
+              </item>
+              <item>
+                <attribute name="label">Vertically</attribute>
+              </item>
+            </submenu>
+            <submenu>
+              <attribute name="label">Rotate</attribute>
+              <item>
+                <attribute name="label">90&#176; clockwise</attribute>
+              </item>
+              <item>
+                <attribute name="label">90&#176; counterclockwise</attribute>
+              </item>
+              <item>
+                <attribute name="label">180&#176;</attribute>
+              </item>
+            </submenu>
+            <item>
+              <attribute name="label">Type in...</attribute>
+            </item>
+          </section>
+          <section>
+            <item>
+              <attribute name="label">By correlation</attribute>
+            </item>
+          </section>
+          <section>
+            <item>
+              <attribute name="label">Repeat</attribute>
+            </item>
+            <item>
+              <attribute name="label">Propagate...</attribute>
+            </item>
+          </section>
+          <section>
+            <submenu>
+              <attribute name="label">Record</attribute>
+              <item>
+                <attribute name="label">Start</attribute>
+              </item>
+              <item>
+                <attribute name="label">from selected</attribute>
+              </item>
+            </submenu>
+          </section>
+        </submenu>
       </section>
-
-      <section>
-        <item>
-          <attribute name="label">_Awesome</attribute>
-          <attribute name="action">app.awesome</attribute>
-        </item>
-        <item>
-          <attribute name="label">_Cool</attribute>
-          <attribute name="action">app.cool</attribute>
-        </item>
-      </section>
-
     </submenu>
 
     <submenu>
-      <attribute name="label">_Help</attribute>
+      <attribute name="label">Domain</attribute>
       <section>
         <item>
-          <attribute name="label">_About</attribute>
+          <attribute name="label">List image domains...</attribute>
+        </item>
+        <item>
+          <attribute name="label">Import image...</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="label">Merge front</attribute>
+        </item>
+        <item>
+          <attribute name="label">Merge rear</attribute>
+        </item>
+        <item>
+          <attribute name="label">Attributes...</attribute>
+        </item>
+        <submenu>
+          <attribute name="label">Reinitialize</attribute>
+          <section>
+            <item>
+              <attribute name="label">Reinitialize Unknown_1</attribute>
+            </item>
+            <item>
+              <attribute name="label">Reinitialize Unknown_2</attribute>
+            </item>
+          </section>
+        </submenu>
+      </section>
+      <section>
+        <item>
+          <attribute name="label">Delete Del</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name="label">Trace</attribute>
+      <section>
+        <item>
+          <attribute name="label">List traces...</attribute>
+        </item>
+        <item>
+          <attribute name="label">Find...</attribute>
+        </item>
+        <item>
+          <attribute name="label">Select all</attribute>
+        </item>
+        <item>
+          <attribute name="label">Deselect all</attribute>
+        </item>
+        <item>
+          <attribute name="label">Zoom to</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="label">Attributes...</attribute>
+        </item>
+        <item>
+          <attribute name="label">Palette...</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="label">Cut</attribute>
+        </item>
+        <item>
+          <attribute name="label">Copy</attribute>
+        </item>
+        <item>
+          <attribute name="label">Paste</attribute>
+        </item>
+        <item>
+          <attribute name="label">Paste attributes</attribute>
+        </item>
+        <item>
+          <attribute name="label">Delete</attribute>
+        </item>
+      </section>
+      <section>
+        <submenu>
+          <attribute name="label">Align Section</attribute>
+          <section>
+            <item>
+              <attribute name="label">Align Section Unknown_1</attribute>
+            </item>
+            <item>
+              <attribute name="label">Align Section Unknown_2</attribute>
+            </item>
+          </section>
+        </submenu>
+        <item>
+          <attribute name="label">Calibrate...</attribute>
+        </item>
+        <item>
+          <attribute name="label">Merge</attribute>
+        </item>
+        <item>
+          <attribute name="label">Reverse</attribute>
+        </item>
+        <item>
+          <attribute name="label">Simplify</attribute>
+        </item>
+        <item>
+          <attribute name="label">Smooth</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name="label">Object</attribute>
+      <section>
+        <item>
+          <attribute name="label">List objects...</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="label">3D Scene...</attribute>
+        </item>
+        <item>
+          <attribute name="label">Z-Traces...</attribute>
+        </item>
+        <item>
+          <attribute name="label">Distances...</attribute>
+        </item>
+      </section>
+    </submenu>
+
+    <submenu>
+      <attribute name="label">Help</attribute>
+      <section>
+        <item>
+          <attribute name="label">Manual...</attribute>
+          <attribute name="action">win.about</attribute>
+        </item>
+        <item>
+          <attribute name="label">Key commands...</attribute>
+          <attribute name="action">win.about</attribute>
+        </item>
+        <item>
+          <attribute name="label">Mouse clicks...</attribute>
+          <attribute name="action">win.about</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="label">License...</attribute>
+          <attribute name="action">win.about</attribute>
+        </item>
+        <item>
+          <attribute name="label">Version...</attribute>
           <attribute name="action">win.about</attribute>
         </item>
       </section>
