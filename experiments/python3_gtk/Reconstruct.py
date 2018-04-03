@@ -23,11 +23,11 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Tools Window</attribute>
-              <attribute name="action">app.awesome</attribute>
+              <attribute name="action">app.tools_window</attribute>
             </item>
             <item>
               <attribute name="label">Status Bar</attribute>
-              <attribute name="action">app.cool</attribute>
+              <attribute name="action">app.status_bar</attribute>
             </item>
           </section>
       </submenu>
@@ -92,11 +92,11 @@ MENU_XML = """
               <section>
                 <item>
                   <attribute name="label">_Check 1</attribute>
-                  <attribute name="action">app.awesome</attribute>
+                  <attribute name="action">app.tools_window</attribute>
                 </item>
                 <item>
                   <attribute name="label">_Check 2</attribute>
-                  <attribute name="action">app.cool</attribute>
+                  <attribute name="action">app.status_bar</attribute>
                 </item>
               </section>
             </submenu>
@@ -609,13 +609,13 @@ class MyApplication(Gtk.Application):
         state_action.connect("activate", self.state_callback)   # action connected to the callback function
         self.add_action(state_action)                           # action added to the application
 
-        awesome_action = Gio.SimpleAction.new_stateful("awesome", None, GLib.Variant.new_boolean(False))        # action with a state created
-        awesome_action.connect("activate", self.tools_window_callback)     # action connected to the callback function
-        self.add_action(awesome_action)                               # action added to the application
+        tools_window_action = Gio.SimpleAction.new_stateful("tools_window", None, GLib.Variant.new_boolean(False))        # action with a state created
+        tools_window_action.connect("activate", self.tools_window_callback)     # action connected to the callback function
+        self.add_action(tools_window_action)                               # action added to the application
 
-        cool_action = Gio.SimpleAction.new_stateful("cool", None, GLib.Variant.new_boolean(False))  # action with a state created
-        cool_action.connect("activate", self.status_bar_callback)        # action connected to the callback function
-        self.add_action(cool_action)                               # action added to the application
+        status_bar_action = Gio.SimpleAction.new_stateful("status_bar", None, GLib.Variant.new_boolean(False))  # action with a state created
+        status_bar_action.connect("activate", self.status_bar_callback)        # action connected to the callback function
+        self.add_action(status_bar_action)                               # action added to the application
 
 
         builder = Gtk.Builder()        # a builder to add the UI designed with Glade to the grid:
