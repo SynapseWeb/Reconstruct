@@ -23,11 +23,11 @@ MENU_XML = """
           <section>
             <item>
               <attribute name="label">Tools Window</attribute>
-              <attribute name="action">win.generic_window</attribute>
+              <attribute name="action">app.awesome</attribute>
             </item>
             <item>
               <attribute name="label">Status Bar</attribute>
-              <attribute name="action">win.generic_window</attribute>
+              <attribute name="action">app.cool</attribute>
             </item>
           </section>
       </submenu>
@@ -92,11 +92,11 @@ MENU_XML = """
               <section>
                 <item>
                   <attribute name="label">_Check 1</attribute>
-                  <attribute name="action">win.generic_window</attribute>
+                  <attribute name="action">app.awesome</attribute>
                 </item>
                 <item>
                   <attribute name="label">_Check 2</attribute>
-                  <attribute name="action">win.generic_window</attribute>
+                  <attribute name="action">app.cool</attribute>
                 </item>
               </section>
             </submenu>
