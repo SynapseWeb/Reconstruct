@@ -45,6 +45,79 @@ MENU_XML = """
             </item>
           </section>
           <section>
+
+            <submenu>
+              <attribute name="label">Set _Angle</attribute>
+              <section>
+                <item>
+                  <attribute name="label">a=0</attribute>
+                  <attribute name="action">win.float_angle</attribute>
+                  <attribute name="target">0.0</attribute>
+                </item>
+                <item>
+                  <attribute name="label">a=45</attribute>
+                  <attribute name="action">win.float_angle</attribute>
+                  <attribute name="target">45.0</attribute>
+                </item>
+                <item>
+                  <attribute name="label">a=90</attribute>
+                  <attribute name="action">win.float_angle</attribute>
+                  <attribute name="target">90.0</attribute>
+                </item>
+                <item>
+                  <attribute name="label">a=180</attribute>
+                  <attribute name="action">win.float_angle</attribute>
+                  <attribute name="target">180.0</attribute>
+                </item>
+                <item>
+                  <attribute name="label">a=270</attribute>
+                  <attribute name="action">win.float_angle</attribute>
+                  <attribute name="target">270.0</attribute>
+                </item>
+                <item>
+                  <attribute name="label">a=360</attribute>
+                  <attribute name="action">win.float_angle</attribute>
+                  <attribute name="target">360.0</attribute>
+                </item>
+              </section>
+            </submenu>
+
+            <submenu>
+              <attribute name="label">Set _Line Width</attribute>
+              <section>
+                <item>
+                  <attribute name="label">w=0</attribute>
+                  <attribute name="action">win.line_width</attribute>
+                  <attribute name="target">0</attribute>
+                </item>
+                <item>
+                  <attribute name="label">w=1</attribute>
+                  <attribute name="action">win.line_width</attribute>
+                  <attribute name="target">1</attribute>
+                </item>
+                <item>
+                  <attribute name="label">w=2</attribute>
+                  <attribute name="action">win.line_width</attribute>
+                  <attribute name="target">2</attribute>
+                </item>
+                <item>
+                  <attribute name="label">w=3</attribute>
+                  <attribute name="action">win.line_width</attribute>
+                  <attribute name="target">3</attribute>
+                </item>
+                <item>
+                  <attribute name="label">w=5</attribute>
+                  <attribute name="action">win.line_width</attribute>
+                  <attribute name="target">5</attribute>
+                </item>
+                <item>
+                  <attribute name="label">w=9</attribute>
+                  <attribute name="action">win.line_width</attribute>
+                  <attribute name="target">9</attribute>
+                </item>
+              </section>
+            </submenu>
+
             <submenu>
               <attribute name="label">_Choice Testing</attribute>
               <submenu>
@@ -486,7 +559,7 @@ MENU_XML = """
 
   </menu>
 
-  <menu id="appmenu"> <!-- Application Menu is special -->
+  <menu id="appmenu"> <!-- Application Menu is a special menu (typically first in a menu bar) -->
     <section>
       <item>
         <attribute name="label">New</attribute>
@@ -498,6 +571,7 @@ MENU_XML = """
       </item>
     </section>
   </menu>
+
 </interface>
 """
 
@@ -514,7 +588,8 @@ class MyWindow(Gtk.ApplicationWindow):
         self.draw_area.set_events ( Gdk.EventMask.BUTTON_PRESS_MASK )
         self.add ( self.draw_area )
 
-        self.angle = 270
+        self.angle = 270.0
+        self.line_width = 3
 
         generic_window_action = Gio.SimpleAction.new("generic_window", None)        # action without a state created (name, parameter type)
         generic_window_action.connect("activate", self.generic_window_callback)     # connected with the callback function
@@ -523,6 +598,14 @@ class MyWindow(Gtk.ApplicationWindow):
         shape_action = Gio.SimpleAction.new_stateful("shape", GLib.VariantType.new('s'), GLib.Variant.new_string('triangle')) # action with a state created (name, parameter type, initial state)
         shape_action.connect("activate", self.shape_callback)        # connected to the callback function
         self.add_action(shape_action)        # added to the window
+
+        float_angle_action = Gio.SimpleAction.new_stateful("float_angle", GLib.VariantType.new('s'), GLib.Variant.new_string(str(self.angle))) # action with a state created (name, parameter type, initial state)
+        float_angle_action.connect("activate", self.float_angle_callback)        # connected to the callback function
+        self.add_action(float_angle_action)        # added to the window
+
+        line_width_action = Gio.SimpleAction.new_stateful("line_width", GLib.VariantType.new('s'), GLib.Variant.new_string(str(self.line_width))) # action with a state created (name, parameter type, initial state)
+        line_width_action.connect("activate", self.line_width_callback)        # connected to the callback function
+        self.add_action(line_width_action)        # added to the window
 
         about_action = Gio.SimpleAction.new("about", None)        # action with a state created
         about_action.connect("activate", self.about_callback)        # action connected to the callback function
@@ -534,12 +617,12 @@ class MyWindow(Gtk.ApplicationWindow):
         self.draw_area.queue_draw()
 
     def draw_callback ( self, draw_area, cr ):
-        cr.set_line_width(10)
+        cr.set_line_width(self.line_width)
         cr.set_source_rgba ( 0.5, 0.0, 0.0, 1.0 )
         w = self.draw_area.get_allocated_width()
         h = self.draw_area.get_allocated_height()
         cr.translate ( w/2, h/2 )
-        cr.line_to ( 55, 0 )
+        cr.line_to ( 50, 0 )
         cr.line_to (  0, 0 )
         cr.arc ( 0, 0, 50, 0, self.angle * ( math.pi / 180 ) )
         cr.line_to (  0, 0 )
@@ -549,16 +632,39 @@ class MyWindow(Gtk.ApplicationWindow):
 
 
     def generic_window_callback(self, action, parameter):
-        print ("\"Generic Window\" activated")
+        print ("\"Generic Window\" action activated")
         print ( "  action = " + str(action) )
         print ( "  parameter = " + str(parameter) )
-
         #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
 
     def shape_callback(self, action, parameter):
         print("Shape is set to", parameter.get_string())
+        #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
+
         # Note that we set the state of the action!
         action.set_state(parameter)
+
+    def float_angle_callback(self, action, parameter):
+        if action.get_name() == "float_angle":
+            print("Angle is set to", parameter.get_string())
+            #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
+            self.angle = float(parameter.get_string())
+            self.draw_area.queue_draw()
+
+        # Note that we set the state of the action!
+        action.set_state(parameter)
+
+
+    def line_width_callback(self, action, parameter):
+        if action.get_name() == "line_width":
+            print("Line width is set to", parameter.get_string())
+            #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
+            self.line_width = int(parameter.get_string())
+            self.draw_area.queue_draw()
+
+        # Note that we set the state of the action!
+        action.set_state(parameter)
+
 
     def about_callback(self, action, parameter):
         aboutdialog = Gtk.AboutDialog()
@@ -611,14 +717,14 @@ class MyApplication(Gtk.Application):
 
         tools_window_action = Gio.SimpleAction.new_stateful("tools_window", None, GLib.Variant.new_boolean(False))        # action with a state created
         tools_window_action.connect("activate", self.tools_window_callback)     # action connected to the callback function
-        self.add_action(tools_window_action)                               # action added to the application
+        self.add_action(tools_window_action)                                    # action added to the application
 
         status_bar_action = Gio.SimpleAction.new_stateful("status_bar", None, GLib.Variant.new_boolean(False))  # action with a state created
-        status_bar_action.connect("activate", self.status_bar_callback)        # action connected to the callback function
-        self.add_action(status_bar_action)                               # action added to the application
+        status_bar_action.connect("activate", self.status_bar_callback)         # action connected to the callback function
+        self.add_action(status_bar_action)                                      # action added to the application
 
 
-        builder = Gtk.Builder()        # a builder to add the UI designed with Glade to the grid:
+        builder = Gtk.Builder()  # Builder can read XML to build the application. The XML can be hand coded or come from Glade
         # get the file (if it is there)
         try:
             # builder.add_from_file("menubar.ui")
@@ -627,11 +733,11 @@ class MyApplication(Gtk.Application):
             print("Unable to load the Menu Definition XML")
             sys.exit()
 
-        # we use the method Gtk.Application.set_menubar(menubar) to add the menubar
+        # Use Gtk.Application.set_menubar(menubar) to add the menubar
         # and the menu to the application (Note: NOT the window!)
         self.set_menubar(builder.get_object("menubar"))
         
-        # self.set_app_menu(builder.get_object("appmenu"))  # This forces an "Application" menu item
+        # self.set_app_menu(builder.get_object("appmenu"))  # This forces an "Application" menu (typically the first item in a menu bar)
         self.set_app_menu(None) # No "Application" menu item
 
     def new_callback(self, action, parameter):
