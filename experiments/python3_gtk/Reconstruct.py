@@ -17,6 +17,134 @@ MENU_XML = """
   <menu id="menubar">
 
     <submenu>
+      <attribute name="label">_Program</attribute>
+
+      <submenu>
+        <attribute name="label">Windows</attribute>
+          <section>
+            <item>
+              <attribute name="label">Tools Window</attribute>
+              <attribute name="action">app.awesome</attribute>
+            </item>
+            <item>
+              <attribute name="label">Status Bar</attribute>
+              <attribute name="action">app.cool</attribute>
+            </item>
+          </section>
+      </submenu>
+
+      <section>
+        <item>
+          <attribute name="label">Debug</attribute>
+        </item>
+        <item>
+          <attribute name="label">Exit</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+      </section>
+
+    </submenu>
+
+    <submenu>
+      <attribute name="label">Series</attribute>
+      <section>
+        <item>
+          <attribute name="label">Open...</attribute>
+          <attribute name="action">app.new</attribute>
+        </item>
+        <item>
+          <attribute name="label">Close</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+        <item>
+          <attribute name="label">New...</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+        <item>
+          <attribute name="label">Save</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+        <item>
+          <attribute name="label">Options... Ctrl+o</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+        <item>
+          <attribute name="label">Export &gt;</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+        <item>
+          <attribute name="label">Import &gt;</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+      </section>
+    </submenu>
+
+
+
+
+
+
+    <submenu>
+      <attribute name="label">Testing -&gt; </attribute>
+      <section>
+        <item>
+          <attribute name="label">_New</attribute>
+          <attribute name="action">app.new</attribute>
+        </item>
+        <item>
+          <attribute name="label">_Quit</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+      </section>
+      <submenu>
+        <attribute name="label">Windows</attribute>
+          <section>
+            <item>
+              <attribute name="label">Status Bar</attribute>
+              <attribute name="action">win.shape</attribute>
+              <attribute name="target">line</attribute>
+            </item>
+            <item>
+              <attribute name="label">_Line</attribute>
+              <attribute name="action">win.shape</attribute>
+              <attribute name="target">line</attribute>
+            </item>
+            <item>
+              <attribute name="label">_Triangle</attribute>
+              <attribute name="action">win.shape</attribute>
+              <attribute name="target">triangle</attribute>
+            </item>
+            <item>
+              <attribute name="label">_Square</attribute>
+              <attribute name="action">win.shape</attribute>
+              <attribute name="target">square</attribute>
+            </item>
+            <item>
+              <attribute name="label">_Polygon</attribute>
+              <attribute name="action">win.shape</attribute>
+              <attribute name="target">polygon</attribute>
+            </item>
+            <item>
+              <attribute name="label">_Circle</attribute>
+              <attribute name="action">win.shape</attribute>
+              <attribute name="target">circle</attribute>
+            </item>
+          </section>
+      </submenu>
+
+      <section>
+        <item>
+          <attribute name="label">Debug</attribute>
+        </item>
+        <item>
+          <attribute name="label">Exit</attribute>
+          <attribute name="action">app.quit</attribute>
+        </item>
+      </section>
+
+    </submenu>
+
+    <submenu>
       <attribute name="label">_File</attribute>
       <section>
         <item>
