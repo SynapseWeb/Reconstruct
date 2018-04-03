@@ -549,7 +549,11 @@ class MyWindow(Gtk.ApplicationWindow):
 
 
     def generic_window_callback(self, action, parameter):
-        print("\"Generic Window\" activated")
+        print ("\"Generic Window\" activated")
+        print ( "  action = " + str(action) )
+        print ( "  parameter = " + str(parameter) )
+
+        #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
 
     def shape_callback(self, action, parameter):
         print("Shape is set to", parameter.get_string())
