@@ -12,11 +12,11 @@
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License version 2 for more details.
 //
-// 
+//
 // modified 11/01/04 by JCF (fiala@bu.edu)
 // -+- change: Added CmWildfire() tool button response routine.
 // modified 2/03/05 by JCF (fiala@bu.edu)
-// -+- change: Added CmScalpel() tool button response routine. 
+// -+- change: Added CmScalpel() tool button response routine.
 // modified 3/07/05 by JCF (fiala@bu.edu)
 // -+- change: Added InvalidateAllViews() to handle rerendering cases when have a domain selected.
 // modified 4/21/05 by Ju Lu (julu@fas.harvard.edu)
@@ -171,7 +171,7 @@ void CmSelectAll( void );										// select all contours on section
 void CmUnSelectAll( void );										// unselect all contours on section
 void CmZoomSelected( void );									// zoom in to selected traces
 void CmCutSelected( void );										// put contours in clipTransform, remove from section
-void CmCopySelected( void );									// put contours into clipTransform 
+void CmCopySelected( void );									// put contours into clipTransform
 void CmPasteSelected( void );									// put clipTransform contours into section
 void CmPasteAttributes( void );									// use 1st clipboard ccontour to set attributes
 void CmDeleteSelected( void );									// delete selected contours
@@ -206,7 +206,7 @@ void CmHelpKeyTable( void );									// show keyboard shortcuts
 void CmHelpMouse( void );										// show mouse actions
 void CmHelpLicense( void );										// show license info dialog
 void CmHelpAbout( void );										// show version info dialog
-						
+
 HWND MakeToolWindow( void );								// toolbar and tools operations (tools.cpp)
 void SetToolCursor( HWND hWnd );								// set cursor based on current tool
 void CmArrow( void );											// use Arrow Tool
@@ -252,9 +252,10 @@ void CmBackspace( void );										// backspace key, undo tracing point
 void CmEscapeCurrentTool( void );								// escape current tool drawing operation
 void CmPrecisionCursor( void );									// switch to/from precision cursor
 void CmHideTraces( void );										// hide selected traces
+void CmHideAllTraces( void );									// hide all traces
 void CmNextWindow( HWND currWnd );								// switch to next doubleing (or main) window
 void CmGetClipboardAttributes(void);							// put clipboard attributes into drawing defaults
-void CmTraceForward(void);			                            // enable automatic trace forward 
+void CmTraceForward(void);			                            // enable automatic trace forward
 void CmTraceBackward(void);										// enable automatic trace backward
 void DoAutoTrace(void);											// autotracing message function
 
@@ -278,7 +279,7 @@ void ErrMsgSplash( int msgno, const char *msgtxt );				// error message display 
 void * GlobalAllocOrDie( DWORD num_bytes );						// global memory allocation
 bool CanOverwrite( char *filename );							// ask user if can overwrite an existing file
 void SplitPath( char *src, char *dir, char *file, char *ext );	// get extension, directory, and filename strings of src
-void MakeLocalPath( char *wpath, char *ipath, char *localpath );// make ipath local relative to wpath 
+void MakeLocalPath( char *wpath, char *ipath, char *localpath );// make ipath local relative to wpath
 void MakeAbsolutePath( char *adir, char *rdir, char *fulldir );	// combine a rel/abs dir with an abs one
 void UpdateTitles( void );										// update the application title bar
 void UpdateMenus( void );										// update menus based on front section attributes

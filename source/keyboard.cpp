@@ -12,7 +12,7 @@
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License version 2 for more details.
 //
-// 
+//
 // modified 11/01/04 by JCF (fiala@bu.edu)
 // -+- change: Added Wildfire Tool to EscapeCurrentTool cases.
 // modified 2/03/05 by JCF (fiala@bu.edu)
@@ -40,14 +40,14 @@
 // modified 6/19/06 by Ju Lu (julu@fas.harvard.edu)
 // -+- change: Modified DoAutoTrace to allow automatic adjustment of brightness threshold.
 // modified 6/22/06 by Ju Lu (julu@fas.harvard.edu)
-// -+- change: Modified DoAutoTrace to utilize histogram for automatic adjustment of threshold. 
+// -+- change: Modified DoAutoTrace to utilize histogram for automatic adjustment of threshold.
 // modified 6/30/06 by Ju Lu (julu@fas.harvard.edu)
 // -+- change: Modified DoAutoTrace to adapt threshold according to different stop criterion.
 // modified 7/2/06 by Ju Lu (julu@fas.harvard.edu)
 // -+- change: Modified DoAutoTrace to utilize info stored in AutomaticTraces object for simultaneous multiple tracing
 //             Created AdjustStopCriteria function
 // modified 7/3/06 by Ju Lu (julu@fas.harvard.edu)
-// -+- change: Modified DoAutoTrace further. 
+// -+- change: Modified DoAutoTrace further.
 //             Added AutoTraceOneContour function.
 //             Added VerifyTraces function
 // modified 11/13/06 by JCF (fiala@bu.edu)
@@ -56,6 +56,11 @@
 // -+- change: Fixed DoAutoTrace to handle Active contours rather than separate AutomaticTraces.
 // modified 11/16/06 by JCF (fiala@bu.edu)
 // -+- change: Added CmGetClipboardAttributes() for Ctrl-G key access.
+// modified 4/3/18 by BK (bobkuczewski@salk.edu)
+// -+- change: Added CmHideAllTraces.
+
+#include <iostream>
+using namespace std;
 
 #include "reconstruct.h"
 
@@ -83,7 +88,7 @@ void CmToggleViews( HWND hWnd )			// respond to '/' by switching views
 	else Previous();					// swap sections also so can page correctly
 }
 
-void CmAdjustContrast( HWND hWnd, double bfactor, double cfactor )		
+void CmAdjustContrast( HWND hWnd, double bfactor, double cfactor )
 {
 	bool done = false;
 	Transform *transform;
@@ -109,7 +114,7 @@ void CmAdjustContrast( HWND hWnd, double bfactor, double cfactor )
 				while ( transform )
 					{
 					if ( transform->image )					// change contrast of every domain image
-						{								
+						{
 						transform->image->brightness += bfactor;
 						transform->image->contrast *= cfactor;
 						}
@@ -122,12 +127,12 @@ void CmAdjustContrast( HWND hWnd, double bfactor, double cfactor )
 		}
 }
 
-void CmMovement( HWND hWnd, WORD command )		
+void CmMovement( HWND hWnd, WORD command )
 {
 	Transform *moveit;
 	Mvmt mvmt;											// initialized for no movement in constructor
 	Nform *adjustment;									// will also remember move so can repeat it
-	
+
 	mvmt = Movement;									// start from last type-in to get center values
 	mvmt.Clear();										// clear everything in mvmt to no movement
 	adjustment = NULL;
@@ -258,7 +263,7 @@ void CmBackspace( void )		// only works with tools that create an EditContour wh
 				p = EditContour->points->first;				// adjust drag line start position to p
 				fx = (p->x - CurrSeries->offset_x)/CurrSeries->pixel_size;	// convert to pixels
 				fy = (p->y - CurrSeries->offset_y)/CurrSeries->pixel_size;
-				LToolRect.left = (int)floor(fx);							// adjust LToolRect to 
+				LToolRect.left = (int)floor(fx);							// adjust LToolRect to
 				LToolRect.top = FrontView->height - (int)floor(fy);			// screen coord. of p
 				MoveToEx( appDC, LToolRect.left, LToolRect.top, NULL );
 				LineTo( appDC, LToolRect.right, LToolRect.bottom );	// so can correctly draw new drag line
@@ -395,7 +400,7 @@ void CmEscapeCurrentTool( void )				// abort tool operation when press escape ke
 		default:								// other tools have nothing to cleanup!
 			break;
 		}
-		
+
 	KillTimer( appWnd, SCROLL_TIMER );			// in case section is scrolling, stop it
 	Scrolling = false;
 }
@@ -426,8 +431,47 @@ void CmHideTraces( void )									// hide selected traces
 				contour = contour->next;						// check all active contours
 				}
 			FrontView->section->active->isActive = false;		// remove hidden contours from active list
-			FrontView->section->active = NULL;					
-			if ( FrontView->needsDrawing ) 
+			FrontView->section->active = NULL;
+			if ( FrontView->needsDrawing )
+				{
+				InvalidateRect( appWnd, NULL, FALSE );
+				if ( IsWindow(traceList) ) FillTraceList( traceList, FrontView->section );
+				}
+			}
+}
+
+void CmHideAllTraces( void )									// hide selected traces
+{
+	Contour *contour;
+
+    cout << "\nHiding/unhiding all traces in CmHideAllTraces." << endl;
+    if (CurrContours == NULL) {
+      cout << "CurrContours is NULL" << endl;
+    } else {
+      cout << "# CurrContours = " << CurrContours->Number() << endl;
+    }
+    cout << endl;
+    fflush (stdout);
+
+	if ( FrontView )
+	  if ( FrontView->section)
+		if ( FrontView->section->active )						// do only if there are active contours
+		  if ( FrontView->section->active->contours )
+			{
+            cout << "# FrontView->section->active->contours = " << FrontView->section->active->contours->Number() << endl;
+            fflush (stdout);
+			FrontView->section->PushUndoState();
+			contour = FrontView->section->active->contours->first;
+			while ( contour )
+				{
+				contour->hidden = true;
+				FrontView->section->hasChanged = true;			// flag change for save
+				FrontView->needsDrawing = true;
+				contour = contour->next;						// check all active contours
+				}
+			FrontView->section->active->isActive = false;		// remove hidden contours from active list
+			FrontView->section->active = NULL;
+			if ( FrontView->needsDrawing )
 				{
 				InvalidateRect( appWnd, NULL, FALSE );
 				if ( IsWindow(traceList) ) FillTraceList( traceList, FrontView->section );
@@ -505,8 +549,8 @@ void CmTraceBackward(void)						// initiate backward autotracing
 /*
 void AdjustStopCriteria(int sh, int ss, int sv, int ch, int cs, int cv)
 {
-	// if stop criterion is 
-	// (1) less than or larger than, then shift the threshold according to the difference 
+	// if stop criterion is
+	// (1) less than or larger than, then shift the threshold according to the difference
 	//		between previous and current contours average value
 	// (2) "equal to", do not change it
 	// (3) "differs by", do not change it
@@ -580,11 +624,11 @@ void AdjustStopCriteria(int sh, int ss, int sv, int ch, int cs, int cv)
 
 void getHistogramStat( Histogram* &histogram, int& h, int& s, int& v)
 {	// h, s, v stands for the corresponding stat for HSV color system components
-	
-	
+
+
 	// my experience shows that the mean of pixels about certain percentile seems a better
 	// indicator than the mean value
-	double percentile = 0.5; // this value is empirical and may be changed. 
+	double percentile = 0.5; // this value is empirical and may be changed.
 
 	h = histogram->MeanValue('h');
 	s = histogram->MeanValue('s');
@@ -600,8 +644,8 @@ bool AutoTraceOneContour(AutomaticTraces* &traces, AutomaticTrace* const &pTrace
 
 	// global variables:
 	// CurrSeries, CurrHistogram, AutoAdjustThreshold
-	
-	
+
+
 	Contour *editContour = NULL;
 	double CentroidX, CentroidY, SrcContourArea, EditContourArea;
 	int SeedX, SeedY;
@@ -609,7 +653,7 @@ bool AutoTraceOneContour(AutomaticTraces* &traces, AutomaticTrace* const &pTrace
 
 	// read out recorded trace info
 	// get wildfire seed
-	
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	//previously working code:
 	//Contour *srcContour = NULL;
@@ -617,7 +661,7 @@ bool AutoTraceOneContour(AutomaticTraces* &traces, AutomaticTrace* const &pTrace
 	//srcContour->GreensCentroidArea(CentroidX, CentroidY, SrcContourArea );
 	//SeedX = (int)floor(CentroidX);						// srcContour is in view bitmap coordinates!
 	//SeedY = (int)floor(CentroidY);
-	//delete srcContour;	srcContour = NULL;					
+	//delete srcContour;	srcContour = NULL;
 	///////////////////////////////////////////////////////////////////////////////////////////////
     Contour* srcContour;
 	srcContour = pTrace->accessContour();
@@ -625,30 +669,30 @@ bool AutoTraceOneContour(AutomaticTraces* &traces, AutomaticTrace* const &pTrace
 	SeedX = (int)floor(CentroidX);						// srcContour is in view bitmap coordinates!
 	SeedY = (int)floor(CentroidY);
 	//srcContour = 0;				                        // shouldn't delete it because it points to an object inside *pTrace!!!
-	
+
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// previously working code:
 	// get source histogram
 	//Histogram* srcHistogram = NULL;
 	//pTrace->setHistogram(srcHistogram);					// set srcHistogram
-	//int sh, ss, sv; 	
+	//int sh, ss, sv;
 	//getHistogramStat(srcHistogram, sh, ss, sv);
 	//delete srcHistogram; srcHistogram = NULL;
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	Histogram* srcHistogram;
 	srcHistogram = pTrace->accessHistogram();
 	//printf("src mean v = %d\n",srcHistogram->MeanValue('v'));
-	int sh, ss, sv; 	
+	int sh, ss, sv;
 	getHistogramStat(srcHistogram, sh, ss, sv);
 	//printf("sv=%d\n",sv);
 	srcHistogram = 0;
-	
-	pTrace->setStopCriteria(CurrSeries);				
-	pTrace->setContourDefaults(CurrSeries);				
-		
+
+	pTrace->setStopCriteria(CurrSeries);
+	pTrace->setContourDefaults(CurrSeries);
+
 	//editContour = region->Wildfire(SeedX,SeedY );
-			
+
 	if (!editContour)
 		stop = true;
 	else
@@ -661,36 +705,36 @@ bool AutoTraceOneContour(AutomaticTraces* &traces, AutomaticTrace* const &pTrace
 			getHistogramStat(CurrHistogram, ch, cs, cv);
 			if (cv != 0) // trial does generate a contour
 				AdjustStopCriteria(sh, ss, sv, ch, cs, cv);
-			delete editContour; 
-			
+			delete editContour;
+
 			// now need to redraw a contour. because previously region's ADib has been modified during Wildfire
 			// a new region is needed
 			delete region;
 			region = FrontView->CopyView( CurrSeries->tracesStopWhen );
 //			editContour = region->Wildfire( SeedX, SeedY );
 		}
-		
+
 		if ( !editContour )											// see if region is growing or shrinking too much
 			stop = true;
 		else
 		{
 			editContour->GreensCentroidArea(CentroidX, CentroidY, EditContourArea );
-			if ( (EditContourArea > SrcContourArea*AreaUpperLimit) || (EditContourArea < SrcContourArea*AreaLowerLimit) )	
+			if ( (EditContourArea > SrcContourArea*AreaUpperLimit) || (EditContourArea < SrcContourArea*AreaLowerLimit) )
 			{
 				delete editContour; 					// if so, give up on autotracing
 				stop = true;
-			} 
-			else 
+			}
+			else
 			{
 				StoreTracingInfo(traces, CurrSeries, CurrHistogram, editContour);
 				AddContour(editContour);
 				FrontView->needsDrawing = true;					// redraw traces for user's pleasure
-				
-				editContour = NULL;								// editContour is added so don't delete it. 
+
+				editContour = NULL;								// editContour is added so don't delete it.
 				//InvalidateRect( appWnd, NULL, FALSE );		// was working. now moved to outside the while loop
-			}				
+			}
 		} // if !editContour
-	}	// if !editContour		
+	}	// if !editContour
 	return stop;
 
 }
@@ -725,7 +769,7 @@ void DoAutoTrace(void)			// it generates a new wildfire based on the centroid of
 			{
 			CmPredecessor();			// page down
 			AutoTrace = -2;				// go to second step (tracing)
-			}	
+			}
 		else AutoTrace = 0;				// quit autotracing
 		break;
 
@@ -733,7 +777,7 @@ void DoAutoTrace(void)			// it generates a new wildfire based on the centroid of
 	case (-2):
 		autotrace = 0;
 												// must have front view and back view (previous section)
-		if ( FrontView && BackView)	
+		if ( FrontView && BackView)
 		  if ( FrontView->section && BackView->section )
 			if ( BackView->section->active )		// must have active contours on back view to propagate
 				if ( BackView->section->active->contours )
@@ -746,7 +790,7 @@ void DoAutoTrace(void)			// it generates a new wildfire based on the centroid of
 						contour->GreensCentroidArea( x, y, area );
 						BackView->section->active->nform->XYinverse( &x, &y ); // tform to view port
 						SeedX = (int)floor( (x-CurrSeries->offset_x)/CurrSeries->pixel_size );
-						SeedY = (int)floor( (y-CurrSeries->offset_y)/CurrSeries->pixel_size );								
+						SeedY = (int)floor( (y-CurrSeries->offset_y)/CurrSeries->pixel_size );
 						wc = region->Wildfire( SeedX, SeedY, CurrSeries->areaStopSize ); // try wildfire
 						if ( wc )					// add wildfire contour to FrontView->section
 							{
@@ -771,7 +815,7 @@ void DoAutoTrace(void)			// it generates a new wildfire based on the centroid of
 		AutoTrace = autotrace;			// continue to next section or abandon autotracing
 		break;
 
-	default: 
+	default:
 		AutoTrace = 0;					// no more autotracing!
 	}
 

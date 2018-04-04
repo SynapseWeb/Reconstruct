@@ -12,7 +12,7 @@
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License version 2 for more details.
 //
-// 
+//
 // modified 10/29/04 by JCF (fiala@bu.edu)
 // -+- change: Added cursors, bitmap, and tool constants for Wildfire region growing.
 // -+- change: Added control IDs for AutoTracing Series Options dialog.
@@ -90,6 +90,8 @@
 // -+- change: OK, that didn't work. But this time I figured it out so I need more UM_ messages
 // modified 5/11/07 by JCF (fiala@bu.edu)
 // -+- change: Added CM_MAGNIFICATION for Zoom menu.
+// modified 4/3/18 by BK (bobkuczewski@salk.edu)
+// -+- change: Added CM_HIDEALLTRACES.
 
 
 #define MAX_CONTOUR_NAME 64			// max length of Contour names
@@ -103,7 +105,7 @@
 #define MAX_FLOAT		3.4E38		// max value for a 32-bit floating point
 #define MIN_FLOAT		1E-14		// min value before zero in distance calc.
 #define MIN_SCALE		0.001		// min allowed scale value
-#define PI      3.1415926535897932	
+#define PI      3.1415926535897932
 #define DIM				6			// dimension of the nonlinear transform basis
 #define IRGB_PIXELS		32			// 1 index byte and 3 8bit values of color per pixel
 #define MAX_DOMAINS		255			// actual domains allowed is only 254
@@ -175,7 +177,7 @@
 #define CM_FLIPVERT			1262
 									// domain and domain list menu
 #define CM_NEWDOMAINFILE	1300
-#define CM_MERGEREAR		1305		
+#define CM_MERGEREAR		1305
 #define CM_MERGEFRONT		1310
 #define CM_DOMAINLIST		1315
 #define CM_RESTORECONTRAST	1320
@@ -362,7 +364,7 @@
 #define UM_GENERATE3DDONE	1996
 #define UM_DISTANCEDONE		1997
 
-//////////////  adding controls to the windows that use UM_ messages might cause conflicts 
+//////////////  adding controls to the windows that use UM_ messages might cause conflicts
 
 									// Resource IDs
 #define XYCUR			2002		// cursors
@@ -385,7 +387,7 @@
 #define GRIDCUR			2038
 #define PRECISECUR		2040
 #define OUTFIRECUR		2042
-									// tool IDs: These must be sequential numbers... 
+									// tool IDs: These must be sequential numbers...
 #define ARROW_TOOL			0
 #define ZOOM_TOOL			1
 #define MAGNIFY_TOOL		2
@@ -563,7 +565,7 @@
 #define ID_IMPORTSECTIONS	4410
 #define ID_IMPORTDOMAINS	4415
 #define ID_IMPORTTRACES		4417
-#define ID_ZTRACENAME		4420		
+#define ID_ZTRACENAME		4420
 									// missing image file dialog
 #define ID_SKIPFILE			4490
 #define ID_SKIPALL			4495
@@ -714,7 +716,7 @@
 									// trace attribute dialogs
 #define ID_NUMTRACES		5700
 #define ID_GETDEFAULTS		5701
-#define ID_GETCLIPBOARD		5702	
+#define ID_GETCLIPBOARD		5702
 									// trace calibration dialog
 #define ID_APPLYTRACES		5710
 #define ID_APPLYDOMAIN		5712
@@ -785,3 +787,5 @@
 #define ERRMSG_SECTIIONEXISTS	6598
 #define ERRMSG_GDIFAILED		6599
 #define ERRMSG_TRACENOTFOUND	6600
+
+#define CM_HIDEALLTRACES    	7100

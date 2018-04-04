@@ -47,6 +47,8 @@
 // -+- change: Fixed ObjectList (and DistancesList?) hanging by having thread procedures post to appWnd only.
 // modified 5/11/07 by JCF (fiala@bu.edu)
 // -+- change: Added CM_MAGNIFICATION for Zoom menu.
+// modified 4/3/18 by BK (bobkuczewski@salk.edu)
+// -+- change: Added CM_HIDEALLTRACES.
 
 #include "reconstruct.h"
 
@@ -298,6 +300,8 @@ LRESULT APIENTRY WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 				break;
 			case CM_UNSELECTALL: CmUnSelectAll();
 				break;
+			case CM_HIDEALLTRACES: CmHideAllTraces();
+				break;
 			case CM_ZOOMSELECTED: CmZoomSelected();
 				break;
 			case CM_CUTSELECTED: CmCutSelected();
@@ -517,11 +521,7 @@ LRESULT APIENTRY WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 							break;
 						case 'E':
 						    /* Add new key to hide all traces */
-							if ( control )  {
-                                    printf ("\nHiding/unhiding all traces.\n");
-                                    fflush (stdout);
-                                    // exit(0);
-							}
+							if ( control ) CmHideAllTraces();
 							break;
 						case 'F':
 							if ( control ) CmFindTrace();
