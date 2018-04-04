@@ -517,7 +517,11 @@ LRESULT APIENTRY WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 							break;
 						case 'E':
 						    /* Add new key to hide all traces */
-							if ( control )  exit(0);
+							if ( control )  {
+                                    printf ("\nHiding/unhiding all traces.\n");
+                                    fflush (stdout);
+                                    // exit(0);
+							}
 							break;
 						case 'F':
 							if ( control ) CmFindTrace();
