@@ -453,6 +453,35 @@ void CmHideAllTraces( void )									// hide selected traces
     cout << endl;
     fflush (stdout);
 
+    if (CurrSeries == NULL) {
+      cout << "CurrSeries is NULL" << endl;
+    } else if (CurrSeries->contours == NULL) {
+      cout << "CurrSeries->contours is NULL" << endl;
+    } else {
+      cout << "# CurrSeries->Contours = " << CurrSeries->contours->Number() << endl;
+      if (CurrSeries->contours->Number() > 0) {
+        // Find if there are any visible contours
+        bool any_visible = false;
+        contour = CurrSeries->contours->first;
+        while ( contour ) {
+            if (!(contour->hidden)) {
+                any_visible = true;
+                break;
+            }
+            contour = contour->next;
+        }
+        cout << "Any contours visible = " << any_visible << endl;
+        contour = CurrSeries->contours->first;
+        while ( contour ) {
+            contour->hidden = (any_visible != false);
+            contour = contour->next;
+        }
+      }
+    }
+    cout << endl;
+    fflush (stdout);
+
+	/*
 	if ( FrontView )
 	  if ( FrontView->section)
 		if ( FrontView->section->active )						// do only if there are active contours
@@ -477,6 +506,7 @@ void CmHideAllTraces( void )									// hide selected traces
 				if ( IsWindow(traceList) ) FillTraceList( traceList, FrontView->section );
 				}
 			}
+	*/
 }
 
 void CmNextWindow( HWND currWnd )			// switch active foreground window in response to ctrl-Tab
