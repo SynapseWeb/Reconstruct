@@ -12,7 +12,7 @@
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //    GNU General Public License version 2 for more details.
 //
-// 
+//
 // modified 11/01/04 by JCF (fiala@bu.edu)
 // -+- change: Added cursors and bitmap for Wildfire region growing.
 // -+- change: Added AutoTracing dialog for Series Options tab.
@@ -331,8 +331,8 @@ MainMenu MENU
 
     END
 
-SectionListMenu MENU  
- 	BEGIN 
+SectionListMenu MENU
+	BEGIN
 	MENUITEM "&Page To", CM_LISTGOTO
 	POPUP "&List"
 		BEGIN
@@ -356,8 +356,8 @@ SectionListMenu MENU
 		END
 	END
 
-DomainListMenu MENU  
- 	BEGIN 
+DomainListMenu MENU
+	BEGIN
 	MENUITEM "&Select", CM_SELECTDOMAIN
 	POPUP "&List"
 		BEGIN
@@ -439,7 +439,7 @@ ObjectListMenu MENU
 	MENUITEM "Find &1st!", CM_FINDOBJECTNAMED
 	END
 
-T3DMenu MENU  
+T3DMenu MENU
  	BEGIN
 	POPUP "&Scene"
 		BEGIN
@@ -468,7 +468,7 @@ T3DMenu MENU
 	MENUITEM "&Info", CM_INFOSCENE
 	END
 
-ZListMenu MENU  
+ZListMenu MENU
  	BEGIN
 	POPUP "&Scene"
 		BEGIN
@@ -500,8 +500,8 @@ ZListMenu MENU
 		END
 	END
 
-DistanceListMenu MENU  
- 	BEGIN 
+DistanceListMenu MENU
+	BEGIN
 	POPUP "&List"
 		BEGIN
 		MENUITEM "&Refresh", CM_REFRESHLIST, GRAYED
@@ -673,7 +673,7 @@ BEGIN
  GROUPBOX "", -1, 38, 5, 162, 25
  LTEXT "All option settings are saved with the series.", -1, 48, 15, 146, 12
  ICON "ALargeIcon", -1, 5, 8, 32, 32
- RTEXT "Series units description:", -1, 10, 37, 90, 10 
+ RTEXT "Series units description:", -1, 10, 37, 90, 10
  EDITTEXT ID_UNITS, 102, 35, 90, 12, ES_AUTOHSCROLL
  RTEXT "Data precision is ", -1, 10, 54, 60, 10
  EDITTEXT ID_SIGDIGITS, 72, 52, 15, 12, ES_READONLY
@@ -689,7 +689,7 @@ BEGIN
  AUTOCHECKBOX "Hide all domains when loading section", ID_HIDEDOMAINS, 10, 152, 190, 12
  AUTOCHECKBOX "Unhide all domains when loading section", ID_UNHIDEDOMAINS, 10, 164, 190, 12
  AUTOCHECKBOX "Use absolute paths for new domains", ID_USEABSOLUTEPATHS, 10, 176, 190, 12
- RTEXT "Default section thickness:", -1, 10, 191, 90, 10 
+ RTEXT "Default section thickness:", -1, 10, 191, 90, 10
  EDITTEXT ID_THICKNESS, 102, 189, 50, 12, ES_AUTOHSCROLL
  AUTOCHECKBOX "Computer z-distance to middle of section (instead of top)", ID_ZMIDSECTION, 10, 203, 190, 12
 END
@@ -700,7 +700,7 @@ FONT 8, "MS Sans Serif"
 BEGIN
  GROUPBOX "", -1, 5, 4, 200, 38
  LTEXT "Set the parameters of motions produced by keyboard input. The scaling increments are multiplicative, all others are additive. See Keyboard Help for keystroke definitions.", -1, 10, 12, 185, 26
- AUTOCHECKBOX "Use F5-F8 keys for deformations instead of slants.", ID_DEFORMKEYS, 25, 46, 175, 10 
+ AUTOCHECKBOX "Use F5-F8 keys for deformations instead of slants.", ID_DEFORMKEYS, 25, 46, 175, 10
  CTEXT "Keystroke", -1, 50, 60, 36, 10
  CTEXT "+ Shift", -1, 90, 60, 36, 10
  CTEXT "+ Control", -1, 130, 60, 36, 10
@@ -739,12 +739,12 @@ BEGIN
  EDITTEXT ID_DEFORMX, 50, 176, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
  EDITTEXT ID_DEFORMXSHFT, 90, 176, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
  EDITTEXT ID_DEFORMXCTRL, 130, 176, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
- LTEXT "1/units", ID_UNITS3, 170, 178, 40, 10 
+ LTEXT "1/units", ID_UNITS3, 170, 178, 40, 10
  RTEXT "Deform Y", -1, 5, 193, 40, 10
  EDITTEXT ID_DEFORMY, 50, 191, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
  EDITTEXT ID_DEFORMYSHFT, 90, 191, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
  EDITTEXT ID_DEFORMYCTRL, 130, 191, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
- LTEXT "1/units", ID_UNITS4, 170, 193, 40, 10 
+ LTEXT "1/units", ID_UNITS4, 170, 193, 40, 10
 END
 
 ProxiesDlg DIALOG 0, 0, 210, 220
@@ -754,7 +754,7 @@ BEGIN
  GROUPBOX "", -1, 5, 4, 200, 38
  LTEXT "Speed up section display at low magnification by creating small image files than serve as substitutes (proxies) for high-resolution images.", -1, 10, 12, 180, 26
  AUTOCHECKBOX "Use proxy images when displaying sections.", ID_USEPROXIES, 10, 52, 190, 12
- LTEXT "Threshold size for creating proxies:", -1, 10, 76, 116, 10 
+ LTEXT "Threshold size for creating proxies:", -1, 10, 76, 116, 10
  EDITTEXT ID_WIDTH, 126, 74, 24, 12, ES_AUTOHSCROLL | ES_RIGHT
  LTEXT "x", -1, 152, 76, 5, 10
  EDITTEXT ID_HEIGHT, 158, 74, 24, 12, ES_AUTOHSCROLL | ES_RIGHT
@@ -775,7 +775,7 @@ FONT 8, "MS Sans Serif"
 BEGIN
  GROUPBOX "", -1, 5, 4, 200, 38
  LTEXT "Thumbnails are small versions of the sections displayed in a separate window for quick access.", -1, 10, 12, 180, 26
- LTEXT "Thumbnail size:", -1, 10, 56, 56, 10 
+ LTEXT "Thumbnail size:", -1, 10, 56, 56, 10
  EDITTEXT ID_WIDTH, 76, 54, 20, 12, ES_AUTOHSCROLL | ES_RIGHT
  LTEXT "x", -1, 98, 56, 5, 10
  EDITTEXT ID_HEIGHT, 105, 54, 20, 12, ES_AUTOHSCROLL | ES_RIGHT
@@ -866,7 +866,7 @@ BEGIN
 	 AUTOCHECKBOX "Flat area",	ID_LISTOBJECTFLATAREA,		148, 106, 50, 12
 	 AUTOCHECKBOX "Volume",		ID_LISTOBJECTVOLUME,		148, 118, 50, 12
 	GROUPBOX "Z-Traces",		-1,		143, 136, 63, 78
-	 LTEXT "Limit To:",			-1,		148, 149, 31, 8	
+	 LTEXT "Limit To:",			-1,		148, 149, 31, 8
 	 EDITTEXT					ID_LIMITZTRACELIST,		148, 161, 50, 12, ES_AUTOHSCROLL
 	 AUTOCHECKBOX "Note",		ID_LISTZTRACENOTE,		148, 175, 40, 12
 	 AUTOCHECKBOX "Range",		ID_LISTZTRACERANGE,		148, 187, 40, 12
@@ -887,22 +887,22 @@ BEGIN
     AUTORADIOBUTTON "Sampling frame", ID_GRIDFRAME, 10, 73, 62, 10
 	AUTORADIOBUTTON "Stamp shape", ID_GRIDSTAMP, 77, 73, 58, 10
 	AUTORADIOBUTTON "Clipboard traces", ID_GRIDCLIPBOARD, 140, 73, 64, 10
-	LTEXT "Element size:", -1, 5, 100, 45, 10 
-	RTEXT "X:", -1, 50, 100, 12, 10 
+	LTEXT "Element size:", -1, 5, 100, 45, 10
+	RTEXT "X:", -1, 50, 100, 12, 10
 	EDITTEXT ID_SIZEX, 65, 98, 35, 12, ES_AUTOHSCROLL | ES_RIGHT
-	RTEXT "Y:", -1, 105, 100, 12, 10 
+	RTEXT "Y:", -1, 105, 100, 12, 10
 	EDITTEXT ID_SIZEY, 120, 98, 35, 12, ES_AUTOHSCROLL | ES_RIGHT
 	CTEXT "units", ID_UNITS1, 158, 100, 50, 10
-	LTEXT "Distance:", -1, 5, 120, 40, 10 
-	RTEXT "X:", -1, 50, 120, 12, 10 
+	LTEXT "Distance:", -1, 5, 120, 40, 10
+	RTEXT "X:", -1, 50, 120, 12, 10
 	EDITTEXT ID_DISTANCEX, 65, 118, 35, 12, ES_AUTOHSCROLL | ES_RIGHT
-	RTEXT "Y:", -1, 105, 120, 12, 10 
+	RTEXT "Y:", -1, 105, 120, 12, 10
 	EDITTEXT ID_DISTANCEY, 120, 118, 35, 12, ES_AUTOHSCROLL | ES_RIGHT
 	CTEXT "units", ID_UNITS2, 158, 120, 50, 10
-	LTEXT "Number:", -1, 5, 140, 40, 10 
-	RTEXT "X:", -1, 50, 140, 12, 10 
+	LTEXT "Number:", -1, 5, 140, 40, 10
+	RTEXT "X:", -1, 50, 140, 12, 10
 	EDITTEXT ID_NUMBERX, 65, 138, 35, 12, ES_AUTOHSCROLL | ES_RIGHT
-	RTEXT "Y:", -1, 105, 140, 12, 10 
+	RTEXT "Y:", -1, 105, 140, 12, 10
 	EDITTEXT ID_NUMBERY, 120, 138, 35, 12, ES_AUTOHSCROLL | ES_RIGHT
 END
 
@@ -920,17 +920,17 @@ BEGIN
 	AUTORADIOBUTTON "Boissonnat surface", ID_3DSURFACE, 10, 47, 75, 10
 	AUTORADIOBUTTON "Cylinder", ID_3DCYLINDER, 86, 47, 41, 10
 	AUTORADIOBUTTON "Ellipsoid", ID_3DELLIPSOID, 128, 47, 40, 10
-	AUTORADIOBUTTON "Sphere", ID_3DSPHERE, 169, 47, 35, 10 
- RTEXT "...using traces in sections", -1, 10, 62, 85, 10 
+	AUTORADIOBUTTON "Sphere", ID_3DSPHERE, 169, 47, 35, 10
+ RTEXT "...using traces in sections", -1, 10, 62, 85, 10
  EDITTEXT ID_FIRSTSECTION, 100, 60, 25, 12, ES_AUTOHSCROLL | ES_RIGHT
- RTEXT "through", -1, 130, 62, 25, 10 
+ RTEXT "through", -1, 130, 62, 25, 10
  EDITTEXT ID_LASTSECTION, 160, 60, 25, 12, ES_AUTOHSCROLL | ES_RIGHT
  LTEXT "Shift whole object by:", -1, 5, 77, 200, 10
-	RTEXT "X:", -1, 6, 90, 12, 10 
+	RTEXT "X:", -1, 6, 90, 12, 10
 	EDITTEXT ID_XOFFSET, 21, 88, 33, 12, ES_AUTOHSCROLL | ES_RIGHT
-	RTEXT "Y:", -1, 55, 90, 12, 10 
+	RTEXT "Y:", -1, 55, 90, 12, 10
 	EDITTEXT ID_YOFFSET, 71, 88, 33, 12, ES_AUTOHSCROLL | ES_RIGHT
-	RTEXT "Z:", -1, 106, 90, 12, 10 
+	RTEXT "Z:", -1, 106, 90, 12, 10
 	EDITTEXT ID_ZOFFSET, 121, 88, 33, 12, ES_AUTOHSCROLL | ES_RIGHT
 	CTEXT "units", ID_UNITS1, 156, 90, 45, 10
  CTEXT "and sections by:", -1, 5, 103, 60, 10
@@ -948,15 +948,15 @@ BEGIN
 	AUTORADIOBUTTON "16", ID_16FACETS, 155, 132, 23, 10
 	AUTORADIOBUTTON "32", ID_32FACETS, 180, 132, 23, 10
  GROUPBOX "Size", -1, 5, 145, 200, 28
-	RTEXT "A:", -1, 6, 158, 12, 10 
+	RTEXT "A:", -1, 6, 158, 12, 10
 	EDITTEXT ID_ASIZE, 21, 156, 33, 12, ES_AUTOHSCROLL | ES_RIGHT
-	RTEXT "B:", -1, 56, 158, 12, 10 
+	RTEXT "B:", -1, 56, 158, 12, 10
 	EDITTEXT ID_BSIZE, 71, 156, 33, 12, ES_AUTOHSCROLL | ES_RIGHT
-	RTEXT "C:", -1, 106, 158, 12, 10 
+	RTEXT "C:", -1, 106, 158, 12, 10
 	EDITTEXT ID_CSIZE, 121, 156, 33, 12, ES_AUTOHSCROLL | ES_RIGHT
 	CTEXT "units", ID_UNITS2, 156, 158, 45, 10
  GROUPBOX "Boissonnat Surfaces", -1, 5, 175, 200, 40
-	RTEXT "Don't connect points further than:", -1, 7, 187, 105, 10 
+	RTEXT "Don't connect points further than:", -1, 7, 187, 105, 10
 	EDITTEXT ID_MAXCONNECTION, 115, 185, 33, 12, ES_AUTOHSCROLL | ES_RIGHT
 	LTEXT "units", ID_UNITS3, 155, 187, 45, 10
 	RTEXT "Generate", -1, 10, 202, 40, 10
@@ -997,10 +997,10 @@ BEGIN
  AUTOCHECKBOX "or when distance to existing traces is", ID_STOPATTRACES, 15, 154, 130, 12
  EDITTEXT ID_CONTOURMASKWIDTH, 150, 154, 23, 12, ES_AUTOHSCROLL | ES_RIGHT
  LTEXT "pixels", -1, 176, 156, 25, 10
- RTEXT "Don't trace areas less than", -1, 10, 172, 105, 10 
+ RTEXT "Don't trace areas less than", -1, 10, 172, 105, 10
  EDITTEXT ID_AREASTOPSIZE, 120, 170, 25, 12, ES_AUTOHSCROLL | ES_RIGHT
  LTEXT "square pixels", -1, 150, 172, 50, 10
- RTEXT "Stop section propagation if area changes by", -1, 10, 188, 150, 10 
+ RTEXT "Stop section propagation if area changes by", -1, 10, 188, 150, 10
  EDITTEXT ID_AREASTOPPERCENT, 165, 186, 25, 12, ES_AUTOHSCROLL | ES_RIGHT
  LTEXT "%", -1, 192, 188, 10, 10
  AUTOCHECKBOX "Automatically adjust threshold when propagating", ID_AUTOADJUSTTHRESHOLD, 10, 200, 180, 12, WS_DISABLED
@@ -1040,7 +1040,7 @@ BEGIN
  GROUPBOX "Deform", -1, 5, 187, 141, 39
  RTEXT "X", -1, 8, 198, 36, 10
  EDITTEXT ID_DEFORMX, 50, 196, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
- LTEXT "1/units", ID_UNITS3, 94, 205, 46, 10 
+ LTEXT "1/units", ID_UNITS3, 94, 205, 46, 10
  RTEXT "Y", -1, 8, 213, 36, 10
  EDITTEXT ID_DEFORMY, 50, 211, 36, 11, ES_AUTOHSCROLL | ES_RIGHT
  DEFPUSHBUTTON "OK", IDOK, 30, 231, 38, 14
@@ -1349,7 +1349,7 @@ FONT 8, "MS Sans Serif"
 
 
 1 VERSIONINFO
-FILEVERSION 1, 2, 0, 4
+FILEVERSION 1, 2, 0, 5
 FILEOS 4
 FILETYPE 1
 	BEGIN
