@@ -2,7 +2,9 @@
 
 ### Patterned after:  https://developer.gnome.org/gnome-devel-demos/stable/menubar.py.html.en
 
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 from gi.repository import GLib
 from gi.repository import Gio
 from gi.repository import cairo
@@ -35,6 +37,14 @@ MENU_XML = """
         <submenu>
           <attribute name="label">Debug</attribute>
           <section>
+            <item>
+              <attribute name="label">Console</attribute>
+              <attribute name="action">win.console</attribute>
+            </item>
+            <item>
+              <attribute name="label">Choose File...</attribute>
+              <attribute name="action">win.open</attribute>
+            </item>
             <item>
               <attribute name="label">Logging</attribute>
               <attribute name="action">win.generic_window</attribute>
@@ -611,24 +621,63 @@ class MyWindow(Gtk.ApplicationWindow):
         about_action.connect("activate", self.about_callback)        # action connected to the callback function
         self.add_action(about_action)        # action added to the application
 
+        open_action = Gio.SimpleAction.new("open", None)        # action with a state created
+        open_action.connect("activate", self.open_callback)        # action connected to the callback function
+        self.add_action(open_action)        # action added to the application
+
+        console_action = Gio.SimpleAction.new("console", None)        # action with a state created
+        console_action.connect("activate", self.console_callback)        # action connected to the callback function
+        self.add_action(console_action)        # action added to the application
+
+        self.image_name = None
+
+        self.image_frame = None  # = GdkPixbuf.Pixbuf.new_from_file ( "test.png" )
 
     def get_angle ( self, event ):
         self.angle = self.spin.get_value_as_int()
         self.draw_area.queue_draw()
 
     def draw_callback ( self, draw_area, cr ):
-        cr.set_line_width(self.line_width)
-        cr.set_source_rgba ( 0.5, 0.0, 0.0, 1.0 )
-        w = self.draw_area.get_allocated_width()
-        h = self.draw_area.get_allocated_height()
-        cr.translate ( w/2, h/2 )
-        cr.line_to ( 50, 0 )
-        cr.line_to (  0, 0 )
-        cr.arc ( 0, 0, 50, 0, self.angle * ( math.pi / 180 ) )
-        cr.line_to (  0, 0 )
-        cr.stroke_preserve()
-        cr.set_source_rgba ( 0.0, 0.5, 0.5, 1.0 )
-        cr.fill()
+
+        if self.image_frame != None:
+
+            # This seems to lock up the window manager:
+
+            #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
+
+            #drawable.draw_pixbuf ( gc, scaled_image, 0, 0, zpa.wxi(0), zpa.wyi(0), -1, -1, gtk.gdk.RGB_DITHER_NONE )
+
+            # From https://www.cairographics.org/cookbook/
+
+            #cr.set_source ( self.image_frame )
+            #cr.paint()
+            pass
+
+        else:
+            cr.set_line_width(self.line_width)
+            cr.set_source_rgba ( 0.5, 0.0, 0.0, 1.0 )
+            w = self.draw_area.get_allocated_width()
+            h = self.draw_area.get_allocated_height()
+            cr.translate ( w/2, h/2 )
+            cr.line_to ( 50, 0 )
+            cr.line_to (  0, 0 )
+            cr.arc ( 0, 0, 50, 0, self.angle * ( math.pi / 180 ) )
+            cr.line_to (  0, 0 )
+            cr.stroke_preserve()
+            cr.set_source_rgba ( 0.0, 0.5, 0.5, 1.0 )
+            cr.fill()
+
+            # From http://www.tortall.net/mu/wiki/CairoTutorial
+
+            """
+            cr.set_line_width(5)
+            cr.set_source_rgb(0, 0, 0)
+            cr.rectangle(10, 10, 50, 50)
+            cr.fill()
+            """
+
+
+        #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
 
 
     def generic_window_callback(self, action, parameter):
@@ -664,6 +713,23 @@ class MyWindow(Gtk.ApplicationWindow):
 
         # Note that we set the state of the action!
         action.set_state(parameter)
+
+
+    def open_callback(self, action, parameter):
+        dialog = Gtk.FileChooserDialog("Open Image", self.get_toplevel(), Gtk.FileChooserAction.OPEN)
+        dialog.add_button ( Gtk.STOCK_CANCEL, 0 )
+        dialog.add_button ( Gtk.STOCK_OK, 1 )
+        dialog.set_default_response(1)
+        filefilter = Gtk.FileFilter()
+        filefilter.add_pixbuf_formats()
+        dialog.set_filter(filefilter)
+        if dialog.run() == 1:
+            self.image_frame = GdkPixbuf.Pixbuf.new_from_file ( dialog.get_filename() )
+        dialog.destroy()
+
+
+    def console_callback(self, action, parameter):
+        __import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
 
 
     def about_callback(self, action, parameter):
