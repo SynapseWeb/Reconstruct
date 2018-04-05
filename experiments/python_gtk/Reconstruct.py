@@ -63,13 +63,55 @@ def expose_callback ( drawing_area, event, zpa ):
 
     On older X servers, rendering pixbufs with an alpha channel involves round trips to the X server, and
     may be somewhat slow. The clip mask of gc is ignored, but clip rectangles and clip regions work fine.
+
+    ========
+    https://developer.gnome.org/gdk-pixbuf/stable/gdk-pixbuf-Scaling.html
+    C:
+    void gdk_pixbuf_scale (const GdkPixbuf *src,
+                  GdkPixbuf *dest,
+                  int dest_x,
+                  int dest_y,
+                  int dest_width,
+                  int dest_height,
+                  double offset_x,
+                  double offset_y,
+                  double scale_x,
+                  double scale_y,
+                  GdkInterpType interp_type);
+    Python:
+       src.scale ( dest, dest_x, dest_y, dest_width, dest_height, offset_x, offset_y, scale_x, scale_y, interp_type )
+          src          a GdkPixbuf
+          dest         the GdkPixbuf into which to render the results
+          dest_x       the left coordinate for region to render
+          dest_y       the top coordinate for region to render
+          dest_width   the width of the region to render
+          dest_height  the height of the region to render
+          offset_x     the offset in the X direction (currently rounded to an integer)
+          offset_y     the offset in the Y direction (currently rounded to an integer)
+          scale_x      the scale factor in the X direction
+          scale_y      the scale factor in the Y direction
+          interp_type  the interpolation type for the transformation.
     """
     pix_buf = zpa.user_data['image_frame']
     pbw = pix_buf.get_width()
     pbh = pix_buf.get_height()
     scale_w = zpa.ww(pbw) / pbw
     scale_h = zpa.wh(pbh) / pbh
-    #scaled_image = pix_buf.scale_simple( int(pbw*scale_w), int(pbh*scale_h), gtk.gdk.INTERP_BILINEAR )
+    ##scaled_image = pix_buf.scale_simple( int(pbw*scale_w), int(pbh*scale_h), gtk.gdk.INTERP_BILINEAR )
+    #scaled_image = pix_buf.scale_simple( int(pbw*scale_w), int(pbh*scale_h), gtk.gdk.INTERP_NEAREST )
+    #drawable.draw_pixbuf ( gc, scaled_image, 0, 0, zpa.wxi(0), zpa.wyi(0), -1, -1, gtk.gdk.RGB_DITHER_NONE )
+
+    #(dw,dh) = drawable.get_size()
+    #pbcs = pix_buf.get_colorspace()
+    # dest_pm = gtk.gdk.Pixmap ( drawable, dw, dh )
+    #dest = gtk.gdk.Pixbuf ( pbcs, False, drawable.get_depth(), dw, dh )
+    #dest = gtk.gdk.Pixbuf ( pbcs, False, 8, dw, dh )  # For some reason the depth seems to have to be 8
+    #pix_buf.scale(dest, 0, 0, 10, 10, 0, 0, 1, 1, gtk.gdk.INTERP_NEAREST)
+    #drawable.draw_pixbuf ( gc, scaled_image, 0, 0, zpa.wxi(0), zpa.wyi(0), -1, -1, gtk.gdk.RGB_DITHER_NONE )
+
+    #gtk.gdk
+
+    #__import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
     scaled_image = pix_buf.scale_simple( int(pbw*scale_w), int(pbh*scale_h), gtk.gdk.INTERP_NEAREST )
     drawable.draw_pixbuf ( gc, scaled_image, 0, 0, zpa.wxi(0), zpa.wyi(0), -1, -1, gtk.gdk.RGB_DITHER_NONE )
 
@@ -176,6 +218,9 @@ def menu_callback ( widget, data=None ):
       zpa.user_data['frame_delay'] = 1.0
     elif command == "ToggleLegend":
       zpa.user_data['show_legend'] = not zpa.user_data['show_legend']
+      zpa.queue_draw()
+    elif command == "Debug":
+      __import__('code').interact(local={k: v for ns in (globals(), locals()) for k, v in ns.items()})
       zpa.queue_draw()
     else:
       print ( "Menu option \"" + command + "\" is not handled yet." )
