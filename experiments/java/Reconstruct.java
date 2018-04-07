@@ -440,9 +440,35 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     //super.keyReleased ( e );
   }
 
+  public String depth_string ( int depth ) {
+    String s = "";
+    for (int i=0; i<depth; i++) {
+      s = "  " + s;
+    }
+    return ( s );
+  }
+
+  public void dump_nodes_and_attrs ( Element parent, int depth ) {
+
+    NamedNodeMap attr_map = parent.getAttributes();
+    for (int index=0; index<attr_map.getLength(); index++) {
+      Node node = attr_map.item(index);
+      System.out.println ( depth_string(depth) + "Attr: " + node );
+    }
+
+    NodeList nodes = parent.getElementsByTagName ( "*" );
+    for (int index=0; index<nodes.getLength(); index++) {
+      Node node = nodes.item(index);
+      System.out.println ( depth_string(depth) + "Node: " + node );
+      dump_nodes_and_attrs ( (Element)node, depth+1 );
+    }
+
+  }
+
   public void parse_series_xml_file ( File f ) {
     System.out.println ( "Parsing " + f );
 
+    // Read the file and convert into a string buffer while removing the "<!DOCTYPE" line
     StringBuilder lines = new StringBuilder();
     try {
       BufferedReader fr = new BufferedReader ( new FileReader ( f ) );
@@ -453,14 +479,14 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
           lines.append ( line );
           lines.append ( '\n' );
         }
-        // System.out.println ( "L: " + line );
       } while (line != null);
     } catch ( Exception e ) {
     }
 
-    // System.out.println ( "\n=============\n" + lines + "\n=============" );
-
+    // Parse the resulting string buffer
     try {
+
+      // Set up the parser
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
       dbFactory.setValidating ( false );
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -471,13 +497,40 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
           doc = dBuilder.parse(new StringBufferInputStream(lines.toString()));
       } catch (SAXException e) {
           e.printStackTrace();
+          doc = null;
       } catch (IOException e) {
           e.printStackTrace();
+          doc = null;
       }
 
-      doc.getDocumentElement().normalize();
+      if (doc != null) {
 
-      System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+        // Process the document tree to pull out the data for this series
+
+        doc.getDocumentElement().normalize();
+
+        if ( ! doc.getDocumentElement().getNodeName().equalsIgnoreCase ( "series" ) ) {
+          System.out.println ( "Error: Series XML files must contain a series element" );
+        } else {
+
+          System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+
+          dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
+
+          NamedNodeMap attr_map = doc.getDocumentElement().getAttributes();
+          for (int index=0; index<attr_map.getLength(); index++) {
+            Node node = attr_map.item(index);
+            System.out.println ( "   Attr: " + node );
+          }
+
+          NodeList nodes = doc.getDocumentElement().getElementsByTagName ( "*" );
+          for (int index=0; index<nodes.getLength(); index++) {
+            Node node = nodes.item(index);
+            System.out.println ( "   Node: " + node );
+          }
+
+        }
+      }
     } catch ( Exception e ) {
       System.out.println("Parsing error: " + e );
     }
