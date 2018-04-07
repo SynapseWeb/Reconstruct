@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE Section SYSTEM "section.dtd">
+
+<Section index="25" thickness="0.05" alignLocked="false">
+<Transform dim="0"
+ xcoef=" 0 1 0 0 0 0"
+ ycoef=" 0 0 1 0 0 0">
+<Image mag="0.00254" contrast="1" brightness="0" red="true" green="true" blue="true"
+ src="../organelle_images/cell_slice_156.jpg" />
+<Contour name="domain1" hidden="false" closed="true" simplified="false" border="1 0 1" fill="1 0 1" mode="11"
+ points="0 0,
+	479 0,
+	479 479,
+	0 479,
+	"/>
+</Transform>
+
+<Transform dim="0"
+ xcoef=" 0 1 0 0 0 0"
+ ycoef=" 0 0 1 0 0 0">
+<Contour name="Cell" hidden="false" closed="true" simplified="true" border="1 0.5 0" fill="1 0.5 0" mode="13"
+ points="0.53086 0.57404,
+	0.54356 0.55372,
+	0.5461 0.54864,
+	0.58674 0.53594,
+	0.5969 0.53594,
+	0.61722 0.54356,
+	0.62738 0.54864,
+	0.63754 0.5588,
+	0.62992 0.59944,
+	0.61468 0.61722,
+	0.59436 0.63246,
+	0.57404 0.64008,
+	0.55372 0.63754,
+	0.53594 0.6223,
+	0.53086 0.61722,
+	0.53086 0.57658,
+	"/>
+</Transform>
+
+</Section>
