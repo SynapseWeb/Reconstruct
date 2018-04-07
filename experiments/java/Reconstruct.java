@@ -536,6 +536,39 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     }
   }
 
+  public String[] get_section_file_names ( String path, String root_name ) {
+    System.out.println ( "Looking for " + root_name + " in " + path );
+    File all_files[] = new File (path).listFiles();
+    if (all_files==null) {
+      return ( new String[0] );
+    }
+    if (all_files.length <= 0) {
+      return ( new String[0] );
+    }
+    String matched_files[] = new String[all_files.length];
+    int num_matched = 0;
+    for (int i=0; i<all_files.length; i++) {
+      matched_files[i] = null;
+      if ( all_files[i].getName().startsWith(root_name+".") ) {
+        if ( ! all_files[i].getName().endsWith(".ser") ) {
+          matched_files[i] = all_files[i].getName();
+          System.out.println ( "Found match: " + matched_files[i] );
+          num_matched += 1;
+        }
+      }
+    }
+    String matched_names[] = new String[num_matched];
+    int j = 0;
+    for (int i=0; i<matched_files.length; i++) {
+      if (matched_files[i] != null) {
+        matched_names[j] = matched_files[i];
+        j += 1;
+      }
+    }
+    return ( matched_names );
+  }
+
+
   // ActionPerformed methods (mostly menu responses):
 
 	public void actionPerformed(ActionEvent e) {
@@ -578,8 +611,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 		  file_chooser.setFileFilter(filter);
 		  int returnVal = file_chooser.showDialog(this, "Open Series");
 		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
-        System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + file_chooser.getSelectedFile() );
-        parse_series_xml_file ( file_chooser.getSelectedFile() );
+		    File series_file = file_chooser.getSelectedFile();
+        System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
+        parse_series_xml_file ( series_file );
+        String series_file_name = series_file.getName();
+        String section_file_names[] = get_section_file_names ( series_file.getParent(), series_file_name.substring(0,series_file_name.length()-4) );
 
         String file_path_and_name = "?Unknown?";
         try {
