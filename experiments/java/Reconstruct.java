@@ -1,6 +1,7 @@
 /* This is a demonstration program to show zooming(scrollwheel) and panning(mouse drag) functionality. */
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -8,6 +9,25 @@ import java.util.*;
 import java.io.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
+
+import org.w3c.dom.*;
+import org.xml.sax.*;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringBufferInputStream;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 class MyFileChooser extends JFileChooser {
@@ -420,6 +440,48 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     //super.keyReleased ( e );
   }
 
+  public void parse_series_xml_file ( File f ) {
+    System.out.println ( "Parsing " + f );
+
+    StringBuilder lines = new StringBuilder();
+    try {
+      BufferedReader fr = new BufferedReader ( new FileReader ( f ) );
+      String line;
+      do {
+        line = fr.readLine();
+        if ( ! line.trim().startsWith ( "<!DOCTYPE" ) ) {
+          lines.append ( line );
+          lines.append ( '\n' );
+        }
+        // System.out.println ( "L: " + line );
+      } while (line != null);
+    } catch ( Exception e ) {
+    }
+
+    // System.out.println ( "\n=============\n" + lines + "\n=============" );
+
+    try {
+      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      dbFactory.setValidating ( false );
+      DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+      Document doc = null;
+
+      try {
+          doc = dBuilder.parse(new StringBufferInputStream(lines.toString()));
+      } catch (SAXException e) {
+          e.printStackTrace();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+
+      doc.getDocumentElement().normalize();
+
+      System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+    } catch ( Exception e ) {
+      System.out.println("Parsing error: " + e );
+    }
+  }
 
   // ActionPerformed methods (mostly menu responses):
 
@@ -457,6 +519,26 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
       }
 		  repaint();
+		} else if (cmd.equalsIgnoreCase("Open...")) {
+		  file_chooser.setMultiSelectionEnabled(false);
+		  FileNameExtensionFilter filter = new FileNameExtensionFilter("Series Files", "ser");
+		  file_chooser.setFileFilter(filter);
+		  int returnVal = file_chooser.showDialog(this, "Open Series");
+		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
+        System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + file_chooser.getSelectedFile() );
+        parse_series_xml_file ( file_chooser.getSelectedFile() );
+
+        String file_path_and_name = "?Unknown?";
+        try {
+          file_path_and_name = "" + file_chooser.getSelectedFile();
+          repaint();
+        } catch (Exception oe) {
+	        // this.image_frame = null;
+	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
+	        repaint();
+        }
+		  }
+
 		} else if (cmd.equalsIgnoreCase("Dump")) {
 		  dump_strokes();
 		} else if (cmd.equalsIgnoreCase("Clear")) {
