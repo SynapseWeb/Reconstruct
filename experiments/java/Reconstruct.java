@@ -560,10 +560,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       String fn = all_files[i].getName();
       if ( fn.startsWith(root_name+".") ) {
         // This is a file of the form root_name.[something]
-        // Verify that the "something contains 1 or more digits after the last dot
-        int last_dot = fn.lastIndexOf ( '.' );
-        String suffix = fn.substring( last_dot+1 );
-        if ( suffix.matches("[0123456789]+") ) {
+        // Verify that the "something" matches properly
+        if ( fn.matches(root_name+"\\.[0123456789]+") ) {
           matched_files[i] = fn;
           System.out.println ( "Found match: " + matched_files[i] );
           num_matched += 1;
