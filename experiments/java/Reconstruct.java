@@ -539,6 +539,14 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
   public String[] get_section_file_names ( String path, String root_name ) {
     System.out.println ( "Looking for " + root_name + " in " + path );
     File all_files[] = new File (path).listFiles();
+
+    System.out.println ( "Before filtering" );
+    for (int i=0; i<all_files.length; i++) {
+      System.out.println ( "  " + all_files[i].getName() );
+    }
+    System.out.println ( "After filtering" );
+
+
     if (all_files==null) {
       return ( new String[0] );
     }
@@ -549,9 +557,14 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     int num_matched = 0;
     for (int i=0; i<all_files.length; i++) {
       matched_files[i] = null;
-      if ( all_files[i].getName().startsWith(root_name+".") ) {
-        if ( ! all_files[i].getName().endsWith(".ser") ) {
-          matched_files[i] = all_files[i].getName();
+      String fn = all_files[i].getName();
+      if ( fn.startsWith(root_name+".") ) {
+        // This is a file of the form root_name.[something]
+        // Verify that the "something contains 1 or more digits after the last dot
+        int last_dot = fn.lastIndexOf ( '.' );
+        String suffix = fn.substring( last_dot+1 );
+        if ( suffix.matches("[0123456789]+") ) {
+          matched_files[i] = fn;
           System.out.println ( "Found match: " + matched_files[i] );
           num_matched += 1;
         }
