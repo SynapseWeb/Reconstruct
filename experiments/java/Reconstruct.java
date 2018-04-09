@@ -465,7 +465,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 
   }
 
-  public void parse_series_xml_file ( File f ) {
+  public void parse_xml_file_to_doc ( File f ) {
     System.out.println ( "Parsing " + f );
 
     // Read the file and convert into a string buffer while removing the "<!DOCTYPE" line
@@ -509,8 +509,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 
         doc.getDocumentElement().normalize();
 
-        if ( ! doc.getDocumentElement().getNodeName().equalsIgnoreCase ( "series" ) ) {
-          System.out.println ( "Error: Series XML files must contain a series element" );
+        String doc_name = doc.getDocumentElement().getNodeName();
+
+        if ( ! ( ( doc_name.equalsIgnoreCase ( "Series" ) ) || ( doc_name.equalsIgnoreCase ( "Section" ) ) ) ) {
+          System.out.println ( "Error: Series XML files must contain either a series or a section element" );
         } else {
 
           System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
@@ -536,16 +538,16 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
     }
   }
 
+
   public String[] get_section_file_names ( String path, String root_name ) {
-    System.out.println ( "Looking for " + root_name + " in " + path );
+    // System.out.println ( "Looking for " + root_name + " in " + path );
     File all_files[] = new File (path).listFiles();
 
-    System.out.println ( "Before filtering" );
-    for (int i=0; i<all_files.length; i++) {
-      System.out.println ( "  " + all_files[i].getName() );
-    }
-    System.out.println ( "After filtering" );
-
+    // System.out.println ( "Before filtering" );
+    // for (int i=0; i<all_files.length; i++) {
+    //   System.out.println ( "  " + all_files[i].getName() );
+    // }
+    // System.out.println ( "After filtering" );
 
     if (all_files==null) {
       return ( new String[0] );
@@ -624,9 +626,16 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
 		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
 		    File series_file = file_chooser.getSelectedFile();
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
-        parse_series_xml_file ( series_file );
+        parse_xml_file_to_doc ( series_file );
         String series_file_name = series_file.getName();
         String section_file_names[] = get_section_file_names ( series_file.getParent(), series_file_name.substring(0,series_file_name.length()-4) );
+        for (int i=0; i<section_file_names.length; i++) {
+          File section_file;
+          System.out.println ( "============== Section File " + section_file_names[i] + " ==============" );
+          section_file = new File ( series_file.getParent() + File.separator + section_file_names[i] );
+          parse_xml_file_to_doc ( section_file );
+          System.out.println ( "===========================================" );
+        }
 
         String file_path_and_name = "?Unknown?";
         try {
