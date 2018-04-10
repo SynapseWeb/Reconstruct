@@ -506,6 +506,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     }
 
     NodeList nodes = parent.getElementsByTagName ( "*" );
+    // NodeList nodes = parent.getChildNodes(); // Calling parent.getChildNodes() returns 41 nodes
+    System.out.println ( "Calling parent.getElementsByTagName() returns " + nodes.getLength() + " nodes" );
     for (int index=0; index<nodes.getLength(); index++) {
       Node node = nodes.item(index);
       System.out.println ( depth_string(depth) + "Node: " + node );
@@ -531,17 +533,19 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
         dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
 
+        /*
         NamedNodeMap attr_map = doc.getDocumentElement().getAttributes();
         for (int index=0; index<attr_map.getLength(); index++) {
           Node node = attr_map.item(index);
-          System.out.println ( "   Attr: " + node );
+          System.out.println ( "  Attr: " + node );
         }
 
         NodeList nodes = doc.getDocumentElement().getElementsByTagName ( "*" );
         for (int index=0; index<nodes.getLength(); index++) {
           Node node = nodes.item(index);
-          System.out.println ( "   Node: " + node );
+          System.out.println ( "  Node: " + node );
         }
+        */
 
       }
 
@@ -603,6 +607,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
           System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 
+          /*
           dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
 
           NamedNodeMap attr_map = doc.getDocumentElement().getAttributes();
@@ -616,6 +621,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             Node node = nodes.item(index);
             System.out.println ( "   Node: " + node );
           }
+          */
 
         }
       }
@@ -738,10 +744,14 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 		} else if (cmd.equalsIgnoreCase("Dump")) {
       dump_strokes();
+      System.out.println ( "============== Begin Series File  ================" );
       dump_doc(this.series_doc);
+      System.out.println ( "============== End Series File  ================" );
       if (this.section_docs != null) {
         for (int i=0; i<this.section_docs.length; i++) {
+          System.out.println ( "============== Begin Section File  ================" );
 	        dump_doc(this.section_docs[i]);
+          System.out.println ( "============== End Section File  ================" );
         }
       }
 		} else if (cmd.equalsIgnoreCase("Clear")) {
