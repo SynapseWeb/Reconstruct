@@ -56,6 +56,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   String current_directory = "";
   MyFileChooser file_chooser = null;
 
+
+  Document series_doc = null;
+  Document section_docs[] = null;
+
 	ArrayList strokes = new ArrayList();  // Argument (if any) specifies initial capacity (default 10)
 	ArrayList stroke  = null;
 
@@ -449,30 +453,32 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     repaint();
   }
   public void keyPressed ( KeyEvent e ) {
-    // System.out.println ( "Key Pressed, e = " + e );
-    if ( (e.getKeyCode() == 33) || (e.getKeyCode() == 34) ) {
+    System.out.println ( "Key Pressed, e = " + e );
+    if ( (e.getKeyCode() == e.VK_PAGE_DOWN) || (e.getKeyCode() == e.VK_PAGE_UP  ) ) {
       // Figure out if there's anything to do
-      if (this.image_frames.length > 1) {
-        // Find the current index
-        int current_index = -1;
-        for (int i=0; i<this.image_frames.length; i++) {
-          if (this.image_frame == this.image_frames[i]) {
-            current_index = i;
-            break;
+      if (this.image_frames != null) {
+        if (this.image_frames.length > 1) {
+          // Find the current index
+          int current_index = -1;
+          for (int i=0; i<this.image_frames.length; i++) {
+            if (this.image_frame == this.image_frames[i]) {
+              current_index = i;
+              break;
+            }
           }
-        }
-        // System.out.println ( "Current image is " + current_index );
-        int delta = 0;
-        if (e.getKeyCode() == 33) {
-          // System.out.println ( "Page Up with " + this.image_frames.length + " frames" );
-          delta = 1;
-        } else if (e.getKeyCode() == 34) {
-          // System.out.println ( "Page Down with " + this.image_frames.length + " frames" );
-          delta = -1;
-        }
-        if ((current_index+delta >= 0) && (current_index+delta < this.image_frames.length)) {
-          this.image_frame = this.image_frames[current_index+delta];
-          repaint();
+          // System.out.println ( "Current image is " + current_index );
+          int delta = 0;
+          if (e.getKeyCode() == e.VK_PAGE_UP) {
+            System.out.println ( "Page Up with " + this.image_frames.length + " frames" );
+            delta = 1;
+          } else if (e.getKeyCode() == e.VK_PAGE_DOWN) {
+            System.out.println ( "Page Down with " + this.image_frames.length + " frames" );
+            delta = -1;
+          }
+          if ((current_index+delta >= 0) && (current_index+delta < this.image_frames.length)) {
+            this.image_frame = this.image_frames[current_index+delta];
+            repaint();
+          }
         }
       }
     }
@@ -508,8 +514,45 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
   }
 
-  public void parse_xml_file_to_doc ( File f ) {
+  public void dump_doc(Document doc) {
+    // Process the document tree to pull out the data for this series
+
+    if (doc != null) {
+
+      doc.getDocumentElement().normalize();
+
+      String doc_name = doc.getDocumentElement().getNodeName();
+
+      if ( ! ( ( doc_name.equalsIgnoreCase ( "Series" ) ) || ( doc_name.equalsIgnoreCase ( "Section" ) ) ) ) {
+        System.out.println ( "Error: Series XML files must contain either a series or a section element" );
+      } else {
+
+        System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+
+        dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
+
+        NamedNodeMap attr_map = doc.getDocumentElement().getAttributes();
+        for (int index=0; index<attr_map.getLength(); index++) {
+          Node node = attr_map.item(index);
+          System.out.println ( "   Attr: " + node );
+        }
+
+        NodeList nodes = doc.getDocumentElement().getElementsByTagName ( "*" );
+        for (int index=0; index<nodes.getLength(); index++) {
+          Node node = nodes.item(index);
+          System.out.println ( "   Node: " + node );
+        }
+
+      }
+
+    }
+
+  }
+
+  public Document parse_xml_file_to_doc ( File f ) {
     System.out.println ( "Parsing " + f );
+
+    Document doc = null;
 
     // Read the file and convert into a string buffer while removing the "<!DOCTYPE" line
     StringBuilder lines = new StringBuilder();
@@ -534,7 +577,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       dbFactory.setValidating ( false );
       DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 
-      Document doc = null;
+      doc = null;
 
       try {
           doc = dBuilder.parse(new StringBufferInputStream(lines.toString()));
@@ -579,6 +622,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     } catch ( Exception e ) {
       System.out.println("Parsing error: " + e );
     }
+    return ( doc );
   }
 
 
@@ -669,14 +713,15 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
 		    File series_file = file_chooser.getSelectedFile();
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
-        parse_xml_file_to_doc ( series_file );
+        series_doc = parse_xml_file_to_doc ( series_file );
         String series_file_name = series_file.getName();
         String section_file_names[] = get_section_file_names ( series_file.getParent(), series_file_name.substring(0,series_file_name.length()-4) );
+        section_docs = new Document[section_file_names.length];
         for (int i=0; i<section_file_names.length; i++) {
           File section_file;
           System.out.println ( "============== Section File " + section_file_names[i] + " ==============" );
           section_file = new File ( series_file.getParent() + File.separator + section_file_names[i] );
-          parse_xml_file_to_doc ( section_file );
+          section_docs[i] = parse_xml_file_to_doc ( section_file );
           System.out.println ( "===========================================" );
         }
 
@@ -692,7 +737,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  }
 
 		} else if (cmd.equalsIgnoreCase("Dump")) {
-		  dump_strokes();
+      dump_strokes();
+      dump_doc(this.series_doc);
+      if (this.section_docs != null) {
+        for (int i=0; i<this.section_docs.length; i++) {
+	        dump_doc(this.section_docs[i]);
+        }
+      }
 		} else if (cmd.equalsIgnoreCase("Clear")) {
 	    strokes = new ArrayList();
 	    stroke  = null;
