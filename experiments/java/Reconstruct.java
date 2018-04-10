@@ -44,7 +44,7 @@ class MyFileChooser extends JFileChooser {
 }
 
 
-public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMotionListener, MouseListener, KeyListener {
+public class Reconstruct extends ZoomPanLib implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
 	static int w=800, h=600;
 	
@@ -138,6 +138,26 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
       g.drawLine ( cx, cy-10, cx, cy+10 );
     }
 	}
+
+
+  public void set_cursor() {
+    if (drawing_mode) {
+      current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+      if (center_draw) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+      }
+      setCursor ( current_cursor );
+      if (draw_menu_item != null) {
+        draw_menu_item.setSelected(true);
+      }
+    } else {
+      current_cursor = b_cursor;
+      setCursor ( current_cursor );
+      if (move_menu_item != null) {
+        move_menu_item.setSelected(true);
+      }
+    }
+  }
 
 
   //  MouseListener methods:
@@ -280,28 +300,36 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
   }
 
   public void mouseClicked ( MouseEvent e ) {
-    // System.out.println ( "Mouse clicked" );
-    super.mouseClicked(e);
+    System.out.println ( "Mouse clicked: " + e );
+    if (e.getButton() == MouseEvent.BUTTON3) {
+      drawing_mode = !drawing_mode;
+      set_cursor();
+      repaint();
+    } else {
+      super.mouseClicked(e);
+    }
   }
 
   public void mousePressed ( MouseEvent e ) {
     // System.out.println ( "Mouse pressed" );
     super.mousePressed(e);
-    if (drawing_mode == true) {
-      if (stroke != null) {
-        // System.out.println ( "Saving previous stroke" );
-        strokes.add ( stroke );
+    if (e.getButton() == MouseEvent.BUTTON1) {
+      if (drawing_mode == true) {
+        if (stroke != null) {
+          // System.out.println ( "Saving previous stroke" );
+          strokes.add ( stroke );
+        }
+        // System.out.println ( "Making new stroke" );
+        stroke  = new ArrayList(100);
+        double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
+        if (center_draw) {
+          p[0] = px_to_x(getSize().width / 2);
+          p[1] = py_to_y(getSize().height / 2);
+        }
+        // System.out.println ( "Adding point " + p[0] + "," + p[1] );
+        stroke.add ( p );
+        repaint();
       }
-      // System.out.println ( "Making new stroke" );
-      stroke  = new ArrayList(100);
-      double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
-      if (center_draw) {
-        p[0] = px_to_x(getSize().width / 2);
-        p[1] = py_to_y(getSize().height / 2);
-      }
-      // System.out.println ( "Adding point " + p[0] + "," + p[1] );
-      stroke.add ( p );
-      repaint();
     }
   }
 
@@ -369,6 +397,21 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseMoti
   public void mouseMoved ( MouseEvent e ) {
     super.mouseMoved ( e );
   }
+
+  // MouseWheelListener methods:
+
+	public void mouseWheelMoved ( MouseWheelEvent e ) {
+    if (drawing_mode == false) {
+      scroll_wheel_position += e.getWheelRotation();
+      System.out.println ( "Reconstruct: scroll wheel = " + scroll_wheel_position );
+      int scrolled_x = e.getX();
+      int scrolled_y = e.getY();
+	  } else {
+	    super.mouseWheelMoved ( e );
+	  }
+		repaint();
+	}
+
 
   JMenuItem move_menu_item = null;
   JMenuItem draw_menu_item = null;
