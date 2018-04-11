@@ -1,4 +1,4 @@
-/* This Class represents a Reconstruct Series. */
+/* This Class represents a Reconstruct Section. */
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,17 +15,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 
-public class SeriesClass {
+public class SectionClass {
 
-  public SeriesClass ( Document series_doc ) {
+  public SectionClass ( Document section_doc ) {
 
-    System.out.println ( "Stub Constructor for SeriesClass" );
-    SectionClass one_section = new SectionClass ( series_doc );
+    System.out.println ( "Stub Constructor for SectionClass" );
 
   }
 
 	public static void main ( String[] args ) {
-		System.out.println ( "Testing SeriesClass.java ..." );
+		System.out.println ( "Testing SectionClass.java ..." );
 	}
 
 }
