@@ -497,6 +497,31 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     return ( s );
   }
 
+  public String ntn ( short node_type_code ) {
+    if (node_type_code == Node.ATTRIBUTE_NODE) return ( "ATTRIBUTE_NODE" );
+    if (node_type_code == Node.CDATA_SECTION_NODE) return ( "CDATA_SECTION_NODE" );
+    if (node_type_code == Node.COMMENT_NODE) return ( "COMMENT_NODE" );
+    if (node_type_code == Node. 	DOCUMENT_FRAGMENT_NODE) return ( " 	DOCUMENT_FRAGMENT_NODE" );
+    if (node_type_code == Node.DOCUMENT_NODE) return ( "DOCUMENT_NODE" );
+    if (node_type_code == Node.DOCUMENT_NODE) return ( "DOCUMENT_NODE" );
+    if (node_type_code == Node.ELEMENT_NODE) return ( "ELEMENT_NODE" );
+    if (node_type_code == Node.ENTITY_NODE) return ( "ENTITY_NODE" );
+    if (node_type_code == Node.ENTITY_REFERENCE_NODE) return ( "ENTITY_REFERENCE_NODE" );
+    if (node_type_code == Node.NOTATION_NODE) return ( "NOTATION_NODE" );
+    if (node_type_code == Node.PROCESSING_INSTRUCTION_NODE) return ( "PROCESSING_INSTRUCTION_NODE" );
+    if (node_type_code == Node.TEXT_NODE) return ( "TEXT_NODE" );
+
+    if (node_type_code == Node.DOCUMENT_POSITION_CONTAINS) return ( "DOCUMENT_POSITION_CONTAINS" );
+    if (node_type_code == Node.DOCUMENT_POSITION_DISCONNECTED) return ( "DOCUMENT_POSITION_DISCONNECTED" );
+    if (node_type_code == Node.DOCUMENT_POSITION_FOLLOWING) return ( "DOCUMENT_POSITION_FOLLOWING" );
+    if (node_type_code == Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC) return ( "DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC" );
+    if (node_type_code == Node.DOCUMENT_POSITION_PRECEDING) return ( "DOCUMENT_POSITION_PRECEDING" );
+    if (node_type_code == Node.DOCUMENT_POSITION_PRECEDING) return ( "DOCUMENT_POSITION_PRECEDING" );
+
+    return ( "Unknown?" );
+  }
+
+  /*
   public void dump_nodes_and_attrs ( Element parent, int depth ) {
 
     NamedNodeMap attr_map = parent.getAttributes();
@@ -507,11 +532,34 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
     NodeList nodes = parent.getElementsByTagName ( "*" );
     // NodeList nodes = parent.getChildNodes(); // Calling parent.getChildNodes() returns 41 nodes
-    System.out.println ( "Calling parent.getElementsByTagName() returns " + nodes.getLength() + " nodes" );
+    // System.out.println ( "Calling parent.getElementsByTagName() returns " + nodes.getLength() + " nodes" );
     for (int index=0; index<nodes.getLength(); index++) {
       Node node = nodes.item(index);
-      System.out.println ( depth_string(depth) + "Node: " + node );
-      dump_nodes_and_attrs ( (Element)node, depth+1 );
+      System.out.println ( depth_string(depth) + "Node Type: " + ntn(node.getNodeType()) );
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        dump_nodes_and_attrs ( (Element)node, depth+1 );
+      }
+    }
+
+  }
+  */
+
+  public void dump_nodes_and_atts ( Node parent, int depth ) {
+
+    NamedNodeMap attr_map = parent.getAttributes();
+    for (int index=0; index<attr_map.getLength(); index++) {
+      Node node = attr_map.item(index);
+      System.out.println ( depth_string(depth) + "Attr: " + ntn(node.getNodeType()) + " " + node.getNodeName() );
+    }
+
+    NodeList nodes = parent.getChildNodes();
+    // System.out.println ( "Calling parent.getChildNodes() returns " + nodes.getLength() + " nodes" );
+    for (int index=0; index<nodes.getLength(); index++) {
+      Node node = nodes.item(index);
+      System.out.println ( depth_string(depth) + "Node: " + ntn(node.getNodeType()) + " " + node.getNodeName() );
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        dump_nodes_and_atts ( (Element)node, depth+1 );
+      }
     }
 
   }
@@ -526,12 +574,16 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       String doc_name = doc.getDocumentElement().getNodeName();
 
       if ( ! ( ( doc_name.equalsIgnoreCase ( "Series" ) ) || ( doc_name.equalsIgnoreCase ( "Section" ) ) ) ) {
-        System.out.println ( "Error: Series XML files must contain either a series or a section element" );
+        System.out.println ( "Error: Series XML files must contain either a series or a section root element" );
       } else {
 
         System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 
-        dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
+        dump_nodes_and_atts ( doc.getDocumentElement(), 1 );
+
+        //System.out.println ( "=================================" );
+        //System.out.println ( "=================================" );
+        //dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
 
         /*
         NamedNodeMap attr_map = doc.getDocumentElement().getAttributes();
