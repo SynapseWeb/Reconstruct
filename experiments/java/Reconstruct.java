@@ -48,7 +48,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 	static int w=800, h=600;
 	
-	boolean drawing_mode = false;
+	boolean drawing_mode = true;
   boolean center_draw = false;
 	boolean stroke_started = false;
   BufferedImage image_frame = null;
@@ -291,8 +291,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
     }
     if (current_cursor == null) {
-      current_cursor = b_cursor;
+      // current_cursor = b_cursor;
       // current_cursor = Cursor.getPredefinedCursor ( Cursor.MOVE_CURSOR );
+      // current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
+      this.set_cursor();
     }
     setCursor ( current_cursor );
   }
@@ -388,7 +390,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   // MouseWheelListener methods:
 
 	public void mouseWheelMoved ( MouseWheelEvent e ) {
-    if (drawing_mode == false) {
+    if (drawing_mode == true) {
       scroll_wheel_position += e.getWheelRotation();
       System.out.println ( "Reconstruct: scroll wheel = " + scroll_wheel_position );
       int scrolled_x = e.getX();
