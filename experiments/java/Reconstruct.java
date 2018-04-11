@@ -60,6 +60,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   Document series_doc = null;
   Document section_docs[] = null;
   
+  SeriesClass series = null;
+
 	ArrayList strokes = new ArrayList();  // Argument (if any) specifies initial capacity (default 10)
 	ArrayList stroke  = null;
 
@@ -558,6 +560,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
         
         series_doc = XML_Parser.parse_xml_file_to_doc ( series_file );
+        this.series = new SeriesClass ( series_doc );
+
         String series_file_name = series_file.getName();
         String section_file_names[] = get_section_file_names ( series_file.getParent(), series_file_name.substring(0,series_file_name.length()-4) );
         section_docs = new Document[section_file_names.length];
