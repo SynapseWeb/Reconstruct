@@ -348,11 +348,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           p[0] = px_to_x(getSize().width / 2);
           p[1] = py_to_y(getSize().height / 2);
         }
-        // System.out.println ( "Adding point " + p[0] + "," + p[1] );
         stroke.add ( p );
-        // System.out.println ( "Adding active stroke to strokes list" );
         strokes.add ( stroke );
-        // System.out.println ( "Setting stroke to null" );
         stroke = null;
         repaint();
       }
@@ -371,7 +368,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         super.mouseDragged(e);
       }
       if (stroke == null) {
-        // System.out.println ( "stroke was null, making new array" );
         stroke  = new ArrayList(100);
       }
       if (stroke != null) {
@@ -380,22 +376,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           p[0] = px_to_x(getSize().width / 2);
           p[1] = py_to_y(getSize().height / 2);
         }
-        // System.out.println ( "Adding point " + p[0] + "," + p[1] );
         stroke.add ( p );
         repaint();
       }
     }
-    /*
-    return;
-    // System.out.println ( "Mouse dragged by " + e.getX() + "," + e.getY() );
-    if (!x_locked) {
-      mouse_dragging_offset_x = e.getX() - mouse_down_x;
-    }
-    if (!y_locked) {
-      mouse_dragging_offset_y = e.getY() - mouse_down_y;
-    }
-    repaint();
-    */
   }
 
   public void mouseMoved ( MouseEvent e ) {
@@ -521,35 +505,18 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     return ( "Unknown?" );
   }
 
-  /*
-  public void dump_nodes_and_attrs ( Element parent, int depth ) {
-
-    NamedNodeMap attr_map = parent.getAttributes();
-    for (int index=0; index<attr_map.getLength(); index++) {
-      Node node = attr_map.item(index);
-      System.out.println ( depth_string(depth) + "Attr: " + node );
-    }
-
-    NodeList nodes = parent.getElementsByTagName ( "*" );
-    // NodeList nodes = parent.getChildNodes(); // Calling parent.getChildNodes() returns 41 nodes
-    // System.out.println ( "Calling parent.getElementsByTagName() returns " + nodes.getLength() + " nodes" );
-    for (int index=0; index<nodes.getLength(); index++) {
-      Node node = nodes.item(index);
-      System.out.println ( depth_string(depth) + "Node Type: " + ntn(node.getNodeType()) );
-      if (node.getNodeType() == Node.ELEMENT_NODE) {
-        dump_nodes_and_attrs ( (Element)node, depth+1 );
-      }
-    }
-
+  public String firstfew ( String full ) {
+    int num = 40;
+    if (full.length() < num) return ( full );
+    return ( full.substring(0,num) );
   }
-  */
 
   public void dump_nodes_and_atts ( Node parent, int depth ) {
 
     NamedNodeMap attr_map = parent.getAttributes();
     for (int index=0; index<attr_map.getLength(); index++) {
       Node node = attr_map.item(index);
-      System.out.println ( depth_string(depth) + "Attr: " + ntn(node.getNodeType()) + " " + node.getNodeName() );
+      System.out.println ( depth_string(depth) + "Attr: " + ntn(node.getNodeType()) + " " + node.getNodeName() + " = " + firstfew(node.getNodeValue()) );
     }
 
     NodeList nodes = parent.getChildNodes();
@@ -580,24 +547,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 
         dump_nodes_and_atts ( doc.getDocumentElement(), 1 );
-
-        //System.out.println ( "=================================" );
-        //System.out.println ( "=================================" );
-        //dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
-
-        /*
-        NamedNodeMap attr_map = doc.getDocumentElement().getAttributes();
-        for (int index=0; index<attr_map.getLength(); index++) {
-          Node node = attr_map.item(index);
-          System.out.println ( "  Attr: " + node );
-        }
-
-        NodeList nodes = doc.getDocumentElement().getElementsByTagName ( "*" );
-        for (int index=0; index<nodes.getLength(); index++) {
-          Node node = nodes.item(index);
-          System.out.println ( "  Node: " + node );
-        }
-        */
 
       }
 
@@ -659,22 +608,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
           System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 
-          /*
-          dump_nodes_and_attrs ( doc.getDocumentElement(), 1 );
-
-          NamedNodeMap attr_map = doc.getDocumentElement().getAttributes();
-          for (int index=0; index<attr_map.getLength(); index++) {
-            Node node = attr_map.item(index);
-            System.out.println ( "   Attr: " + node );
-          }
-
-          NodeList nodes = doc.getDocumentElement().getElementsByTagName ( "*" );
-          for (int index=0; index<nodes.getLength(); index++) {
-            Node node = nodes.item(index);
-            System.out.println ( "   Node: " + node );
-          }
-          */
-
         }
       }
     } catch ( Exception e ) {
@@ -687,12 +620,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   public String[] get_section_file_names ( String path, String root_name ) {
     // System.out.println ( "Looking for " + root_name + " in " + path );
     File all_files[] = new File (path).listFiles();
-
-    // System.out.println ( "Before filtering" );
-    // for (int i=0; i<all_files.length; i++) {
-    //   System.out.println ( "  " + all_files[i].getName() );
-    // }
-    // System.out.println ( "After filtering" );
 
     if (all_files==null) {
       return ( new String[0] );
@@ -813,13 +740,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		} else if ( cmd.equalsIgnoreCase("Add") || cmd.equalsIgnoreCase("Images...") ) {
 
 			System.out.println ( "Opening new file ..." );
-			// String old_path = current_base_path;
 
-		  // MyFileChooser file_chooser = new MyFileChooser ( this.current_directory );
-		  //FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
-		  // FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-		  // file_chooser.setFileFilter(filter);
-		  // data_set_chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		  file_chooser.setMultiSelectionEnabled(true);
 		  int returnVal = file_chooser.showDialog(this, "Image Files to Add");
 		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
