@@ -56,9 +56,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   String current_directory = "";
   MyFileChooser file_chooser = null;
 
-
-  Document series_doc = null;
-  Document section_docs[] = null;
   
   SeriesClass series = null;
 
@@ -475,45 +472,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     //super.keyReleased ( e );
   }
 
-  
-
-  public String[] get_section_file_names ( String path, String root_name ) {
-    // System.out.println ( "Looking for " + root_name + " in " + path );
-    File all_files[] = new File (path).listFiles();
-
-    if (all_files==null) {
-      return ( new String[0] );
-    }
-    if (all_files.length <= 0) {
-      return ( new String[0] );
-    }
-    String matched_files[] = new String[all_files.length];
-    int num_matched = 0;
-    for (int i=0; i<all_files.length; i++) {
-      matched_files[i] = null;
-      String fn = all_files[i].getName();
-      if ( fn.startsWith(root_name+".") ) {
-        // This is a file of the form root_name.[something]
-        // Verify that the "something" matches properly
-        if ( fn.matches(root_name+"\\.[0123456789]+") ) {
-          matched_files[i] = fn;
-          System.out.println ( "Found match: " + matched_files[i] );
-          num_matched += 1;
-        }
-      }
-    }
-    String matched_names[] = new String[num_matched];
-    int j = 0;
-    for (int i=0; i<matched_files.length; i++) {
-      if (matched_files[i] != null) {
-        matched_names[j] = matched_files[i];
-        j += 1;
-      }
-    }
-    return ( matched_names );
-  }
-
-
   // ActionPerformed methods (mostly menu responses):
 
 	public void actionPerformed(ActionEvent e) {
@@ -559,19 +517,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		    File series_file = file_chooser.getSelectedFile();
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
         
-        series_doc = XML_Parser.parse_xml_file_to_doc ( series_file );
-        this.series = new SeriesClass ( series_doc );
-
-        String series_file_name = series_file.getName();
-        String section_file_names[] = get_section_file_names ( series_file.getParent(), series_file_name.substring(0,series_file_name.length()-4) );
-        section_docs = new Document[section_file_names.length];
-        for (int i=0; i<section_file_names.length; i++) {
-          File section_file;
-          System.out.println ( "============== Section File " + section_file_names[i] + " ==============" );
-          section_file = new File ( series_file.getParent() + File.separator + section_file_names[i] );
-          section_docs[i] = XML_Parser.parse_xml_file_to_doc ( section_file );
-          System.out.println ( "===========================================" );
-        }
+        this.series = new SeriesClass ( series_file );
 
         String file_path_and_name = "?Unknown?";
         try {
@@ -586,16 +532,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 		} else if (cmd.equalsIgnoreCase("Dump")) {
       dump_strokes();
-      System.out.println ( "============== Begin Series File  ================" );
-      XML_Parser.dump_doc(this.series_doc);
-      System.out.println ( "============== End Series File  ================" );
-      if (this.section_docs != null) {
-        for (int i=0; i<this.section_docs.length; i++) {
-          System.out.println ( "============== Begin Section File  ================" );
-	        XML_Parser.dump_doc(this.section_docs[i]);
-          System.out.println ( "============== End Section File  ================" );
-        }
-      }
+      this.series.dump();
 		} else if (cmd.equalsIgnoreCase("Clear")) {
 	    strokes = new ArrayList();
 	    stroke  = null;

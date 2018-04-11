@@ -1,6 +1,6 @@
 all: Reconstruct.jar ZoomPanDraw.jar
 
-Reconstruct.jar: Reconstruct.java ZoomPanLib.java XML_Parser.java makefile
+Reconstruct.jar: Reconstruct.java ZoomPanLib.java XML_Parser.java SeriesClass.java SectionClass.java makefile
 	javac Reconstruct.java
 	jar -cvfe Reconstruct.jar Reconstruct *.class *.java
 
