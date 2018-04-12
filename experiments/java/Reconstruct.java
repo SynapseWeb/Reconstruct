@@ -393,17 +393,17 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   // MouseWheelListener methods:
 	public void mouseWheelMoved ( MouseWheelEvent e ) {
     if (drawing_mode == true) {
-      scroll_wheel_position += e.getWheelRotation();
+      // scroll_wheel_position += e.getWheelRotation();
       int scroll_wheel_delta = e.getWheelRotation();
 
-      System.out.println ( "Reconstruct: scroll wheel delta = " + scroll_wheel_delta );
+      // System.out.println ( "Reconstruct: scroll wheel delta = " + scroll_wheel_delta );
       if (this.image_frame != null) {
-        System.out.println ( "this.image_frame != null" );
+        // System.out.println ( "this.image_frame != null" );
         // Need to find relative to this one
         if (this.image_frames != null) {
-          System.out.println ( "this.image_frames != null" );
+          // System.out.println ( "this.image_frames != null" );
           if (this.image_frames.length > 0) {
-            System.out.println ( "this.image_frames.length > 0" );
+            // System.out.println ( "this.image_frames.length > 0" );
             // Begin the search
             int matching_frame = -1;
             for (int i=0; i<this.image_frames.length; i++) {
@@ -416,7 +416,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
               int new_frame = matching_frame + scroll_wheel_delta;
               if (new_frame < 0) new_frame = 0;
               if (new_frame >= this.image_frames.length) new_frame = this.image_frames.length - 1;
-              System.out.println ( "Changing the frame to " + new_frame );
+              // System.out.println ( "Changing the frame to " + new_frame );
               this.image_frame = this.image_frames[new_frame];
             }
           }
