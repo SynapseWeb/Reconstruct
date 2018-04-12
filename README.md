@@ -7,13 +7,15 @@ Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
 
 # Software
 
-## Reconstruct Downloads for Windows
+## Reconstruct Downloads for Windows and other Platforms
 
-* **[Reconstruct 1.1.0.0 (32-bit)](https://sites.cns.utexas.edu/sites/default/files/synapseweb/files/recon1100ex.exe)**
+* **[Reconstruct 1.1.0.0 (32-bit Windows)](https://sites.cns.utexas.edu/sites/default/files/synapseweb/files/recon1100ex.exe)**
 
-* **[Reconstruct 1.1.0.1 (64-bit)](https://sites.cns.utexas.edu/sites/default/files/synapseweb/files/recon1101win64.exe)**
+* **[Reconstruct 1.1.0.1 (64-bit Windows)](https://sites.cns.utexas.edu/sites/default/files/synapseweb/files/recon1101win64.exe)**
 
-* **[Development Version (64-bit)](https://github.com/SynapseWeb/Reconstruct/blob/master/source/Reconstruct.exe)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/source/sha1sum.txt))
+* **[Development Version (64-bit Windows)](https://github.com/SynapseWeb/Reconstruct/blob/master/source/Reconstruct.exe)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/source/sha1sum.txt))
+
+* **[Development Version (Java All)](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/Reconstruct.jar)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/sha1sum.txt))
 
 
 with Help Manual and example.ser (7.38MB) 
