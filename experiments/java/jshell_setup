@@ -1,0 +1,9 @@
+/open ZoomPanLib.java
+/open XML_Parser.java
+/open SectionClass.java
+/open SeriesClass.java
+/open Reconstruct.java
+/types
+File sf = new File ("data/organelle_3_slice.ser")
+SeriesClass sc = new SeriesClass(sf)
+
