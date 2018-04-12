@@ -31,6 +31,7 @@ import org.xml.sax.SAXException;
 
 
 class MyFileChooser extends JFileChooser {
+  private static final long serialVersionUID = 1L;
   MyFileChooser ( String path ) {
     super(path);
   }
@@ -45,6 +46,7 @@ class MyFileChooser extends JFileChooser {
 
 
 public class Reconstruct extends ZoomPanLib implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
+  private static final long serialVersionUID = 1L;
 
 	static int w=800, h=600;
 	
