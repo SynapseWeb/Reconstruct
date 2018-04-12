@@ -69,7 +69,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       System.out.println ( " Stroke " + i );
       ArrayList<double[]> s = strokes.get(i);
 	    for (int j=0; j<s.size(); j++) {
-	      double p[] = (double[])(s.get(j));
+	      double p[] = s.get(j);
 	      System.out.println ( "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
 	    }
     }
@@ -80,9 +80,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       int line_padding = 1;
       for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
         for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
-          double p0[] = (double[])(s.get(0));
+          double p0[] = s.get(0);
           for (int j=1; j<s.size(); j++) {
-            double p1[] = (double[])(s.get(j));
+            double p1[] = s.get(j);
       		  g.drawLine (  xoffset+x_to_pxi(p0[0]),   yoffset+y_to_pyi(p0[1]),  xoffset+x_to_pxi(p1[0]),  yoffset+y_to_pyi(p1[1]) );
             // System.out.println ( "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
       		  p0 = new double[2];
