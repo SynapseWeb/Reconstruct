@@ -1,6 +1,8 @@
 # Log
 ### Generated with: git log --date=short --pretty=format:"* %ad ==> %s (%h)"
 
+* 2018-04-12 ==> Updated readme to contain a link to Java version with sha1sum. ( [8a0f00c](https://github.com/SynapseWeb/Reconstruct/commit/8a0f00c9c6842cf12d1876d30952fe7c10d8cdee) )
+
 * 2018-04-12 ==> Updated readme to contain a link to Java version with sha1sum. (8a0f00c)
 * 2018-04-11 ==> Commented out printing and decoupled scroll_wheel_position in draw. (238b0a0)
 * 2018-04-11 ==> This version can scroll through a stack of images (loads all at once). (7ea2584)
