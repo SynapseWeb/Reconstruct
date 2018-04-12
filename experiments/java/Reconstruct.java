@@ -522,6 +522,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
         
         this.series = new SeriesClass ( series_file );
+        this.series.get_image_file_names();
 
         String file_path_and_name = "?Unknown?";
         try {

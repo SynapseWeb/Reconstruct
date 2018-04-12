@@ -10,6 +10,8 @@ Element sec0 = sc.section_docs[0].getDocumentElement()
 sec0.getNodeName()
 sec0.getAttribute("thickness")
 sec0.getAttribute("index")
+String sfnames[] = sc.get_section_file_names(sf.getParent(), sf.getName().substring(0,sf.getName().length()-4))
+Element se = sc.section_docs[0].getDocumentElement()
 /vars
 
 
