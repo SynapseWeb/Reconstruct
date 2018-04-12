@@ -5,15 +5,6 @@ import java.util.Map;
 import java.util.Iterator;
 import java.util.Set;
 
-
-
-import java.io.*;
-import java.awt.image.*;
-import javax.imageio.ImageIO;
-
-import org.w3c.dom.*;
-import org.xml.sax.*;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,13 +12,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-// import java.io.StringBufferInputStream;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
 
@@ -146,8 +138,6 @@ public class XML_Parser {
       doc = null;
 
       try {
-          // doc = dBuilder.parse(new StringBufferInputStream(lines.toString()));
-          // doc = dBuilder.parse(new StringReader(lines.toString()));
           doc = dBuilder.parse(new ByteArrayInputStream(lines.toString().getBytes()));
       } catch (SAXException e) {
           e.printStackTrace();
