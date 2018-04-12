@@ -30,6 +30,8 @@ public class SeriesClass {
 
     this.series_doc = XML_Parser.parse_xml_file_to_doc ( series_file );
 
+    System.out.println ( "Series is currently viewing: " + this.series_doc.getDocumentElement().getAttributes().getNamedItem("index") );
+
     this.section_docs = new Document[section_file_names.length];
 
     for (int i=0; i<section_file_names.length; i++) {
@@ -37,6 +39,7 @@ public class SeriesClass {
       System.out.println ( "============== Section File " + section_file_names[i] + " ==============" );
       section_file = new File ( series_file.getParent() + File.separator + section_file_names[i] );
       this.section_docs[i] = XML_Parser.parse_xml_file_to_doc ( section_file );
+      System.out.println ( "This section is: " + this.section_docs[i].getDocumentElement().getAttributes().getNamedItem("index") );
       System.out.println ( "===========================================" );
     }
 
