@@ -82,7 +82,7 @@ public class SeriesClass {
                     for (int i=0; i<image_file_names.length; i++) {
                       new_names[i] = image_file_names[i];
                     }
-                    try {                    
+                    try {
                       new_names[image_file_names.length] = new File ( series_path + File.separator + ((Element)grandchild).getAttribute("src") ).getCanonicalPath();
                     } catch (Exception e) {
                       System.out.println ( "Error getting path for " + ((Element)grandchild).getAttribute("src") );

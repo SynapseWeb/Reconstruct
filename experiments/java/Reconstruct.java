@@ -391,13 +391,43 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   }
 
   // MouseWheelListener methods:
-
 	public void mouseWheelMoved ( MouseWheelEvent e ) {
     if (drawing_mode == true) {
       scroll_wheel_position += e.getWheelRotation();
-      System.out.println ( "Reconstruct: scroll wheel = " + scroll_wheel_position );
-      int scrolled_x = e.getX();
-      int scrolled_y = e.getY();
+      int scroll_wheel_delta = e.getWheelRotation();
+
+      System.out.println ( "Reconstruct: scroll wheel delta = " + scroll_wheel_delta );
+      if (this.image_frame != null) {
+        System.out.println ( "this.image_frame != null" );
+        // Need to find relative to this one
+        if (this.image_frames != null) {
+          System.out.println ( "this.image_frames != null" );
+          if (this.image_frames.length > 0) {
+            System.out.println ( "this.image_frames.length > 0" );
+            // Begin the search
+            int matching_frame = -1;
+            for (int i=0; i<this.image_frames.length; i++) {
+              if (this.image_frames[i] == this.image_frame) {
+                matching_frame = i;
+                break;
+              }
+            }
+            if (matching_frame >= 0) {
+              int new_frame = matching_frame + scroll_wheel_delta;
+              if (new_frame < 0) new_frame = 0;
+              if (new_frame >= this.image_frames.length) new_frame = this.image_frames.length - 1;
+              System.out.println ( "Changing the frame to " + new_frame );
+              this.image_frame = this.image_frames[new_frame];
+            }
+          }
+        }
+	    } else if (this.image_frames != null) {
+	      // Just set to first if possible
+	      if (this.image_frames.length > 0) {
+	        this.image_frame = this.image_frames[0];
+	      }
+	    }
+
 	  } else {
 	    super.mouseWheelMoved ( e );
 	  }
@@ -522,12 +552,46 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		    File series_file = file_chooser.getSelectedFile();
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
         
-        this.series = new SeriesClass ( series_file );
-        this.image_frame_names = this.series.get_image_file_names();
-        for (int i=0; i<this.image_frame_names.length; i++) {
-          System.out.println ( " Opening ... " + this.image_frame_names[i] );
+        try {
+          this.series = new SeriesClass ( series_file );
+          this.image_frame_names = this.series.get_image_file_names();
+          this.image_frames = new BufferedImage[this.image_frame_names.length];
+          for (int i=0; i<this.image_frame_names.length; i++) {
+            System.out.println ( " Opening ... " + this.image_frame_names[i] );
+            File image_file = new File ( this.image_frame_names[i] );
+            this.image_frames[i] = ImageIO.read(image_file);
+            if (i == 0) {
+              this.image_frame = this.image_frames[i];
+            }
+          }
+        } catch (Exception oe) {
+	        // this.image_frame = null;
+	        JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
+	        repaint();
         }
 
+/*
+        String file_path_and_name = "?Unknown?";
+        try {
+          file_path_and_name = this.image_frame_names[0];
+          File image_file = new File ( file_path_and_name );
+          BufferedImage new_image;
+          new_image = ImageIO.read(image_file);
+          this.image_frame = new_image;
+          this.image_frames = new BufferedImage[this.image_frame_names.length];
+
+          repaint();
+        } catch (Exception oe) {
+	        // this.image_frame = null;
+	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
+	        repaint();
+        }
+
+*/
+
+
+
+        /*
         String file_path_and_name = "?Unknown?";
         try {
           file_path_and_name = "" + file_chooser.getSelectedFile();
@@ -537,6 +601,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
 	        repaint();
         }
+        */
 		  }
 
 		} else if (cmd.equalsIgnoreCase("Dump")) {
