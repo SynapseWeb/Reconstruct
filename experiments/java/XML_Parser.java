@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringBufferInputStream;
+// import java.io.StringBufferInputStream;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -146,7 +146,9 @@ public class XML_Parser {
       doc = null;
 
       try {
-          doc = dBuilder.parse(new StringBufferInputStream(lines.toString()));
+          // doc = dBuilder.parse(new StringBufferInputStream(lines.toString()));
+          // doc = dBuilder.parse(new StringReader(lines.toString()));
+          doc = dBuilder.parse(new ByteArrayInputStream(lines.toString().getBytes()));
       } catch (SAXException e) {
           e.printStackTrace();
           doc = null;
