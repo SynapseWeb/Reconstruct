@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringBufferInputStream;
+// Deprecated: import java.io.StringBufferInputStream;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,13 +59,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   
   SeriesClass series = null;
 
-	ArrayList strokes = new ArrayList();  // Argument (if any) specifies initial capacity (default 10)
-	ArrayList stroke  = null;
+	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
+	ArrayList<double[]> stroke  = null;
 
   void dump_strokes() {
     for (int i=0; i<strokes.size(); i++) {
       System.out.println ( " Stroke " + i );
-      ArrayList s = (ArrayList)(strokes.get(i));
+      ArrayList<double[]> s = strokes.get(i);
 	    for (int j=0; j<s.size(); j++) {
 	      double p[] = (double[])(s.get(j));
 	      System.out.println ( "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
@@ -73,7 +73,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     }
   }
 
-  void draw_stroke ( Graphics g, ArrayList s ) {
+  void draw_stroke ( Graphics g, ArrayList<double[]> s ) {
     if (s.size() > 0) {
       int line_padding = 1;
       for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
@@ -126,7 +126,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     g.setColor ( new Color ( 200, 0, 0 ) );
     for (int i=0; i<strokes.size(); i++) {
       // System.out.println ( " Stroke " + i );
-      ArrayList s = (ArrayList)(strokes.get(i));
+      ArrayList<double[]> s = strokes.get(i);
       draw_stroke ( g, s );
     }
     if (stroke != null) {
@@ -325,7 +325,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           strokes.add ( stroke );
         }
         // System.out.println ( "Making new stroke" );
-        stroke  = new ArrayList(100);
+        stroke  = new ArrayList<double[]>(100);
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
           p[0] = px_to_x(getSize().width / 2);
@@ -369,7 +369,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         super.mouseDragged(e);
       }
       if (stroke == null) {
-        stroke  = new ArrayList(100);
+        stroke  = new ArrayList<double[]>(100);
       }
       if (stroke != null) {
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
@@ -536,7 +536,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       dump_strokes();
       this.series.dump();
 		} else if (cmd.equalsIgnoreCase("Clear")) {
-	    strokes = new ArrayList();
+	    strokes = new ArrayList<ArrayList<double[]>>();
 	    stroke  = null;
 	    repaint();
 		} else if ( cmd.equalsIgnoreCase("Add") || cmd.equalsIgnoreCase("Images...") ) {
