@@ -15,7 +15,7 @@ Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
 
 * **[Development Version (64-bit Windows)](https://github.com/SynapseWeb/Reconstruct/blob/master/source/Reconstruct.exe)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/source/sha1sum.txt))
 
-* **[Development Version (Java All)](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/Reconstruct.jar)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/sha1sum.txt))
+* **[Experimental Version (Java All)](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/Reconstruct.jar)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/sha1sum.txt))
 
 
 with Help Manual and example.ser (7.38MB) 
