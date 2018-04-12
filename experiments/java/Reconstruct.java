@@ -441,7 +441,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   }
   public void keyPressed ( KeyEvent e ) {
     System.out.println ( "Key Pressed, e = " + e );
-    if ( (e.getKeyCode() == e.VK_PAGE_DOWN) || (e.getKeyCode() == e.VK_PAGE_UP  ) ) {
+    if ( (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) || (e.getKeyCode() == KeyEvent.VK_PAGE_UP  ) ) {
       // Figure out if there's anything to do
       if (this.image_frames != null) {
         if (this.image_frames.length > 1) {
@@ -455,10 +455,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           }
           // System.out.println ( "Current image is " + current_index );
           int delta = 0;
-          if (e.getKeyCode() == e.VK_PAGE_UP) {
+          if (e.getKeyCode() == KeyEvent.VK_PAGE_UP) {
             System.out.println ( "Page Up with " + this.image_frames.length + " frames" );
             delta = 1;
-          } else if (e.getKeyCode() == e.VK_PAGE_DOWN) {
+          } else if (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
             System.out.println ( "Page Down with " + this.image_frames.length + " frames" );
             delta = -1;
           }
