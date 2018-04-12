@@ -61,6 +61,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
   
   SeriesClass series = null;
+	ArrayList<SectionClass> sections = new ArrayList<SectionClass>();  // Argument (if any) specifies initial capacity (default 10)
+  SectionClass current_section = null;
+
 
 	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
 	ArrayList<double[]> stroke  = null;
