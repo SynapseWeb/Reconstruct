@@ -59,9 +59,10 @@ public class SeriesClass {
 
   public String[] get_image_file_names() {
     System.out.println ( "Getting image file names" );
+    String image_file_names[] = new String[0];
     if (this.section_docs != null) {
-      for (int i=0; i<this.section_docs.length; i++) {
-        Element section_element = this.section_docs[i].getDocumentElement();
+      for (int sect_num=0; sect_num<this.section_docs.length; sect_num++) {
+        Element section_element = this.section_docs[sect_num].getDocumentElement();
         System.out.println ( "This section is index " + section_element.getAttribute("index") );
         if (section_element.hasChildNodes()) {
           System.out.println ( "  This section has child nodes" );
@@ -77,6 +78,17 @@ public class SeriesClass {
                   if (grandchild.getNodeName() == "Image") {
                     System.out.println ( "      Grandchild " + gn + " is an image" );
                     System.out.println ( "         Image name is: " + ((Element)grandchild).getAttribute("src") );
+                    String new_names[] = new String[image_file_names.length + 1];
+                    for (int i=0; i<image_file_names.length; i++) {
+                      new_names[i] = image_file_names[i];
+                    }
+                    try {                    
+                      new_names[image_file_names.length] = new File ( series_path + File.separator + ((Element)grandchild).getAttribute("src") ).getCanonicalPath();
+                    } catch (Exception e) {
+                      System.out.println ( "Error getting path for " + ((Element)grandchild).getAttribute("src") );
+                      System.exit(1);
+                    }
+                    image_file_names = new_names;
                   }
                 }
               }
@@ -85,7 +97,7 @@ public class SeriesClass {
         }
       }
     }
-    return ( new String[0] );
+    return ( image_file_names );
   }
 
   public void dump() {
