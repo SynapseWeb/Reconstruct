@@ -1,6 +1,8 @@
 # Log
 ### Generated with: git log --date=short --pretty=format:"* %ad ==> %s ([%h](https://github.com/SynapseWeb/Reconstruct/commit/%H))"
 
+
+* 2018-04-12 ==> Added links to commits in the log file for easier browsing. ([d04f60c](https://github.com/SynapseWeb/Reconstruct/commit/d04f60ca7fe1b8379296dfbbd5b39b5438517fb9))
 * 2018-04-12 ==> Experiment with adding links to log file. ([4e83099](https://github.com/SynapseWeb/Reconstruct/commit/4e83099678e5d7b3e8997f2d02917640d2f40d89))
 * 2018-04-12 ==> Updated documentation. ([d1e45f1](https://github.com/SynapseWeb/Reconstruct/commit/d1e45f1d6df7032d1bdb9097bb8fc267392149ae))
 * 2018-04-12 ==> Changed Java name from "Development" to "Experimental". ([40f7e72](https://github.com/SynapseWeb/Reconstruct/commit/40f7e72a58d3675c5766ba4d05ded22ccbd0df54))
@@ -53,7 +55,7 @@
 * 2018-04-02 ==> Restored the "awesome" and "cool" check box connections for testing. ([fbb52c3](https://github.com/SynapseWeb/Reconstruct/commit/fbb52c3606128a9ea024a14a63b73d93fb0cfe13))
 * 2018-04-02 ==> Added some debugging code to help understand the callback parameters ([5a756ea](https://github.com/SynapseWeb/Reconstruct/commit/5a756ea3ea19ae420b5e60e23f61cac284818d78))
 * 2018-04-02 ==> PyGTK3: Added stub callbacks to all menu items. Removed demo code. ([2f764f6](https://github.com/SynapseWeb/Reconstruct/commit/2f764f61eeefca82e9a9bb1f3c6c5315fa67171f))
-* 2018-04-02 ==> PyGTK3: Added most of the remaining menus. Some deeper ones not implemented yet. ([4c39250](https://github.com/SynapseWeb/Reconstruct/commit/4c392508d967213b3f1b5a53fb555da43daa92
+* 2018-04-02 ==> PyGTK3: Added most of the remaining menus. Some deeper ones not implemented yet. ([4c39250](https://github.com/SynapseWeb/Reconstruct/commit/4c392508d967213b3f1b5a53fb555da43daa92ae))
 * 2018-04-02 ==> PyGTK3: Began adding actual Reconstruct Menus ([90ac9be](https://github.com/SynapseWeb/Reconstruct/commit/90ac9be6527d5a1388205da8d5c80316f89b407b))
 * 2018-04-02 ==> Added some customizations to bring it closer to other versions. ([81eabe6](https://github.com/SynapseWeb/Reconstruct/commit/81eabe661848b4d386537d7d9d8c5f52c08dc4ed))
 * 2018-04-02 ==> Added a Python3 GTK example with XML Menu Definition ([fbdf355](https://github.com/SynapseWeb/Reconstruct/commit/fbdf3552bf29611c9d519279fda8d13acd1e6481))
@@ -134,7 +136,7 @@
 * 2018-02-28 ==> Improved cursor by centering at origin and then translating ([d406f3e](https://github.com/SynapseWeb/Reconstruct/commit/d406f3e28b71fbe43a1fb5efbd253a5ef7f890a3))
 * 2018-02-28 ==> Added Center Drawing mode and attempted cursor improvements ([af86d7b](https://github.com/SynapseWeb/Reconstruct/commit/af86d7baf2040a29ca3455f06bc3cae59efbe48d))
 * 2018-02-27 ==> Added some instructions to the Java version. ([b5df3fc](https://github.com/SynapseWeb/Reconstruct/commit/b5df3fcfa67e9d26f19b78c38fa43bcbd135413f))
-* 2018-02-27 ==> Merge branch 'experiments' of https://github.com/SynapseWeb/Reconstruct into experiments ([743a2e1](https://github.com/SynapseWeb/Reconstruct/commit/743a2e1d918e5dd98c2047bfae2e3f
+* 2018-02-27 ==> Merge branch 'experiments' of https://github.com/SynapseWeb/Reconstruct into experiments ([743a2e1](https://github.com/SynapseWeb/Reconstruct/commit/743a2e1d918e5dd98c2047bfae2e3f8e31347b5c))
 * 2018-02-27 ==> Added some updates to the readme files, and moved old to history.md. ([190a093](https://github.com/SynapseWeb/Reconstruct/commit/190a093df65ec90c00d28122367c1018e6bce836))
 * 2018-02-27 ==> Added Reconstruct.jar to the git repository to make it easier to use. ([3f06ea0](https://github.com/SynapseWeb/Reconstruct/commit/3f06ea0dd6f560a0a3157ec978d707b91c115565))
 * 2018-02-27 ==> Implemented space bar for switching between move and draw modes. ([bb0874f](https://github.com/SynapseWeb/Reconstruct/commit/bb0874fc47a63566b269e7ea2d6b94834b2ad9c4))
