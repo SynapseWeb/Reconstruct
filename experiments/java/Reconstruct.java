@@ -1,4 +1,4 @@
-/* This is a demonstration program to show zooming(scrollwheel) and panning(mouse drag) functionality. */
+/* This is a prototype of Reconstruct functionality. */
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -50,12 +50,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 	static int w=800, h=600;
 	
-	boolean drawing_mode = true;
+	boolean drawing_mode = false;
   boolean center_draw = false;
 	boolean stroke_started = false;
-  BufferedImage image_frame = null;
-  BufferedImage image_frames[] = null;
-  String image_frame_names[] = null;
   String current_directory = "";
   MyFileChooser file_chooser = null;
 
@@ -79,74 +76,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     }
   }
 
-  void draw_stroke ( Graphics g, ArrayList<double[]> s ) {
-    if (s.size() > 0) {
-      int line_padding = 1;
-      for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
-        for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
-          double p0[] = s.get(0);
-          for (int j=1; j<s.size(); j++) {
-            double p1[] = s.get(j);
-      		  g.drawLine (  xoffset+x_to_pxi(p0[0]),   yoffset+y_to_pyi(p0[1]),  xoffset+x_to_pxi(p1[0]),  yoffset+y_to_pyi(p1[1]) );
-            // System.out.println ( "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
-      		  p0 = new double[2];
-      		  p0[0] = p1[0];
-      		  p0[1] = p1[1];
-          }
-        }
-      }
+  public void paint_frame (Graphics g) {
+    if (this.series != null) {
+      this.series.paint_section(g, this);
     }
   }
-
-	public void paint_frame (Graphics g) {
-	  Dimension win_s = getSize();
-	  int win_w = win_s.width;
-	  int win_h = win_s.height;
-	  if (recalculate) {
-      set_scale_to_fit ( -100, 100, -100, 100, win_w, win_h );
-	    recalculate = false;
-	  }
-		if (image_frame == null) {
-		  System.out.println ( "Image is null" );
-		} else {
-		  // System.out.println ( "Image is NOT null" );
-		  int img_w = image_frame.getWidth();
-		  int img_h = image_frame.getHeight();
-		  double img_wf = 200;
-		  double img_hf = 200;
-		  if (img_w >= img_h) {
-		    // Make the image wider to fit
-		    img_wf = img_w * img_wf / img_h;
-		  } else {
-		    // Make the height shorter to fit
-		    img_hf = img_h * img_hf / img_w;
-		  }
-		  int draw_x = x_to_pxi(-img_wf/2.0);
-		  int draw_y = y_to_pyi(-img_hf/2.0);
-		  int draw_w = x_to_pxi(img_wf/2.0) - draw_x;
-		  int draw_h = y_to_pyi(img_hf/2.0) - draw_y;
-  		g.drawImage ( image_frame, draw_x, draw_y, draw_w, draw_h, this );
-  		//g.drawImage ( image_frame, (win_w-img_w)/2, (win_h-img_h)/2, img_w, img_h, this );
-    }
-
-    g.setColor ( new Color ( 200, 0, 0 ) );
-    for (int i=0; i<strokes.size(); i++) {
-      // System.out.println ( " Stroke " + i );
-      ArrayList<double[]> s = strokes.get(i);
-      draw_stroke ( g, s );
-    }
-    if (stroke != null) {
-      g.setColor ( new Color ( 255, 0, 0 ) );
-      draw_stroke ( g, stroke );
-    }
-    if (center_draw) {
-      g.setColor ( new Color ( 255, 255, 255 ) );
-      int cx = getSize().width / 2;
-      int cy = getSize().height / 2;
-      g.drawLine ( cx-10, cy, cx+10, cy );
-      g.drawLine ( cx, cy-10, cx, cy+10 );
-    }
-	}
 
 
   public void set_cursor() {
@@ -400,34 +334,36 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       int scroll_wheel_delta = e.getWheelRotation();
 
       // System.out.println ( "Reconstruct: scroll wheel delta = " + scroll_wheel_delta );
-      if (this.image_frame != null) {
-        // System.out.println ( "this.image_frame != null" );
-        // Need to find relative to this one
-        if (this.image_frames != null) {
-          // System.out.println ( "this.image_frames != null" );
-          if (this.image_frames.length > 0) {
-            // System.out.println ( "this.image_frames.length > 0" );
-            // Begin the search
-            int matching_frame = -1;
-            for (int i=0; i<this.image_frames.length; i++) {
-              if (this.image_frames[i] == this.image_frame) {
-                matching_frame = i;
-                break;
+      if (this.series != null) {
+        if (this.series.image_frame != null) {
+          // System.out.println ( "this.series.image_frame != null" );
+          // Need to find relative to this one
+          if (this.series.image_frames != null) {
+            // System.out.println ( "this.series.image_frames != null" );
+            if (this.series.image_frames.length > 0) {
+              // System.out.println ( "this.series.image_frames.length > 0" );
+              // Begin the search
+              int matching_frame = -1;
+              for (int i=0; i<this.series.image_frames.length; i++) {
+                if (this.series.image_frames[i] == this.series.image_frame) {
+                  matching_frame = i;
+                  break;
+                }
+              }
+              if (matching_frame >= 0) {
+                int new_frame = matching_frame + scroll_wheel_delta;
+                if (new_frame < 0) new_frame = 0;
+                if (new_frame >= this.series.image_frames.length) new_frame = this.series.image_frames.length - 1;
+                // System.out.println ( "Changing the frame to " + new_frame );
+                this.series.image_frame = this.series.image_frames[new_frame];
               }
             }
-            if (matching_frame >= 0) {
-              int new_frame = matching_frame + scroll_wheel_delta;
-              if (new_frame < 0) new_frame = 0;
-              if (new_frame >= this.image_frames.length) new_frame = this.image_frames.length - 1;
-              // System.out.println ( "Changing the frame to " + new_frame );
-              this.image_frame = this.image_frames[new_frame];
-            }
           }
-        }
-	    } else if (this.image_frames != null) {
-	      // Just set to first if possible
-	      if (this.image_frames.length > 0) {
-	        this.image_frame = this.image_frames[0];
+	      } else if (this.series.image_frames != null) {
+	        // Just set to first if possible
+	        if (this.series.image_frames.length > 0) {
+	          this.series.image_frame = this.series.image_frames[0];
+	        }
 	      }
 	    }
 
@@ -477,28 +413,30 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     System.out.println ( "Key Pressed, e = " + e );
     if ( (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) || (e.getKeyCode() == KeyEvent.VK_PAGE_UP  ) ) {
       // Figure out if there's anything to do
-      if (this.image_frames != null) {
-        if (this.image_frames.length > 1) {
-          // Find the current index
-          int current_index = -1;
-          for (int i=0; i<this.image_frames.length; i++) {
-            if (this.image_frame == this.image_frames[i]) {
-              current_index = i;
-              break;
+      if (this.series != null) {
+        if (this.series.image_frames != null) {
+          if (this.series.image_frames.length > 1) {
+            // Find the current index
+            int current_index = -1;
+            for (int i=0; i<this.series.image_frames.length; i++) {
+              if (this.series.image_frame == this.series.image_frames[i]) {
+                current_index = i;
+                break;
+              }
             }
-          }
-          // System.out.println ( "Current image is " + current_index );
-          int delta = 0;
-          if (e.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-            System.out.println ( "Page Up with " + this.image_frames.length + " frames" );
-            delta = 1;
-          } else if (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-            System.out.println ( "Page Down with " + this.image_frames.length + " frames" );
-            delta = -1;
-          }
-          if ((current_index+delta >= 0) && (current_index+delta < this.image_frames.length)) {
-            this.image_frame = this.image_frames[current_index+delta];
-            repaint();
+            // System.out.println ( "Current image is " + current_index );
+            int delta = 0;
+            if (e.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+              System.out.println ( "Page Up with " + this.series.image_frames.length + " frames" );
+              delta = 1;
+            } else if (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+              System.out.println ( "Page Down with " + this.series.image_frames.length + " frames" );
+              delta = -1;
+            }
+            if ((current_index+delta >= 0) && (current_index+delta < this.series.image_frames.length)) {
+              this.series.image_frame = this.series.image_frames[current_index+delta];
+              repaint();
+            }
           }
         }
       }
@@ -557,59 +495,28 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         
         try {
           this.series = new SeriesClass ( series_file );
-          this.image_frame_names = this.series.get_image_file_names();
-          this.image_frames = new BufferedImage[this.image_frame_names.length];
-          for (int i=0; i<this.image_frame_names.length; i++) {
-            System.out.println ( " Opening ... " + this.image_frame_names[i] );
-            File image_file = new File ( this.image_frame_names[i] );
-            this.image_frames[i] = ImageIO.read(image_file);
+          this.series.image_frame_names = this.series.get_image_file_names();
+          this.series.image_frames = new BufferedImage[this.series.image_frame_names.length];
+          for (int i=0; i<this.series.image_frame_names.length; i++) {
+            System.out.println ( " Opening ... " + this.series.image_frame_names[i] );
+            File image_file = new File ( this.series.image_frame_names[i] );
+            this.series.image_frames[i] = ImageIO.read(image_file);
             if (i == 0) {
-              this.image_frame = this.image_frames[i];
+              this.series.image_frame = this.series.image_frames[i];
             }
           }
         } catch (Exception oe) {
-	        // this.image_frame = null;
+	        // this.series.image_frame = null;
 	        JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
 	        repaint();
         }
-
-/*
-        String file_path_and_name = "?Unknown?";
-        try {
-          file_path_and_name = this.image_frame_names[0];
-          File image_file = new File ( file_path_and_name );
-          BufferedImage new_image;
-          new_image = ImageIO.read(image_file);
-          this.image_frame = new_image;
-          this.image_frames = new BufferedImage[this.image_frame_names.length];
-
-          repaint();
-        } catch (Exception oe) {
-	        // this.image_frame = null;
-	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
-	        repaint();
-        }
-
-*/
-
-
-
-        /*
-        String file_path_and_name = "?Unknown?";
-        try {
-          file_path_and_name = "" + file_chooser.getSelectedFile();
-          repaint();
-        } catch (Exception oe) {
-	        // this.image_frame = null;
-	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
-	        repaint();
-        }
-        */
 		  }
 
 		} else if (cmd.equalsIgnoreCase("Dump")) {
       dump_strokes();
-      this.series.dump();
+      if (this.series != null) {
+        this.series.dump();
+      }
 		} else if (cmd.equalsIgnoreCase("Clear")) {
 	    strokes = new ArrayList<ArrayList<double[]>>();
 	    stroke  = null;
@@ -634,21 +541,22 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           File image_file = new File ( file_path_and_name );
           BufferedImage new_image;
           new_image = ImageIO.read(image_file);
-          this.image_frame = new_image;
-
-          if (this.image_frames == null) {
-            this.image_frames = new BufferedImage[1];
-          } else {
-            BufferedImage temp[] = new BufferedImage[this.image_frames.length+1];
-            for (int i=0; i<this.image_frames.length; i++) {
-              temp[i] = this.image_frames[i];
+          if (this.series != null) {
+            this.series.image_frame = new_image;
+            if (this.series.image_frames == null) {
+              this.series.image_frames = new BufferedImage[1];
+            } else {
+              BufferedImage temp[] = new BufferedImage[this.series.image_frames.length+1];
+              for (int i=0; i<this.series.image_frames.length; i++) {
+                temp[i] = this.series.image_frames[i];
+              }
+              this.series.image_frames = temp;
             }
-            this.image_frames = temp;
+            this.series.image_frames[this.series.image_frames.length-1] = this.series.image_frame;
           }
-          this.image_frames[this.image_frames.length-1] = this.image_frame;
           repaint();
         } catch (Exception oe) {
-	        // this.image_frame = null;
+	        // this.series.image_frame = null;
 	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
 	        repaint();
         }
@@ -911,22 +819,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             mi.addActionListener(zp);
             menu_bar.add ( help_menu );
 
-
-          /*
-          JMenu file_menu = new JMenu("File");
-            file_menu.add ( mi = new JMenuItem("Next") );
-            mi.addActionListener(zp);
-            file_menu.add ( mi = new JMenuItem("Previous") );
-            mi.addActionListener(zp);
-            file_menu.add ( mi = new JMenuItem("Add") );
-            mi.addActionListener(zp);
-            file_menu.add ( mi = new JMenuItem("Remove") );
-            mi.addActionListener(zp);
-            file_menu.add ( mi = new JMenuItem("Exit") );
-            mi.addActionListener(zp);
-            menu_bar.add ( file_menu );
-          */
-
           JMenu mode_menu = new JMenu("Mode");
             bg = new ButtonGroup();
             System.out.println ( "Initializing Drawing Mode with drawing_mode: "  + zp.drawing_mode );
@@ -949,13 +841,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				
 				zp.setBackground ( new Color (0,0,0) );
 		    zp.file_chooser = new MyFileChooser ( zp.current_directory );
-
-        try {
-			    zp.image_frame = ImageIO.read(new File("test.png"));
-			    // int type = zp.image_frame.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : zp.image_frame.getType();
-		    } catch (IOException e) {
-			    System.out.println( "\n\nCannot open default \"test.png\" file:\n" + e + "\n" );
-		    }
 
 				f.add ( zp );
         zp.addKeyListener ( zp );
