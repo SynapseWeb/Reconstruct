@@ -1,5 +1,5 @@
 # Log
-### Generated with: git log --date=short --pretty=format:"* %ad ==> %s ([%h](https://github.com/SynapseWeb/Reconstruct/commit/%H))"
+### Generated with: git log --date=short --pretty=format:"\* %ad ==> %s \([%h]\(https://github.com/SynapseWeb/Reconstruct/commit/%H))"
 
 * 2018-04-14 ==> Updated the instructions for the current multiple section version. ([11d863d](https://github.com/SynapseWeb/Reconstruct/commit/11d863d5cc52674dfff35bd012288a76a6650f47))
 * 2018-04-14 ==> Added the round version of cell_slice_032.jpg to replace the oval. ([cbde528](https://github.com/SynapseWeb/Reconstruct/commit/cbde528af24d8c99385b21250555e6c0f4d32564))
