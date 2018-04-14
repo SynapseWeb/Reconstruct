@@ -59,17 +59,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   
   SeriesClass series = null;
 
-	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
 	ArrayList<double[]> stroke  = null;
 
   void dump_strokes() {
-    for (int i=0; i<strokes.size(); i++) {
-      System.out.println ( " Stroke " + i );
-      ArrayList<double[]> s = strokes.get(i);
-	    for (int j=0; j<s.size(); j++) {
-	      double p[] = s.get(j);
-	      System.out.println ( "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
-	    }
+    if (series != null) {
+      series.dump_strokes();
     }
   }
 
@@ -266,7 +260,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       if (drawing_mode == true) {
         if (stroke != null) {
           // System.out.println ( "Saving previous stroke" );
-          strokes.add ( stroke );
+          if (series != null) {
+            series.add_stroke ( stroke );
+          }
         }
         // System.out.println ( "Making new stroke" );
         stroke  = new ArrayList<double[]>(100);
@@ -294,7 +290,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           p[1] = py_to_y(getSize().height / 2);
         }
         stroke.add ( p );
-        strokes.add ( stroke );
+        series.add_stroke ( stroke );
         stroke = null;
         repaint();
       }
@@ -465,17 +461,20 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  }
 
 		} else if (cmd.equalsIgnoreCase("Dump")) {
-      dump_strokes();
       if (this.series != null) {
+        this.series.dump_strokes();
         this.series.dump();
       }
 		} else if (cmd.equalsIgnoreCase("Clear")) {
-	    strokes = new ArrayList<ArrayList<double[]>>();
+      if (this.series != null) {
+        this.series.clear_strokes();
+      }
 	    stroke  = null;
 	    repaint();
 		} else if ( cmd.equalsIgnoreCase("Add") || cmd.equalsIgnoreCase("Images...") ) {
 
 			System.out.println ( "This option is disabled!!!" );
+      JOptionPane.showMessageDialog(null, "Add Images Disabled", "Add Images Disabled", JOptionPane.WARNING_MESSAGE);
 
 		  /*
 			System.out.println ( "Opening new file ..." );
@@ -524,7 +523,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  System.out.println ( "Sections: ..." );
 		} else if (cmd.equalsIgnoreCase("Exit")) {
 			System.exit ( 0 );
-		}
+		} else {
+	    JOptionPane.showMessageDialog(null, "Option Not Implemented", "Option Not Implemented", JOptionPane.WARNING_MESSAGE);
+	  }
+
   }
 
 	public static void main ( String[] args ) {

@@ -33,6 +33,8 @@ public class SectionClass {
   BufferedImage section_image = null;
   String image_file_names[] = new String[0];
 
+	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
+
   public SectionClass ( String p_name, String f_name ) {
     this.path_name = p_name;
     this.file_name = f_name;
@@ -83,6 +85,27 @@ public class SectionClass {
 
   }
 
+
+  public void dump_strokes() {
+    for (int i=0; i<strokes.size(); i++) {
+      System.out.println ( " Stroke " + i );
+      ArrayList<double[]> s = strokes.get(i);
+	    for (int j=0; j<s.size(); j++) {
+	      double p[] = s.get(j);
+	      System.out.println ( "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
+	    }
+    }
+  }
+
+  public void clear_strokes() {
+    strokes = new ArrayList<ArrayList<double[]>>();
+  }
+
+  public void add_stroke (	ArrayList<double[]> stroke ) {
+    strokes.add ( stroke );
+  }
+
+
   public BufferedImage get_image() {
     if (section_image == null) {
       try {
@@ -98,7 +121,7 @@ public class SectionClass {
     return ( section_image );
   }
 
-  void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r ) {
+  public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r ) {
     if (s.size() > 0) {
       int line_padding = 1;
       for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
@@ -144,9 +167,9 @@ public class SectionClass {
     }
 
     g.setColor ( new Color ( 200, 0, 0 ) );
-    for (int i=0; i<r.strokes.size(); i++) {
+    for (int i=0; i<strokes.size(); i++) {
       // System.out.println ( " Stroke " + i );
-      ArrayList<double[]> s = r.strokes.get(i);
+      ArrayList<double[]> s = strokes.get(i);
       draw_stroke ( g, s, r );
     }
     if (r.stroke != null) {

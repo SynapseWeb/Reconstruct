@@ -38,24 +38,6 @@ public class SeriesClass {
   SectionClass sections[] = null;
   int section_index = 0;
 
-  void position_by_n_sections ( int n ) {
-    section_index += n;
-    if (section_index < 0) {
-      section_index = 0;
-    } else if (section_index >= sections.length) {
-      section_index = sections.length - 1;
-    }
-  }
-
-	public void paint_section (Graphics g, Reconstruct r) {
-	  // BufferedImage image_frame = null;
-	  if (sections != null) {
-	    if (section_index < sections.length) {
-	      sections[section_index].paint_section ( g, r, this );
-	    }
-	  }
-	}
-
   public SeriesClass ( File series_file ) {
 
     this.series_path = series_file.getParent();
@@ -104,6 +86,49 @@ public class SeriesClass {
       }
     }
   }
+
+  public void dump_strokes() {
+	  if (sections != null) {
+	    if (section_index < sections.length) {
+	      sections[section_index].dump_strokes();
+	    }
+    }
+  }
+
+  public void clear_strokes() {
+	  if (sections != null) {
+	    if (section_index < sections.length) {
+	      sections[section_index].clear_strokes();
+	    }
+    }
+  }
+
+  public void add_stroke (	ArrayList<double[]> stroke ) {
+	  if (sections != null) {
+	    if (section_index < sections.length) {
+	      sections[section_index].add_stroke ( stroke );
+	    }
+	  }
+  }
+
+  public void position_by_n_sections ( int n ) {
+    section_index += n;
+    if (section_index < 0) {
+      section_index = 0;
+    } else if (section_index >= sections.length) {
+      section_index = sections.length - 1;
+    }
+  }
+
+	public void paint_section (Graphics g, Reconstruct r) {
+	  // BufferedImage image_frame = null;
+	  if (sections != null) {
+	    if (section_index < sections.length) {
+	      sections[section_index].paint_section ( g, r, this );
+	    }
+	  }
+	}
+
 
   public String[] get_section_file_names ( String path, String root_name ) {
     // System.out.println ( "Looking for " + root_name + " in " + path );
