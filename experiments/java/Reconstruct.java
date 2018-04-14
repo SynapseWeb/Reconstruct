@@ -331,7 +331,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	public void mouseWheelMoved ( MouseWheelEvent e ) {
     if (drawing_mode == true) {
       // scroll_wheel_position += e.getWheelRotation();
-      int scroll_wheel_delta = e.getWheelRotation();
+      int scroll_wheel_delta = -e.getWheelRotation();
 
       // System.out.println ( "Reconstruct: scroll wheel delta = " + scroll_wheel_delta );
       if (this.series != null) {
@@ -354,7 +354,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
                 int new_frame = matching_frame + scroll_wheel_delta;
                 if (new_frame < 0) new_frame = 0;
                 if (new_frame >= this.series.image_frames.length) new_frame = this.series.image_frames.length - 1;
-                // System.out.println ( "Changing the frame to " + new_frame );
+                System.out.println ( "Changing the frame to " + new_frame );
                 this.series.image_frame = this.series.image_frames[new_frame];
               }
             }
