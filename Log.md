@@ -1,7 +1,21 @@
 # Log
 ### Generated with: git log --date=short --pretty=format:"* %ad ==> %s ([%h](https://github.com/SynapseWeb/Reconstruct/commit/%H))"
 
-
+* 2018-04-14 ==> Updated the instructions for the current multiple section version. ([11d863d](https://github.com/SynapseWeb/Reconstruct/commit/11d863d5cc52674dfff35bd012288a76a6650f47))
+* 2018-04-14 ==> Added the round version of cell_slice_032.jpg to replace the oval. ([cbde528](https://github.com/SynapseWeb/Reconstruct/commit/cbde528af24d8c99385b21250555e6c0f4d32564))
+* 2018-04-14 ==> Moved the stretched version of cell_slice_032 to cell_slice_032s. ([c956d34](https://github.com/SynapseWeb/Reconstruct/commit/c956d3466a4efc2c529df5e80d3ab90c80e184c1))
+* 2018-04-14 ==> This version supports separate traces for each section. ([bc7e276](https://github.com/SynapseWeb/Reconstruct/commit/bc7e27652e91b5a48e6e5812d0ad01d96221d129))
+* 2018-04-13 ==> Moved the drawing code (paint_section) into SectionClass. ([a70cc95](https://github.com/SynapseWeb/Reconstruct/commit/a70cc9594d8db82efe06db7a3d465edb96f969c6))
+* 2018-04-13 ==> Removed a lot of unused code. ([a6a002e](https://github.com/SynapseWeb/Reconstruct/commit/a6a002ee080374c25325576bacfa838fbd55cac9))
+* 2018-04-13 ==> Disabled much of old direct image reading code (source only update). ([53ea2b0](https://github.com/SynapseWeb/Reconstruct/commit/53ea2b05c9199fd1b6dec9a6fc8fe19f85aa466e))
+* 2018-04-13 ==> Moved the images into the sections (without removing from series yet). ([8e7b4f3](https://github.com/SynapseWeb/Reconstruct/commit/8e7b4f30d926f4a14457fc6c2d80891371bd0848))
+* 2018-04-13 ==> Very minor change to load image file names in the series (not in main). ([81b8002](https://github.com/SynapseWeb/Reconstruct/commit/81b8002a3d9d65d32da817ddaaffb35c5100bc82))
+* 2018-04-13 ==> Added support for home key to reset scales and centering. ([91e7f25](https://github.com/SynapseWeb/Reconstruct/commit/91e7f259f9d03abab0e27e92d963f2869c90c9f0))
+* 2018-04-13 ==> Changed cursor to better match Reconstruct (source only update). ([4b6f9bd](https://github.com/SynapseWeb/Reconstruct/commit/4b6f9bdbf1f019ad8a17a489ca6dbd71ebbde6f2))
+* 2018-04-13 ==> Reversed the sense of the mouse wheel to match Reconstruct.exe ([756429b](https://github.com/SynapseWeb/Reconstruct/commit/756429bb0e9576715e9f404a8267bf935d2483e6))
+* 2018-04-12 ==> Moved a lot of code from Reconstruct.java into SeriesClass.java. ([6c51ec2](https://github.com/SynapseWeb/Reconstruct/commit/6c51ec2ffcc024ccc3762210cfa464487e23b97c))
+* 2018-04-12 ==> Began moving drawing from Reconstruct to Sections. ([6dc3ddf](https://github.com/SynapseWeb/Reconstruct/commit/6dc3ddfc944cbcfb4e10d0014f54c857e60668b9))
+* 2018-04-12 ==> The previous log had been clipped on right hand side (terminal width) ([bdefec5](https://github.com/SynapseWeb/Reconstruct/commit/bdefec53fa305309ecbf01cf2af9c43c7191a0b4))
 * 2018-04-12 ==> Added links to commits in the log file for easier browsing. ([d04f60c](https://github.com/SynapseWeb/Reconstruct/commit/d04f60ca7fe1b8379296dfbbd5b39b5438517fb9))
 * 2018-04-12 ==> Experiment with adding links to log file. ([4e83099](https://github.com/SynapseWeb/Reconstruct/commit/4e83099678e5d7b3e8997f2d02917640d2f40d89))
 * 2018-04-12 ==> Updated documentation. ([d1e45f1](https://github.com/SynapseWeb/Reconstruct/commit/d1e45f1d6df7032d1bdb9097bb8fc267392149ae))
