@@ -501,7 +501,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         
         try {
           this.series = new SeriesClass ( series_file );
-          this.series.image_frame_names = this.series.get_image_file_names();
+          // this.series.image_frame_names = this.series.get_image_file_names();
           this.series.image_frames = new BufferedImage[this.series.image_frame_names.length];
           for (int i=0; i<this.series.image_frame_names.length; i++) {
             System.out.println ( " Opening ... " + this.series.image_frame_names[i] );

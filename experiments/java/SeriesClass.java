@@ -139,6 +139,8 @@ public class SeriesClass {
       System.out.println ( "===========================================" );
     }
 
+    image_frame_names = get_image_file_names();
+
     System.out.println ( "Stub Constructor for SeriesClass" );
     SectionClass one_section = new SectionClass ( series_doc );
   }
