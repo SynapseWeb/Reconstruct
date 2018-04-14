@@ -419,7 +419,26 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   public void keyPressed ( KeyEvent e ) {
     if ( (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) || (e.getKeyCode() == KeyEvent.VK_PAGE_UP  ) ) {
       // Figure out if there's anything to do
+
+
       if (this.series != null) {
+
+        int delta = 0;
+        if (e.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+          System.out.println ( "Page Up" );
+          delta = 1;
+        } else if (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+          System.out.println ( "Page Down" );
+          delta = -1;
+        }
+        if (delta >= 0) {
+          this.series.position_by_n_sections ( delta );
+          repaint();
+        }
+
+
+
+        /*
         if (this.series.image_frames != null) {
           if (this.series.image_frames.length > 1) {
             // Find the current index
@@ -445,6 +464,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             }
           }
         }
+        */
       }
     } else if ( e.getKeyCode() == KeyEvent.VK_HOME ) {
       this.recalculate = true;
@@ -507,6 +527,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         try {
           this.series = new SeriesClass ( series_file );
           // this.series.image_frame_names = this.series.get_image_file_names();
+          /*
           this.series.image_frames = new BufferedImage[this.series.image_frame_names.length];
           for (int i=0; i<this.series.image_frame_names.length; i++) {
             System.out.println ( " Opening ... " + this.series.image_frame_names[i] );
@@ -516,6 +537,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
               this.series.image_frame = this.series.image_frames[i];
             }
           }
+          */
         } catch (Exception oe) {
 	        // this.series.image_frame = null;
 	        System.out.println ( "Error while opening a series file:\n" + oe );
@@ -535,6 +557,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	    repaint();
 		} else if ( cmd.equalsIgnoreCase("Add") || cmd.equalsIgnoreCase("Images...") ) {
 
+			System.out.println ( "This option is disabled!!!" );
+
+		  /*
 			System.out.println ( "Opening new file ..." );
 
 		  file_chooser.setMultiSelectionEnabled(true);
@@ -546,7 +571,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             System.out.println ( "You chose this file: " + selected_files[i] );
 		      }
 		    }
-        System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + file_chooser.getSelectedFile() );
+        System.out.println ( "You chose to open this file: " + file_chooser.getSelectedFile() );
         String file_path_and_name = "?Unknown?";
         try {
           file_path_and_name = "" + file_chooser.getSelectedFile();
@@ -574,6 +599,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	        repaint();
         }
 		  }
+		  */
+
+
 		} else if (cmd.equalsIgnoreCase("List Sections...")) {
 		  System.out.println ( "Sections: ..." );
 		} else if (cmd.equalsIgnoreCase("Exit")) {

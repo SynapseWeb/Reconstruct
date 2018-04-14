@@ -39,7 +39,7 @@ public class SeriesClass {
   int section_index = 0;
   // one_section = new SectionClass ( series_doc );
 
-  BufferedImage image_frame = null;
+  // BufferedImage image_frame = null;
   String image_frame_names[] = null;
   BufferedImage image_frames[] = null;
 
