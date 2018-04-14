@@ -172,7 +172,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
       int clw = w/12;  // Arrow line width / 2
       int caw = w/6;   // Arrow head width / 2
-      int cal = (int)(w/3.5);   // Arrow head length
+      int cal = (int)(w/5);   // Arrow head length
 
       p = new Polygon();
       p.addPoint (       -cw2,           0 );  // Left Point
