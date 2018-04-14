@@ -74,6 +74,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   }
 
   public void paint_frame (Graphics g) {
+	  Dimension win_s = getSize();
+	  int win_w = win_s.width;
+	  int win_h = win_s.height;
+	  if (recalculate) {
+      set_scale_to_fit ( -100, 100, -100, 100, win_w, win_h );
+	    recalculate = false;
+	  }
     if (this.series != null) {
       this.series.paint_section(g, this);
     }
