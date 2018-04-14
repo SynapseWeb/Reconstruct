@@ -335,6 +335,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       // scroll_wheel_position += e.getWheelRotation();
       int scroll_wheel_delta = -e.getWheelRotation();
 
+      this.series.position_by_n_sections ( scroll_wheel_delta );
+
+      /*
+
       // System.out.println ( "Reconstruct: scroll wheel delta = " + scroll_wheel_delta );
       if (this.series != null) {
         if (this.series.image_frame != null) {
@@ -368,6 +372,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	        }
 	      }
 	    }
+	    */
 
 	  } else {
 	    super.mouseWheelMoved ( e );
@@ -513,6 +518,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           }
         } catch (Exception oe) {
 	        // this.series.image_frame = null;
+	        System.out.println ( "Error while opening a series file:\n" + oe );
 	        JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
 	        repaint();
         }
@@ -563,6 +569,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           repaint();
         } catch (Exception oe) {
 	        // this.series.image_frame = null;
+	        System.out.println ( "Error while opening an image file:\n" + oe );
 	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
 	        repaint();
         }

@@ -35,10 +35,22 @@ public class SeriesClass {
   Document series_doc = null;
   Document section_docs[] = null;
 
+  SectionClass sections[] = null;
+  int section_index = 0;
+  // one_section = new SectionClass ( series_doc );
+
   BufferedImage image_frame = null;
   String image_frame_names[] = null;
   BufferedImage image_frames[] = null;
 
+  void position_by_n_sections ( int n ) {
+    section_index += n;
+    if (section_index < 0) {
+      section_index = 0;
+    } else if (section_index >= sections.length) {
+      section_index = sections.length - 1;
+    }
+  }
 
   void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r ) {
     if (s.size() > 0) {
@@ -67,12 +79,18 @@ public class SeriesClass {
       r.set_scale_to_fit ( -100, 100, -100, 100, win_w, win_h );
 	    r.recalculate = false;
 	  }
-		if (this.image_frame == null) {
+	  BufferedImage image_frame = null;
+	  if (sections != null) {
+	    if (section_index < sections.length) {
+	      image_frame = sections[section_index].get_image();
+	    }
+	  }
+		if (image_frame == null) {
 		  System.out.println ( "Image is null" );
 		} else {
 		  // System.out.println ( "Image is NOT null" );
-		  int img_w = this.image_frame.getWidth();
-		  int img_h = this.image_frame.getHeight();
+		  int img_w = image_frame.getWidth();
+		  int img_h = image_frame.getHeight();
 		  double img_wf = 200;
 		  double img_hf = 200;
 		  if (img_w >= img_h) {
@@ -86,8 +104,8 @@ public class SeriesClass {
 		  int draw_y = r.y_to_pyi(-img_hf/2.0);
 		  int draw_w = r.x_to_pxi(img_wf/2.0) - draw_x;
 		  int draw_h = r.y_to_pyi(img_hf/2.0) - draw_y;
-      g.drawImage ( this.image_frame, draw_x, draw_y, draw_w, draw_h, r );
-      //g.drawImage ( this.image_frame, (win_w-img_w)/2, (win_h-img_h)/2, img_w, img_h, this );
+      g.drawImage ( image_frame, draw_x, draw_y, draw_w, draw_h, r );
+      //g.drawImage ( image_frame, (win_w-img_w)/2, (win_h-img_h)/2, img_w, img_h, this );
     }
 
     g.setColor ( new Color ( 200, 0, 0 ) );
@@ -114,35 +132,41 @@ public class SeriesClass {
   public SeriesClass ( File series_file ) {
 
     this.series_path = series_file.getParent();
-    String series_file_name = series_file.getName();
-    String section_file_names[] = get_section_file_names ( series_path, series_file_name.substring(0,series_file_name.length()-4) );
 
+    String series_file_name = series_file.getName();
     this.series_doc = XML_Parser.parse_xml_file_to_doc ( series_file );
 
-    Element series_element = this.series_doc.getDocumentElement();
+    String section_file_names[] = get_section_file_names ( series_path, series_file_name.substring(0,series_file_name.length()-4) );
 
-    // System.out.println ( "Series is currently viewing: " + this.series_doc.getDocumentElement().getAttributes().getNamedItem("index") );
+
+    Element series_element = this.series_doc.getDocumentElement();
     System.out.println ( "Series is currently viewing index: " + series_element.getAttribute("index") );
 
     this.section_docs = new Document[section_file_names.length];
 
+    sections = new SectionClass[section_file_names.length];
+
+
     for (int i=0; i<section_file_names.length; i++) {
       File section_file;
-      System.out.println ( "============== Section File " + section_file_names[i] + " ==============" );
+
       section_file = new File ( series_path + File.separator + section_file_names[i] );
+
       this.section_docs[i] = XML_Parser.parse_xml_file_to_doc ( section_file );
+
+      sections[i] = new SectionClass ( series_path, section_file_names[i] );
 
       Element section_element = this.section_docs[i].getDocumentElement();
 
       // System.out.println ( "This section is index " + this.section_docs[i].getDocumentElement().getAttributes().getNamedItem("index").getNodeValue() );
-      System.out.println ( "This section is index " + section_element.getAttribute("index") );
-      System.out.println ( "===========================================" );
     }
+
+    section_index = 0;
 
     image_frame_names = get_image_file_names();
 
     System.out.println ( "Stub Constructor for SeriesClass" );
-    SectionClass one_section = new SectionClass ( series_doc );
+    // SectionClass one_section = new SectionClass ( series_doc );
   }
 
   public String[] get_image_file_names() {
