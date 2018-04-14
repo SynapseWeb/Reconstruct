@@ -37,11 +37,6 @@ public class SeriesClass {
 
   SectionClass sections[] = null;
   int section_index = 0;
-  // one_section = new SectionClass ( series_doc );
-
-  // BufferedImage image_frame = null;
-  String image_frame_names[] = null;
-  BufferedImage image_frames[] = null;
 
   void position_by_n_sections ( int n ) {
     section_index += n;
@@ -162,54 +157,6 @@ public class SeriesClass {
     }
 
     section_index = 0;
-
-    image_frame_names = get_image_file_names();
-
-    System.out.println ( "Stub Constructor for SeriesClass" );
-    // SectionClass one_section = new SectionClass ( series_doc );
-  }
-
-  public String[] get_image_file_names() {
-    System.out.println ( "Getting image file names" );
-    String image_file_names[] = new String[0];
-    if (this.section_docs != null) {
-      for (int sect_num=0; sect_num<this.section_docs.length; sect_num++) {
-        Element section_element = this.section_docs[sect_num].getDocumentElement();
-        System.out.println ( "This section is index " + section_element.getAttribute("index") );
-        if (section_element.hasChildNodes()) {
-          System.out.println ( "  This section has child nodes" );
-          NodeList child_nodes = section_element.getChildNodes();
-          for (int cn=0; cn<child_nodes.getLength(); cn++) {
-            Node child = child_nodes.item(cn);
-            if (child.getNodeName() == "Transform") {
-              System.out.println ( "    Node " + cn + " is a transform" );
-              if (child.hasChildNodes()) {
-                NodeList grandchild_nodes = child.getChildNodes();
-                for (int gn=0; gn<grandchild_nodes.getLength(); gn++) {
-                  Node grandchild = grandchild_nodes.item(gn);
-                  if (grandchild.getNodeName() == "Image") {
-                    System.out.println ( "      Grandchild " + gn + " is an image" );
-                    System.out.println ( "         Image name is: " + ((Element)grandchild).getAttribute("src") );
-                    String new_names[] = new String[image_file_names.length + 1];
-                    for (int i=0; i<image_file_names.length; i++) {
-                      new_names[i] = image_file_names[i];
-                    }
-                    try {
-                      new_names[image_file_names.length] = new File ( series_path + File.separator + ((Element)grandchild).getAttribute("src") ).getCanonicalPath();
-                    } catch (Exception e) {
-                      System.out.println ( "Error getting path for " + ((Element)grandchild).getAttribute("src") );
-                      System.exit(1);
-                    }
-                    image_file_names = new_names;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return ( image_file_names );
   }
 
   public void dump() {
