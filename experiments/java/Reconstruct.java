@@ -58,8 +58,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
   
   SeriesClass series = null;
+  /*
 	ArrayList<SectionClass> sections = new ArrayList<SectionClass>();  // Argument (if any) specifies initial capacity (default 10)
   SectionClass current_section = null;
+  */
 
 
 	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
@@ -410,7 +412,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     repaint();
   }
   public void keyPressed ( KeyEvent e ) {
-    System.out.println ( "Key Pressed, e = " + e );
     if ( (e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) || (e.getKeyCode() == KeyEvent.VK_PAGE_UP  ) ) {
       // Figure out if there's anything to do
       if (this.series != null) {
@@ -440,6 +441,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           }
         }
       }
+    } else if ( e.getKeyCode() == KeyEvent.VK_HOME ) {
+      this.recalculate = true;
+      repaint();
+    } else {
+      System.out.println ( "Key Pressed, e = " + e );
     }
     //super.keyPressed ( e );
   }
