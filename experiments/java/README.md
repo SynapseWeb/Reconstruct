@@ -1,5 +1,9 @@
 # Reconstruct Java Experiments
-## This is an early Java prototype of basic functionality (February 27th, 2018):
+## Prototype Bezier Tracing Interface with BezierTracing.jar (April 16th, 2018):
+
+![Bezier Tracing](Trace_Round.gif?raw=true "Bezier Tracing")
+
+## Early Java prototype of basic functionality (February 27th, 2018):
 
 ![Early Demo](Screenshot_02272018_105320PM.png?raw=true "Early Demo")
 
