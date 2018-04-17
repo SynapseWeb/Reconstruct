@@ -1,4 +1,4 @@
-all: ZoomPanLib.class Reconstruct.jar ZoomPanDraw.jar sha1sum.txt
+all: ZoomPanLib.class Reconstruct.jar BezierTracing.jar ZoomPanDraw.jar sha1sum.txt
 
 ZoomPanLib.class: ZoomPanLib.java makefile
 	javac -nowarn -source 1.4 ZoomPanLib.java
@@ -14,14 +14,20 @@ SectionClass.class: SectionClass.java makefile
 
 Reconstruct.jar: Reconstruct.java ZoomPanLib.class XML_Parser.class SeriesClass.class SectionClass.class makefile
 	javac Reconstruct.java
-	jar -cfe Reconstruct.jar Reconstruct *.class *.java
+	jar -cfe Reconstruct.jar Reconstruct *.class
 
 ZoomPanDraw.jar: ZoomPanDraw.java ZoomPanLib.java makefile
 	javac -nowarn -source 1.4 ZoomPanDraw.java
-	jar -cfe ZoomPanDraw.jar ZoomPanDraw *.class *.java
+	jar -cfe ZoomPanDraw.jar ZoomPanDraw *.class
 
-sha1sum.txt: Reconstruct.jar
+BezierTracing.jar: BezierTracing.java makefile
+	rm -f *.class
+	javac -nowarn -source 1.2 BezierTracing.java
+	jar -cfe BezierTracing.jar BezierTracing *.class
+
+sha1sum.txt: Reconstruct.jar BezierTracing.jar
 	sha1sum Reconstruct.jar > sha1sum.txt
+	sha1sum BezierTracing.jar >> sha1sum.txt
 
 clean:
 	rm -f *.jar
