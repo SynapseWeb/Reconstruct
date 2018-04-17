@@ -1,6 +1,13 @@
 # Log
 ### Generated with: git log --date=short --pretty=format:"\* %ad ==> %s \([%h]\(https://github.com/SynapseWeb/Reconstruct/commit/%H))"
 
+* 2018-04-16 ==> Added usage description for BezierTracing.jar ([1151d06](https://github.com/SynapseWeb/Reconstruct/commit/1151d061bef885ebbb146064a0182819d0c9a09a))
+* 2018-04-16 ==> Updated the makefile to generate SHA1 sum for BezierTracing.jar ([8017315](https://github.com/SynapseWeb/Reconstruct/commit/8017315f3bd03cf974e87fdcdbfe0e280d9acf90))
+* 2018-04-16 ==> Updated README.md to show Java Bezier Tracing Demonstration ([d662a0d](https://github.com/SynapseWeb/Reconstruct/commit/d662a0d3c2ae85974ce7a4d41b48e94518a9d3a4))
+* 2018-04-16 ==> Added "TraceRound.gif" to demonstrate the Experimental Java Interface ([daaa3a3](https://github.com/SynapseWeb/Reconstruct/commit/daaa3a3cb356e270da980de25fc17f6e8daa7d7c))
+* 2018-04-16 ==> Added BezierTracing.java and .jar (uses Bezier Curves for tracing). ([45e457d](https://github.com/SynapseWeb/Reconstruct/commit/45e457db62847ec78bf48981d1f9a521e6a0a0fe))
+* 2018-04-14 ==> Attempt to escape git log special characters ([5528dcf](https://github.com/SynapseWeb/Reconstruct/commit/5528dcf4327b4ad8b36e510e89ecac2d04ba5ca8))
+* 2018-04-14 ==> Updated the log file with Friday's commits. ([7b0efd9](https://github.com/SynapseWeb/Reconstruct/commit/7b0efd9a9a796a1718919298c43ab8f45d1e3387))
 * 2018-04-14 ==> Updated the instructions for the current multiple section version. ([11d863d](https://github.com/SynapseWeb/Reconstruct/commit/11d863d5cc52674dfff35bd012288a76a6650f47))
 * 2018-04-14 ==> Added the round version of cell_slice_032.jpg to replace the oval. ([cbde528](https://github.com/SynapseWeb/Reconstruct/commit/cbde528af24d8c99385b21250555e6c0f4d32564))
 * 2018-04-14 ==> Moved the stretched version of cell_slice_032 to cell_slice_032s. ([c956d34](https://github.com/SynapseWeb/Reconstruct/commit/c956d3466a4efc2c529df5e80d3ab90c80e184c1))
@@ -182,4 +189,3 @@
 * 2015-08-05 ==> Update README.md ([760d1e3](https://github.com/SynapseWeb/Reconstruct/commit/760d1e385cb25efd18d596b35856b3cbb3ef99fc))
 * 2015-08-05 ==> initial commit ([a269533](https://github.com/SynapseWeb/Reconstruct/commit/a26953353e1e1597a171440d849b033d01348442))
 * 2015-08-05 ==> Initial commit ([4365cca](https://github.com/SynapseWeb/Reconstruct/commit/4365ccadf46fb5c65e82f7836839d9a92517d052))
-
