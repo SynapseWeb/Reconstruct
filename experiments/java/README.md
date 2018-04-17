@@ -3,6 +3,32 @@
 
 ![Bezier Tracing](Trace_Round.gif?raw=true "Bezier Tracing")
 
+## Use:
+
+* Obtain a copy of **BezierTracing.jar** (either by downloading, or by building with make).
+* Double click on BezierTracing.jar (or run it with: java -jar BezierTracing.jar).
+* Start a trace by **RIGHT** clicking. A white dot should appear as your starting point.
+* Move (not drag) the mouse to the next point and **LEFT** click to add the second point.
+* With only two points, you'll get a line with two endpoints and two "handles" between them.
+* Again move (not drag) the mouse to the next point and click again. Another segment will appear.
+* **NOTE:** Each new point (click) will affect the previous segment. That's OK.
+* Complete the trace with a **RIGHT** click on either the start point or the end point (see following).
+* If you complete a trace by **RIGHT** clicking on the first (start) point, the trace will be closed to that point.
+* If you complete a trace by **RIGHT** clicking on the last (end) point, the trace will remain open.
+
+## Typical workflow:
+
+#### Creating a trace:
+
+* Right click to start a trace (white dot appears).
+* Left click to add sequential points (no dragging needed).
+* Right click to end a trace.
+
+#### Modifying a trace:
+
+* When not creating a trace, the left button performs "click and drag" on all points and handles.
+
+
 ## Early Java prototype of basic functionality (February 27th, 2018):
 
 ![Early Demo](Screenshot_02272018_105320PM.png?raw=true "Early Demo")
@@ -18,7 +44,7 @@ This version supports switching between **Move Mode** and **Draw Mode** via the 
 
 ## Use:
 
-* Obtain a copy of Reconstruct.jar (either by downloading, or by building with make).
+* Obtain a copy of **Reconstruct.jar** (either by downloading, or by building with make).
 * Double click on Reconstruct.jar (or run it with: java -jar Reconstruct.jar).
 * Use the menu option "**Series / Open...**" to open an existing series file (.ser).
 * The mouse wheel will zoom in and out. The image will zoom about the mouse location (that point remains fixed).
