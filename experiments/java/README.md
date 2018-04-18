@@ -30,6 +30,9 @@
 
 ![Bezier Point Adjustment](Bezier_Point_Adjustment.gif?raw=true "Bezier Point Adjustment")
 
+![Bezier Slope Adjustment](Single_Cubic_Bezier_Control.gif?raw=true "Bezier Slope Adjustment")
+
+
 #### Comparison with Polygon Tool:
 
 ![Bezier v Polygon](Bezier_Polygon_Image.gif?raw=true "Bezier v Polygon")
