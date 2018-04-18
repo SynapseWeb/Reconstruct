@@ -28,6 +28,9 @@
 
 * When not creating a trace, the left button performs "click and drag" on all points and handles.
 
+#### Comparison with Polygon Tool:
+
+![Bezier Tracing](Bezier_Polygon_Image.gif?raw=true "Bezier Tracing")
 
 ## Early Java prototype of basic functionality (February 27th, 2018):
 
