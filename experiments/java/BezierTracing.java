@@ -21,6 +21,7 @@ class DrawParameters {
   boolean round_points = true;
   boolean round_handles = true;
   boolean fill_current = true;
+  boolean align_handles = true;
 }
 
 
@@ -448,6 +449,16 @@ class BezierCurves implements PointSelect, CanDraw {
   }
 
   public void key_press ( Event evt ) {
+    if (evt.key == (int)'a') {
+      draw_pars.align_handles = ! draw_pars.align_handles;
+      System.out.println ( "Align Handles = " + draw_pars.align_handles );
+    }
+    if (evt.key == (int)'d') {
+      System.out.println ( "Dumping data to bezier_traces.txt" );
+    }
+    if (evt.key == (int)'l') {
+      System.out.println ( "Loading data from bezier_traces.txt" );
+    }
     if (evt.key == (int)'r') {
       draw_pars.round_points = ! draw_pars.round_points;
       System.out.println ( "Set Round = " + draw_pars.round_points );
@@ -489,6 +500,57 @@ class BezierCurves implements PointSelect, CanDraw {
 
   public void key_release ( Event evt ) {
     // System.out.println( "Key Press Event:" + evt.key );
+  }
+
+  public void mouse_drag ( BezierTracing window, Event evt ) {
+    if (closest_point != null) {
+      double dx = evt.x - this.closest_point.x;
+      double dy = evt.y - this.closest_point.y;
+      this.closest_point.x = evt.x;
+      this.closest_point.y = evt.y;
+      // Translate all handles attached to this point:
+      for (int i=0; i<this.curves.size(); i++) {
+        BezierCurve curve = (BezierCurve)(this.curves.elementAt(i));
+        for (int j=0; j<curve.segments.size(); j++) {
+          BezierSegment seg = (BezierSegment)(curve.segments.elementAt(j));
+          if (seg.p0 == this.closest_point) {
+            seg.h0.x += dx;
+            seg.h0.y += dy;
+          }
+          if (seg.p1 == this.closest_point) {
+            seg.h1.x += dx;
+            seg.h1.y += dy;
+          }
+        }
+      }
+      if (this.draw_pars.align_handles) {
+        // Rotate all handles attached to this point:
+        for (int i=0; i<this.curves.size(); i++) {
+          BezierCurve curve = (BezierCurve)(this.curves.elementAt(i));
+          int nsegs = curve.segments.size();
+          for (int j=0; j<nsegs; j++) {
+            BezierSegment seg = (BezierSegment)(curve.segments.elementAt(j));
+            if (seg.h0 == this.closest_point) {
+              BezierSegment other_seg = (BezierSegment)(curve.segments.elementAt((j+nsegs-1)%nsegs));
+              System.out.println ( "Seg " + j + ", h0: Update seg " + ((j+nsegs-1)%nsegs) + ", h1, loc = " + seg.h0.x + "," + seg.h0.y );
+              double lp1h1 = Math.sqrt ( (seg.h1.x * seg.h1.x) + (seg.p1.y * seg.p1.y) );
+              double lp0h0 = Math.sqrt ( (other_seg.h0.x * other_seg.h0.x) + (other_seg.p0.y * other_seg.p0.y) );
+              other_seg.h1.x = other_seg.p1.x + ( lp1h1 * (seg.p0.x - seg.h0.x) / lp0h0 );
+              other_seg.h1.y = other_seg.p1.y + ( lp1h1 * (seg.p0.y - seg.h0.y) / lp0h0 );
+            }
+            if (seg.h1 == this.closest_point) {
+              BezierSegment other_seg = (BezierSegment)(curve.segments.elementAt((j+nsegs+1)%nsegs));
+              System.out.println ( "Seg " + j + ", h1: Update seg " + ((j+nsegs+1)%nsegs) + ", h0, loc = " + seg.h1.x + "," + seg.h1.y );
+              double lp1h1 = Math.sqrt ( (seg.h1.x * seg.h1.x) + (seg.p1.y * seg.p1.y) );
+              double lp0h0 = Math.sqrt ( (other_seg.h0.x * other_seg.h0.x) + (other_seg.p0.y * other_seg.p0.y) );
+              other_seg.h0.x = other_seg.p0.x + ( lp0h0 * (seg.p1.x - seg.h1.x) / lp1h1 );
+              other_seg.h0.y = other_seg.p0.y + ( lp0h0 * (seg.p1.y - seg.h1.y) / lp1h1 );
+            }
+          }
+       }
+      }
+      window.repaint();
+    }
   }
 
 }
@@ -607,29 +669,7 @@ public class BezierTracing extends java.applet.Applet {
  			repaint();
   	} else if (evt.id == Event.MOUSE_DRAG) {
       if (this.curves != null) {
-    	  if (this.curves.closest_point != null) {
-    	    double dx = evt.x - this.curves.closest_point.x;
-    	    double dy = evt.y - this.curves.closest_point.y;
-    	    this.curves.closest_point.x = evt.x;
-    	    this.curves.closest_point.y = evt.y;
-    	    // Move all handles attached to this point:
-          for (int i=0; i<this.curves.curves.size(); i++) {
-            BezierCurve curve = (BezierCurve)(this.curves.curves.elementAt(i));
-            for (int j=0; j<curve.segments.size(); j++) {
-              BezierSegment seg = (BezierSegment)(curve.segments.elementAt(j));
-              if (seg.p0 == this.curves.closest_point) {
-                seg.h0.x += dx;
-                seg.h0.y += dy;
-              }
-              if (seg.p1 == this.curves.closest_point) {
-                seg.h1.x += dx;
-                seg.h1.y += dy;
-              }
-            }
-          }
-    	    
-				  repaint();
-    	  }
+        this.curves.mouse_drag ( this, evt );
     	}
  		} else if (evt.id == Event.WINDOW_DESTROY) {
       hide();
@@ -651,6 +691,9 @@ public class BezierTracing extends java.applet.Applet {
   }
 
 	public static void main ( String args[] ) {
+	  System.out.println ( "a: align handles" );
+	  System.out.println ( "d: dump data to bezier_traces.txt" );
+	  System.out.println ( "l: load data from bezier_traces.txt" );
 	  System.out.println ( "r: round handles" );
 	  System.out.println ( "s: change symbol size" );
 	  System.out.println ( "t: show/hide text" );
