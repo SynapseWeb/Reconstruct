@@ -28,9 +28,11 @@
 
 * When not creating a trace, the left button performs "click and drag" on all points and handles.
 
+![Bezier Point Adjustment](Bezier_Point_Adjustment.gif?raw=true "Bezier Point Adjustment")
+
 #### Comparison with Polygon Tool:
 
-![Bezier Tracing](Bezier_Polygon_Image.gif?raw=true "Bezier Tracing")
+![Bezier v Polygon](Bezier_Polygon_Image.gif?raw=true "Bezier v Polygon")
 
 ## Early Java prototype of basic functionality (February 27th, 2018):
 
