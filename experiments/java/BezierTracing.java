@@ -21,6 +21,7 @@ class DrawParameters {
   boolean round_points = true;
   boolean round_handles = true;
   boolean fill_current = true;
+  boolean show_handles = true;
   boolean align_handles = true;
 }
 
@@ -46,6 +47,9 @@ class Point implements CanDraw {
   public double x, y;
   public Point ( double x, double y ) {
     this.x = x; this.y = y;
+  }
+  public boolean equals ( Point other ) {
+    return ( (this.x == other.x) && (this.y == other.y) );
   }
   public void draw ( Graphics g, DrawParameters draw_pars ) {
     int l = draw_pars.symbol_size;
@@ -178,18 +182,30 @@ class BezierSegment extends CurveSegment implements CanDraw, PointSelect {
 		double t, dt, t2, t3, x, y, dtdx, dtdy;
 
 		// Draw the control lines along with the points and their labels
+
 		String s = "";
 
-		// Start with the control lines to put them in the background
-		g.setColor(new Color(64,64,64));
-		g.drawLine ((int)p0.x, (int)p0.y, (int)h0.x, (int)h0.y);
-		g.drawLine ((int)h1.x, (int)h1.y, (int)p1.x, (int)p1.y);
+    // Start with the control lines to put them in the background
+    if (draw_pars.show_handles) {
+		  g.setColor(new Color(64,64,64));
+		  g.drawLine ((int)p0.x, (int)p0.y, (int)h0.x, (int)h0.y);
+		  g.drawLine ((int)h1.x, (int)h1.y, (int)p1.x, (int)p1.y);
+		}
 
-		// Now draw each point and label it
-  	Color colors[] = { new Color(255,20,20), new Color(20,255,20), new Color(100,100,255), new Color(240,240,0) };
-		CurvePoint points[] = { p0, h0, h1, p1 };
+    // Now draw each point and label it
+    Color colors_without_handles[] = { new Color(255,20,20), new Color(255,20,20) };
+    CurvePoint points_without_handles[] = { p0, p1 };
+    Color	colors_with_handles[] = { new Color(255,20,20), new Color(20,255,20), new Color(100,100,255), new Color(240,240,0) };
+    CurvePoint points_with_handles[] = { p0, h0, h1, p1 };
 
-		for (int i=0; i<4; i++) {
+    Color colors[] = colors_without_handles;
+    CurvePoint points[] = points_without_handles;
+    if (draw_pars.show_handles) {
+      colors = colors_with_handles;
+      points = points_with_handles;
+    }
+
+		for (int i=0; i<colors.length; i++) {
 			g.setColor ( colors[i] );
 			if (draw_pars.show_text) {
 			  s = "P" + i + "=" + Integer.toString((int)(points[i].x)) + ", " + Integer.toString((int)(points[i].y));
@@ -453,16 +469,118 @@ class BezierCurves implements PointSelect, CanDraw {
     return ( pvclosest );
   }
 
+  public void delete_all() {
+    current_curve = null;
+    current_segment = null;
+    current_point = null;
+    closest_point = null;
+    this.curves = new Vector();
+  }
+
+  public void load_from_file ( String filename ) throws Exception {
+    DataInputStream f = new DataInputStream ( new FileInputStream ( filename ) );
+    int version = f.readInt();
+    if (version != 1) {
+      System.out.println ( "Error: version is not 1" );
+      return;
+    }
+    Vector new_curves = new Vector();
+
+    int num_curves = f.readInt();
+    System.out.println ( "Num curves = " + num_curves );
+
+    for (int c=0; c<num_curves; c++) {
+      BezierCurve curve = new BezierCurve();
+      int num_segs = f.readInt();
+      System.out.println ( " Curve " + c + ", Num segs = " + num_segs );
+      for (int s=0; s<num_segs; s++) {
+        System.out.println ( "  Segment " + s );
+        BezierSegment seg = new BezierSegment (
+            new CurvePoint ( f.readDouble(), f.readDouble() ),    // p0.x p0.y
+            new CurvePoint ( f.readDouble(), f.readDouble() ),    // p1.x p1.y
+            new CurvePoint ( f.readDouble(), f.readDouble() ),    // h0.x h0.y
+            new CurvePoint ( f.readDouble(), f.readDouble() ) );  // h1.x h1.y
+        curve.segments.addElement ( seg );
+      }
+
+      // Remove redundant points, by assuming that identical points are the same
+      for (int s=0; s<num_segs; s++) {
+        BezierSegment seg = (BezierSegment)(curve.segments.elementAt(s));
+        BezierSegment seg_next = (BezierSegment)(curve.segments.elementAt((s+1)%num_segs));
+        if (seg.p1.equals(seg_next.p0)) {
+          // Assume that they should be the same exact point
+          seg_next.p0 = seg.p1;
+        }
+      }
+      new_curves.addElement ( curve );
+    }
+    delete_all();
+    this.curves = new_curves;
+  }
+
+  public void dump_to_file ( String filename ) throws Exception {
+    DataOutputStream f = new DataOutputStream ( new FileOutputStream ( filename ) );
+    int version = 1;
+    f.writeInt(version);
+    int num = curves.size();
+    f.writeInt(num);
+    for (int c=0; c<curves.size(); c++) {
+      BezierCurve curve = (BezierCurve)(curves.elementAt(c));
+      num = curve.segments.size();
+      f.writeInt(num);
+      for (int s=0; s<curve.segments.size(); s++) {
+        BezierSegment seg = (BezierSegment)(curve.segments.elementAt(s));
+        f.writeDouble ( seg.p0.x );
+        f.writeDouble ( seg.p0.y );
+        f.writeDouble ( seg.p1.x );
+        f.writeDouble ( seg.p1.y );
+        f.writeDouble ( seg.h0.x );
+        f.writeDouble ( seg.h0.y );
+        f.writeDouble ( seg.h1.x );
+        f.writeDouble ( seg.h1.y );
+      }
+    }
+  }
+
+  public void print_help() {
+	  System.out.println ( "?: show help" );
+	  System.out.println ( "a: align handles" );
+	  System.out.println ( "h: hide/show handles" );
+	  System.out.println ( "d: dump data to bezier_traces.txt" );
+	  System.out.println ( "l: load data from bezier_traces.txt" );
+	  System.out.println ( "r: round handles" );
+	  System.out.println ( "s: change symbol size" );
+	  System.out.println ( "t: show/hide text" );
+	  System.out.println ( "x: delete all traces" );
+	}
+
   public void key_press ( Event evt ) {
+    System.out.println ( "Key Press: \"" + (char)(evt.key) + "\"" );
+    if (evt.key == (int)'?') {
+      print_help();
+    }
     if (evt.key == (int)'a') {
       draw_pars.align_handles = ! draw_pars.align_handles;
       System.out.println ( "Align Handles = " + draw_pars.align_handles );
     }
+    if (evt.key == (int)'h') {
+      draw_pars.show_handles = ! draw_pars.show_handles;
+    }
     if (evt.key == (int)'d') {
       System.out.println ( "Dumping data to bezier_traces.txt" );
+      try {
+        dump_to_file ( "bezier_traces.dat" );
+      } catch (Exception e) {
+        System.out.println ( "Error writing to file: " + e );
+      }
     }
     if (evt.key == (int)'l') {
       System.out.println ( "Loading data from bezier_traces.txt" );
+      try {
+        load_from_file ( "bezier_traces.dat" );
+      } catch (Exception e) {
+        System.out.println ( "Error writing to file: " + e );
+      }
     }
     if (evt.key == (int)'r') {
       draw_pars.round_points = ! draw_pars.round_points;
@@ -495,11 +613,7 @@ class BezierCurves implements PointSelect, CanDraw {
     }
     if (evt.key == (int)'x') {
       System.out.println ( "Deleting all traces" );
-      current_curve = null;
-      current_segment = null;
-      current_point = null;
-      closest_point = null;
-      this.curves = new Vector();
+      delete_all();
     }
   }
 
@@ -684,9 +798,11 @@ public class BezierTracing extends java.applet.Applet {
  			//curve.select_none();
  			repaint();
   	} else if (evt.id == Event.MOUSE_DRAG) {
-      if (this.curves != null) {
-        this.curves.mouse_drag ( this, evt );
-    	}
+      if (!drawing) {
+        if (this.curves != null) {
+          this.curves.mouse_drag ( this, evt );
+        }
+      }
  		} else if (evt.id == Event.WINDOW_DESTROY) {
       hide();
       System.exit(0);
@@ -707,13 +823,7 @@ public class BezierTracing extends java.applet.Applet {
   }
 
 	public static void main ( String args[] ) {
-	  System.out.println ( "a: align handles" );
-	  System.out.println ( "d: dump data to bezier_traces.txt" );
-	  System.out.println ( "l: load data from bezier_traces.txt" );
-	  System.out.println ( "r: round handles" );
-	  System.out.println ( "s: change symbol size" );
-	  System.out.println ( "t: show/hide text" );
-	  System.out.println ( "x: delete all traces" );
+	  static_bezier.curves.print_help();
 
 		//Application Args   w h  #r (-)#c  diam
 		int w=800, h=600, num_rows=20, num_cols=30, diam=20;
