@@ -273,9 +273,14 @@ class BezierCurve implements PointSelect {
     this.smooth_segment_handles ( -1, 0.2 );
   }
 
+  public boolean is_closed () {
+    boolean closed = ( ((BezierSegment)(segments.elementAt(0))).p0 == ((BezierSegment)(segments.elementAt(segments.size()-1))).p1 );
+    return ( closed );
+  }
+
   public void smooth_segment_handles ( int segment_num, double factor ) {
     int n = segments.size();
-    boolean closed = ( ((BezierSegment)(segments.elementAt(0))).p0 == ((BezierSegment)(segments.elementAt(n-1))).p1 );
+    boolean closed = is_closed();
     for (int i=0; i<n; i++) {
       BezierSegment seg_to_adjust = (BezierSegment)(segments.elementAt(i));
       // Adjust the h0 handle
