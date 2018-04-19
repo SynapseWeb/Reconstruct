@@ -507,6 +507,23 @@ class BezierCurves implements PointSelect, CanDraw {
     // System.out.println( "Key Press Event:" + evt.key );
   }
 
+  public void rotate_about ( Point center, Point master, Point slave ) {
+    // Rotate the "slave" point about the "center" point to be aligned with (but opposite of) the "control" point
+    // Modify the slave point in place
+    double mx_rel = master.x - center.x;
+    double my_rel = master.y - center.y;
+    double sx_rel = slave.x - center.x;
+    double sy_rel = slave.y - center.y;
+    double dmaster = Math.sqrt ( (mx_rel * mx_rel) + (my_rel * my_rel) );
+    double dslave = Math.sqrt ( (sx_rel * sx_rel) + (sy_rel * sy_rel) );
+    if ( (dmaster > 0) && (dslave > 0) ) {
+      double mx_unit = mx_rel / dmaster;
+      double my_unit = my_rel / dmaster;
+      slave.x = center.x - ( mx_unit * dslave );
+      slave.y = center.y - ( my_unit * dslave );
+    }
+  }
+
   public void mouse_drag ( BezierTracing window, Event evt ) {
     if (closest_point != null) {
       double dx = evt.x - this.closest_point.x;
@@ -538,18 +555,12 @@ class BezierCurves implements PointSelect, CanDraw {
             if (seg.h0 == this.closest_point) {
               BezierSegment other_seg = (BezierSegment)(curve.segments.elementAt((j+nsegs-1)%nsegs));
               System.out.println ( "Seg " + j + ", h0: Update seg " + ((j+nsegs-1)%nsegs) + ", h1, loc = " + seg.h0.x + "," + seg.h0.y );
-              double lp1h1 = Math.sqrt ( (seg.h1.x * seg.h1.x) + (seg.p1.y * seg.p1.y) );
-              double lp0h0 = Math.sqrt ( (other_seg.h0.x * other_seg.h0.x) + (other_seg.p0.y * other_seg.p0.y) );
-              other_seg.h1.x = other_seg.p1.x + ( lp1h1 * (seg.p0.x - seg.h0.x) / lp0h0 );
-              other_seg.h1.y = other_seg.p1.y + ( lp1h1 * (seg.p0.y - seg.h0.y) / lp0h0 );
+              rotate_about ( seg.p0, seg.h0, other_seg.h1 );
             }
             if (seg.h1 == this.closest_point) {
               BezierSegment other_seg = (BezierSegment)(curve.segments.elementAt((j+nsegs+1)%nsegs));
               System.out.println ( "Seg " + j + ", h1: Update seg " + ((j+nsegs+1)%nsegs) + ", h0, loc = " + seg.h1.x + "," + seg.h1.y );
-              double lp1h1 = Math.sqrt ( (seg.h1.x * seg.h1.x) + (seg.p1.y * seg.p1.y) );
-              double lp0h0 = Math.sqrt ( (other_seg.h0.x * other_seg.h0.x) + (other_seg.p0.y * other_seg.p0.y) );
-              other_seg.h0.x = other_seg.p0.x + ( lp0h0 * (seg.p1.x - seg.h1.x) / lp1h1 );
-              other_seg.h0.y = other_seg.p0.y + ( lp0h0 * (seg.p1.y - seg.h1.y) / lp1h1 );
+              rotate_about ( seg.p1, seg.h1, other_seg.h0 );
             }
           }
        }
