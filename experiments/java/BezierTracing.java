@@ -554,12 +554,12 @@ class BezierCurves implements PointSelect, CanDraw {
             BezierSegment seg = (BezierSegment)(curve.segments.elementAt(j));
             if (seg.h0 == this.closest_point) {
               BezierSegment other_seg = (BezierSegment)(curve.segments.elementAt((j+nsegs-1)%nsegs));
-              System.out.println ( "Seg " + j + ", h0: Update seg " + ((j+nsegs-1)%nsegs) + ", h1, loc = " + seg.h0.x + "," + seg.h0.y );
+              // System.out.println ( "Seg " + j + ", h0: Update seg " + ((j+nsegs-1)%nsegs) + ", h1, loc = " + seg.h0.x + "," + seg.h0.y );
               rotate_about ( seg.p0, seg.h0, other_seg.h1 );
             }
             if (seg.h1 == this.closest_point) {
               BezierSegment other_seg = (BezierSegment)(curve.segments.elementAt((j+nsegs+1)%nsegs));
-              System.out.println ( "Seg " + j + ", h1: Update seg " + ((j+nsegs+1)%nsegs) + ", h0, loc = " + seg.h1.x + "," + seg.h1.y );
+              // System.out.println ( "Seg " + j + ", h1: Update seg " + ((j+nsegs+1)%nsegs) + ", h0, loc = " + seg.h1.x + "," + seg.h1.y );
               rotate_about ( seg.p1, seg.h1, other_seg.h0 );
             }
           }
