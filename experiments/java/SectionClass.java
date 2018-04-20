@@ -55,22 +55,41 @@ public class SectionClass {
           System.out.println ( "    SectionClass: Node " + cn + " is a transform" );
           if (child.hasChildNodes()) {
             NodeList grandchild_nodes = child.getChildNodes();
+            boolean is_image = false;
             for (int gn=0; gn<grandchild_nodes.getLength(); gn++) {
-              Node grandchild = grandchild_nodes.item(gn);
-              if (grandchild.getNodeName() == "Image") {
-                System.out.println ( "      SectionClass: Grandchild " + gn + " is an image" );
-                System.out.println ( "         SectionClass: Image name is: " + ((Element)grandchild).getAttribute("src") );
-                String new_names[] = new String[image_file_names.length + 1];
-                for (int i=0; i<image_file_names.length; i++) {
-                  new_names[i] = image_file_names[i];
+              if (grandchild_nodes.item(gn).getNodeName() == "Image") {
+                is_image = true;
+                break;
+              }
+            }
+            if (is_image) {
+              // This transform should contain an "Image" node and ONE "Contour" node
+              for (int gn=0; gn<grandchild_nodes.getLength(); gn++) {
+                Node grandchild = grandchild_nodes.item(gn);
+                if (grandchild.getNodeName() == "Image") {
+                  System.out.println ( "      SectionClass: Grandchild " + gn + " is an image" );
+                  System.out.println ( "         SectionClass: Image name is: " + ((Element)grandchild).getAttribute("src") );
+                  String new_names[] = new String[image_file_names.length + 1];
+                  for (int i=0; i<image_file_names.length; i++) {
+                    new_names[i] = image_file_names[i];
+                  }
+                  try {
+                    new_names[image_file_names.length] = new File ( this.path_name + File.separator + ((Element)grandchild).getAttribute("src") ).getCanonicalPath();
+                  } catch (Exception e) {
+                    System.out.println ( "SectionClass: Error getting path for " + ((Element)grandchild).getAttribute("src") );
+                    System.exit(1);
+                  }
+                  image_file_names = new_names;
                 }
-                try {
-                  new_names[image_file_names.length] = new File ( this.path_name + File.separator + ((Element)grandchild).getAttribute("src") ).getCanonicalPath();
-                } catch (Exception e) {
-                  System.out.println ( "SectionClass: Error getting path for " + ((Element)grandchild).getAttribute("src") );
-                  System.exit(1);
+              }
+            } else {
+              // This transform should contain one or more "Contour" nodes
+              for (int gn=0; gn<grandchild_nodes.getLength(); gn++) {
+                Node grandchild = grandchild_nodes.item(gn);
+                if (grandchild.getNodeName() == "Contour") {
+                  System.out.println ( "      SectionClass: Grandchild " + gn + " is a contour" );
+                  System.out.println ( "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
                 }
-                image_file_names = new_names;
               }
             }
           }
