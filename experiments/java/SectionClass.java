@@ -80,6 +80,9 @@ public class SectionClass {
                     System.exit(1);
                   }
                   image_file_names = new_names;
+                } else if (grandchild.getNodeName() == "Contour") {
+                  System.out.println ( "      SectionClass: Grandchild " + gn + " is an image perimeter contour" );
+                  System.out.println ( "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
                 }
               }
             } else {
@@ -87,7 +90,7 @@ public class SectionClass {
               for (int gn=0; gn<grandchild_nodes.getLength(); gn++) {
                 Node grandchild = grandchild_nodes.item(gn);
                 if (grandchild.getNodeName() == "Contour") {
-                  System.out.println ( "      SectionClass: Grandchild " + gn + " is a contour" );
+                  System.out.println ( "      SectionClass: Grandchild " + gn + " is a trace contour" );
                   System.out.println ( "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
                 }
               }
