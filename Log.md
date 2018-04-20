@@ -1,6 +1,21 @@
 # Log
 ### Generated with: git log --date=short --pretty=format:"\* %ad ==> %s \([%h]\(https://github.com/SynapseWeb/Reconstruct/commit/%H))"
 
+* 2018-04-19 ==> This version reads the traces from the XML but scaling isn't right yet. ([fa1ea83](https://github.com/SynapseWeb/Reconstruct/commit/fa1ea8350c58c2f8ae1e56f4c0000df74f241708))
+* 2018-04-19 ==> Added additional printing for contours. ([7d8bf04](https://github.com/SynapseWeb/Reconstruct/commit/7d8bf047d08c1b8c6be5647c4633c16b84f432d3))
+* 2018-04-19 ==> Java: Modified SectionClass to detect both images and traces. ([dd345d4](https://github.com/SynapseWeb/Reconstruct/commit/dd345d4131a4fb229627702f25b83988bc3ee919))
+* 2018-04-18 ==> Added code to save and load tracings in BezierTracing. ([215bcc4](https://github.com/SynapseWeb/Reconstruct/commit/215bcc4b3b7d01af2e21ad866461734c2f22cffd))
+* 2018-04-18 ==> Commented out debug printing during mouse dragging. ([6a54711](https://github.com/SynapseWeb/Reconstruct/commit/6a547114199dcf94c6e91cf4e8374117aaf1f0a2))
+* 2018-04-18 ==> BezierTracing: Allow Bezier handles to have different lengths. ([ff2132b](https://github.com/SynapseWeb/Reconstruct/commit/ff2132b036015c81f3953d4557e740edd7badb4f))
+* 2018-04-18 ==> Bezier: Factored "is_closed" from smooth_segment_handles function. ([4d99a0e](https://github.com/SynapseWeb/Reconstruct/commit/4d99a0e82bc90e2f6ad20c6f46a72502e82f9381))
+* 2018-04-17 ==> Added an option (now default) to align handles (not perfect yet) ([f625c70](https://github.com/SynapseWeb/Reconstruct/commit/f625c709febedfbb31be5e042fe5edeb56900dfd))
+* 2018-04-17 ==> Added the Single Cubic Bezier Conrol image to the introduction ([45238f4](https://github.com/SynapseWeb/Reconstruct/commit/45238f4843d2a7775b840d8f27afe5344fa062e7))
+* 2018-04-17 ==> Added a Bezier modification example. ([7f7efaa](https://github.com/SynapseWeb/Reconstruct/commit/7f7efaa4f3abd71b75b47c10f1eee8ac0ac9c91d))
+* 2018-04-17 ==> Added an animation to show correction of trace with Bezier Curves. ([b0e6fa9](https://github.com/SynapseWeb/Reconstruct/commit/b0e6fa9a6062ec96b2632a36be5b38335419661e))
+* 2018-04-17 ==> Added a single Cubic Bezier Control point example. ([81a66df](https://github.com/SynapseWeb/Reconstruct/commit/81a66df6b11131d7399aa60c5d9c74bf24e5415b))
+* 2018-04-17 ==> Added comparison between Polygon and Bezier Tracing methods ([03bfed7](https://github.com/SynapseWeb/Reconstruct/commit/03bfed7a5b7b16ca82aaf41a70265357d341b90b))
+* 2018-04-17 ==> Added a 9 point comparison between a Bezier Curve and a Polygon. ([2f8902c](https://github.com/SynapseWeb/Reconstruct/commit/2f8902c7f2f1e2af5c79c69c52dea65d0d50bbd1))
+* 2018-04-16 ==> Updated the log.md file. ([bad10f6](https://github.com/SynapseWeb/Reconstruct/commit/bad10f68a9dc6f74736df66c5d540b52c1acd5e9))
 * 2018-04-16 ==> Added usage description for BezierTracing.jar ([1151d06](https://github.com/SynapseWeb/Reconstruct/commit/1151d061bef885ebbb146064a0182819d0c9a09a))
 * 2018-04-16 ==> Updated the makefile to generate SHA1 sum for BezierTracing.jar ([8017315](https://github.com/SynapseWeb/Reconstruct/commit/8017315f3bd03cf974e87fdcdbfe0e280d9acf90))
 * 2018-04-16 ==> Updated README.md to show Java Bezier Tracing Demonstration ([d662a0d](https://github.com/SynapseWeb/Reconstruct/commit/d662a0d3c2ae85974ce7a4d41b48e94518a9d3a4))
@@ -189,3 +204,4 @@
 * 2015-08-05 ==> Update README.md ([760d1e3](https://github.com/SynapseWeb/Reconstruct/commit/760d1e385cb25efd18d596b35856b3cbb3ef99fc))
 * 2015-08-05 ==> initial commit ([a269533](https://github.com/SynapseWeb/Reconstruct/commit/a26953353e1e1597a171440d849b033d01348442))
 * 2015-08-05 ==> Initial commit ([4365cca](https://github.com/SynapseWeb/Reconstruct/commit/4365ccadf46fb5c65e82f7836839d9a92517d052))
+
