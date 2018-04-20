@@ -92,6 +92,18 @@ public class SectionClass {
                 if (grandchild.getNodeName() == "Contour") {
                   System.out.println ( "      SectionClass: Grandchild " + gn + " is a trace contour" );
                   System.out.println ( "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
+                  String points_str = ((Element)grandchild).getAttribute("points");
+                  String xy_str[] = points_str.trim().split(",");
+                  // Allocate an ArrayList to hold the double points
+                  ArrayList<double[]> stroke = new ArrayList<double[]>(xy_str.length);
+                  for (int xyi=0; xyi<xy_str.length; xyi++) {
+                    String xy[] = xy_str[xyi].trim().split(" ");
+                    double p[] = { Double.parseDouble(xy[0])*240, Double.parseDouble(xy[1])*240 };
+                    stroke.add ( p );
+                    System.out.println ( "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
+                  }
+                  strokes.add ( stroke );
+                  System.out.println ( "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }
               }
             }

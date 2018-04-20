@@ -265,7 +265,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           }
         }
         // System.out.println ( "Making new stroke" );
-        stroke  = new ArrayList<double[]>(100);
+        stroke = new ArrayList<double[]>(100);
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
           p[0] = px_to_x(getSize().width / 2);
