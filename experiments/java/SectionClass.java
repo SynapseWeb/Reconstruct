@@ -98,7 +98,7 @@ public class SectionClass {
                   ArrayList<double[]> stroke = new ArrayList<double[]>(xy_str.length);
                   for (int xyi=0; xyi<xy_str.length; xyi++) {
                     String xy[] = xy_str[xyi].trim().split(" ");
-                    double p[] = { Double.parseDouble(xy[0])*240, Double.parseDouble(xy[1])*240 };
+                    double p[] = { (Double.parseDouble(xy[0])*165)-100, (-Double.parseDouble(xy[1])*165)+100 };
                     stroke.add ( p );
                     System.out.println ( "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
