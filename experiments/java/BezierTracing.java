@@ -43,12 +43,12 @@ class PointValue {
   }
 }
 
-class Point implements CanDraw {
+class ControlPoint implements CanDraw {
   public double x, y;
-  public Point ( double x, double y ) {
+  public ControlPoint ( double x, double y ) {
     this.x = x; this.y = y;
   }
-  public boolean equals ( Point other ) {
+  public boolean equals ( ControlPoint other ) {
     return ( (this.x == other.x) && (this.y == other.y) );
   }
   public void draw ( Graphics g, DrawParameters draw_pars ) {
@@ -71,7 +71,7 @@ class Point implements CanDraw {
   }
 }
 
-class CurvePoint extends Point implements CanDraw {
+class CurvePoint extends ControlPoint implements CanDraw {
   public CurveSegment segment;
   public CurvePoint ( double x, double y ) {
     super(x, y);
@@ -621,7 +621,7 @@ class BezierCurves implements PointSelect, CanDraw {
     // System.out.println( "Key Press Event:" + evt.key );
   }
 
-  public void rotate_about ( Point center, Point master, Point slave ) {
+  public void rotate_about ( ControlPoint center, ControlPoint master, ControlPoint slave ) {
     // Rotate the "slave" point about the "center" point to be aligned with (but opposite of) the "control" point
     // Modify the slave point in place
     double mx_rel = master.x - center.x;
