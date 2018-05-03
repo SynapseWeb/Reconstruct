@@ -405,11 +405,18 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     //super.keyReleased ( e );
   }
 
+
+
+	JMenuItem open_series_menu_item=null;
+
   // ActionPerformed methods (mostly menu responses):
 
 	public void actionPerformed(ActionEvent e) {
+		Object action_source = e.getSource();
+
 		String cmd = e.getActionCommand();
-		System.out.println ( "ActionPerformed got \"" + cmd + "\"" );
+		// System.out.println ( "ActionPerformed got \"" + cmd + "\"" );
+		// System.out.println ( "ActionPerformed got \"" + action_source + "\"" );
 		
 		if (cmd.equalsIgnoreCase("Move")) {
       current_cursor = b_cursor;
@@ -441,7 +448,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
       }
 		  repaint();
-		} else if (cmd.equalsIgnoreCase("Open...")) {
+		} else if ( action_source == open_series_menu_item ) {
 		  file_chooser.setMultiSelectionEnabled(false);
 		  FileNameExtensionFilter filter = new FileNameExtensionFilter("Series Files", "ser");
 		  file_chooser.setFileFilter(filter);
@@ -529,6 +536,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
   }
 
+
 	public static void main ( String[] args ) {
 	  for (int i=0; i<args.length; i++) {
 		  System.out.println ( "Arg[" + i + "] = \"" + args[i] + "\"" );
@@ -581,6 +589,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
           JMenu series_menu = new JMenu("Series");
             series_menu.add ( mi = new JMenuItem("Open...") );
+            zp.open_series_menu_item = mi;
             mi.addActionListener(zp);
             series_menu.add ( mi = new JMenuItem("Close") );
             mi.addActionListener(zp);
