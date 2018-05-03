@@ -343,6 +343,12 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   JMenuItem move_menu_item = null;
   JMenuItem draw_menu_item = null;
   JMenuItem center_draw_menu_item = null;
+	JMenuItem open_series_menu_item=null;
+	JMenuItem import_images_menu_item=null;
+	JMenuItem list_sections_menu_item=null;
+	JMenuItem dump_menu_item=null;
+	JMenuItem clear_menu_item=null;
+	JMenuItem exit_menu_item=null;
 
   // KeyListener methods:
 
@@ -407,7 +413,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 
 
-	JMenuItem open_series_menu_item=null;
 
   // ActionPerformed methods (mostly menu responses):
 
@@ -417,8 +422,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		String cmd = e.getActionCommand();
 		// System.out.println ( "ActionPerformed got \"" + cmd + "\"" );
 		// System.out.println ( "ActionPerformed got \"" + action_source + "\"" );
-		
-		if (cmd.equalsIgnoreCase("Move")) {
+
+		if ( action_source == move_menu_item ) {
       current_cursor = b_cursor;
       /*
         Alternative predefined cursors from java.awt.Cursor:
@@ -431,7 +436,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  drawing_mode = false;
 		  stroke_started = false;
 		  repaint();
-		} else if (cmd.equalsIgnoreCase("Draw")) {
+		} else if ( action_source == draw_menu_item ) {
       current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
       if (center_draw) {
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
@@ -441,7 +446,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  drawing_mode = true;
 		  stroke_started = false;
 		  repaint();
-		} else if (cmd.equalsIgnoreCase("Center Drawing")) {
+		} else if ( action_source == center_draw_menu_item ) {
 		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
 		  center_draw = item.getState();
 		  if (drawing_mode) {
@@ -467,18 +472,18 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         }
 		  }
 
-		} else if (cmd.equalsIgnoreCase("Dump")) {
+		} else if ( action_source == dump_menu_item ) {
       if (this.series != null) {
         this.series.dump_strokes();
         this.series.dump();
       }
-		} else if (cmd.equalsIgnoreCase("Clear")) {
+		} else if ( action_source == clear_menu_item ) {
       if (this.series != null) {
         this.series.clear_strokes();
       }
 	    stroke  = null;
 	    repaint();
-		} else if ( cmd.equalsIgnoreCase("Add") || cmd.equalsIgnoreCase("Images...") ) {
+		} else if ( action_source == import_images_menu_item ) {
 
 			System.out.println ( "This option is disabled!!!" );
       JOptionPane.showMessageDialog(null, "Add Images Disabled", "Add Images Disabled", JOptionPane.WARNING_MESSAGE);
@@ -526,9 +531,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  */
 
 
-		} else if (cmd.equalsIgnoreCase("List Sections...")) {
+		} else if ( action_source == list_sections_menu_item ) {
 		  System.out.println ( "Sections: ..." );
-		} else if (cmd.equalsIgnoreCase("Exit")) {
+		} else if ( action_source == exit_menu_item ) {
 			System.exit ( 0 );
 		} else {
 	    JOptionPane.showMessageDialog(null, "Option Not Implemented", "Option Not Implemented", JOptionPane.WARNING_MESSAGE);
@@ -577,13 +582,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
               debug_menu.add ( mi = new JMenuItem("Times") );
               mi.addActionListener(zp);
               debug_menu.addSeparator();
-              debug_menu.add ( mi = new JMenuItem("Dump") );
+              debug_menu.add ( zp.dump_menu_item = mi = new JMenuItem("Dump") );
               mi.addActionListener(zp);
-              debug_menu.add ( mi = new JMenuItem("Clear") );
+              debug_menu.add ( zp.clear_menu_item = mi = new JMenuItem("Clear") );
               mi.addActionListener(zp);
             program_menu.add ( debug_menu );
 
-            program_menu.add ( mi = new JMenuItem("Exit") );
+            program_menu.add ( zp.exit_menu_item = mi = new JMenuItem("Exit") );
             mi.addActionListener(zp);
             menu_bar.add ( program_menu );
 
@@ -615,7 +620,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             series_menu.add ( export_menu );
 
             JMenu import_menu = new JMenu("Import");
-              import_menu.add ( mi = new JMenuItem("Images...") );
+              import_menu.add ( zp.import_images_menu_item = mi = new JMenuItem("Images...") );
               mi.addActionListener(zp);
               import_menu.add ( mi = new JMenuItem("Lines...") );
               mi.addActionListener(zp);
@@ -626,7 +631,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             menu_bar.add ( series_menu );
 
           JMenu section_menu = new JMenu("Section");
-            section_menu.add ( mi = new JMenuItem("List Sections...") );
+            section_menu.add ( zp.list_sections_menu_item = mi = new JMenuItem("List Sections...") );
             mi.addActionListener(zp);
             section_menu.add ( mi = new JMenuItem("Thumbnails...") );
             mi.addActionListener(zp);
@@ -801,10 +806,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             System.out.println ( "Initializing Center Drawing check box with: "  + zp.center_draw );
             mode_menu.add ( zp.center_draw_menu_item = mi = new JCheckBoxMenuItem("Center Drawing", zp.center_draw) );
             mi.addActionListener(zp);
-            mode_menu.add ( mi = new JMenuItem("Dump") );
-            mi.addActionListener(zp);
-            mode_menu.add ( mi = new JMenuItem("Clear") );
-            mi.addActionListener(zp);
+            // mode_menu.add ( zp.dump_menu_item );
+            // mi.addActionListener(zp);
+            // mode_menu.add ( mi = new JMenuItem("Clear") );
+            // mi.addActionListener(zp);
             menu_bar.add ( mode_menu );
 
 				f.setJMenuBar ( menu_bar );
