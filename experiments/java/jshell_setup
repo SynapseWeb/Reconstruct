@@ -4,7 +4,7 @@
 /open SeriesClass.java
 /open Reconstruct.java
 /types
-File sf = new File ("data/organelle_3_slice.ser")
+File sf = new File ("data/organelle_series/organelle_3_slice.ser")
 SeriesClass sc = new SeriesClass(sf)
 Element sec0 = sc.section_docs[0].getDocumentElement()
 sec0.getNodeName()
