@@ -224,6 +224,18 @@ public class SectionClass {
 
 	public static void main ( String[] args ) {
 		System.out.println ( "Testing SectionClass.java ..." );
+		File sf = new File ("data/organelle_series/organelle_3_slice.ser");
+		SeriesClass sc = new SeriesClass(sf);
+		Element sec0 = sc.section_docs[0].getDocumentElement();
+		System.out.println ( "NodeName = " + sec0.getNodeName() );
+		System.out.println ( "thickness = " + sec0.getAttribute("thickness") );
+		System.out.println ( "index = " + sec0.getAttribute("index") );
+		String sfnames[] = sc.get_section_file_names(sf.getParent(), sf.getName().substring(0,sf.getName().length()-4));
+		System.out.println ( "sfnames:" );
+		for (int i=0; i<sfnames.length; i++) {
+			System.out.println ( "  " + sfnames[i] );
+		}
+		Element se = sc.section_docs[0].getDocumentElement();
 	}
 
 }
