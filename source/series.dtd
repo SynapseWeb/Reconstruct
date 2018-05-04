@@ -1,0 +1,85 @@
+<!-- Document Type Definition for a SERIES document as used by the RECONSTRUCT application;
+#
+#   Revision history:
+#    0.01a          Original definition 6/6/02 by JCF (fiala@bu.edu)
+#    0.02a          Added series attributes 5/13/03 by JCF (fiala@bu.edu)
+#    0.04a          Added Contour mode attribute, series attributes. 6/12/03 JCF 
+-->
+
+<!ENTITY % SFBool   "(true|false)"> <!-- a single field Boolean -->
+<!ENTITY % SFColor  "CDATA">        <!-- RGB color as 3 floats where 0 0 0 is black and 1 1 1 is white -->
+<!ENTITY % MFColor  "CDATA">        <!-- array of RGB color values -->
+<!ENTITY % SFFloat  "CDATA">        <!-- a single 32-bit floating point value-->
+<!ENTITY % MFFloat  "CDATA">        <!-- an array of floats -->
+<!ENTITY % SFImage  "CDATA">        <!-- Image data -->
+<!ENTITY % SFInt32  "CDATA">        <!-- a single 32-bit integer -->
+<!ENTITY % SFString "CDATA">        <!-- a string of characters excluding '/','<','>','"' -->
+<!ENTITY % MFVec2f  "CDATA">        <!-- an array of pairs of floats -->
+
+                    <!-- A Contour defines a region by a set of ordered points.
+					         name = identifier of object to which contour belongs
+							 closed = whether contour closes on itself
+							 border = displayed color of polygonal representation
+							 fill = multiplicative color of interior of contour
+							 points = sequence of (x,y) coordinates of contour
+							 FUTURE: add unique ID for contour "id ID #IMPLIED"
+					-->
+<!ELEMENT Contour EMPTY>
+<!ATTLIST Contour
+    name    %SFString;  "unknown"
+    closed  %SFBool;    "true"
+    border  %SFColor;   "1 0 1"
+    fill    %SFColor;   "1 0 1"
+    mode    %SFInt32;	"9"
+    points  %MFVec2f;   #IMPLIED>
+
+                    <!-- Images refer to external files that are (can be) mapped to rastered pixels.
+                            mag = width of a square pixel in Series units
+                            src = link to file containing the image data, e.g. the file name
+                            contrast, brightness = operate on a virtual intensity range of [0,1]
+                    -->
+<!ELEMENT Image EMPTY>
+<!ATTLIST Image
+    mag         %SFFloat;   #IMPLIED
+    contrast    %SFFloat;   "1"
+    brightness  %SFFloat;   "0"
+    src         %SFImage;   #IMPLIED>
+
+                    <!-- A Calibration contains the cal grid Image and a set of contour lines (in pixels)
+			             used to determine the "mag" of the Image in pixels/unit.
+                    -->
+
+<!ELEMENT Calibration (Image,Contour+) >
+
+                    <!-- The Series is a set of Calibrations and 3D Contours.
+                            index = current section in the series
+                            viewport = offset_x offset_y pixel_size of last view
+                            units = comments the units of measure
+                    -->
+<!ELEMENT Series (Calibration*,Contour*)>
+<!ATTLIST Series
+    index                %SFInt32;   "1"
+    viewport             %MFFloat;   "0 0 0.00254"
+    units                %SFString;  "microns"
+    autoSaveSeries       %SFBool;    "true"
+    autoSaveSection      %SFBool;    "true"
+    warnSaveSection      %SFBool;    "true"
+    thumbWidth           %SFInt32;   "128"
+    thumbHeight          %SFInt32;   "96"
+    fitThumbSections     %SFBool;    "false"
+    firstThumbSection    %SFInt32;   "1"
+    lastThumbSection     %SFInt32;   "9999"
+    skipSections         %SFInt32;   "1"
+    displayThumbContours %SFBool;    "true"
+    useFlipbookStyle     %SFBool;    "false"
+    flipRate             %SFInt32;   "5"
+    useProxies           %SFBool;    "true"
+    widthUseProxies      %SFInt32;   "2048"
+    heightUseProxies     %SFInt32;   "1536"
+    scaleProxies         %SFFloat;   "0.25"
+    defaultBorder	 %SFColor;   "1 0 1"
+    defaultFill		 %SFColor;   "1 0 1"
+    defaultMode          %SFInt32;   "9"
+    defaultName		 %SFString;  "unknown"
+    borderColors	 %MFColor;   #IMPLIED
+    fillColors		 %MFColor;   #IMPLIED >
