@@ -1,0 +1,44 @@
+<!ENTITY % SFBool    "(true|false)">
+<!ENTITY % SFColor   "CDATA">
+<!ENTITY % SFFloat   "CDATA">
+<!ENTITY % MFFloat   "CDATA">
+<!ENTITY % SFInt32   "CDATA">
+<!ENTITY % SFString  "CDATA">
+<!ENTITY % MFVec2f   "CDATA">
+
+<!ELEMENT Contour EMPTY>
+<!ATTLIST Contour
+		name         %SFString;   "unknown"
+		hidden       %SFBool;     "false"
+		closed       %SFBool;     "true"
+		simplified   %SFBool;     "false"
+		border       %SFColor;    "1 0 1"
+		fill         %SFColor;    "1 0 1"
+		mode         %SFInt32;    "9"
+		comment      %SFString;   #IMPLIED
+		points       %MFVec2f;    #IMPLIED>
+
+<!ELEMENT Image EMPTY>
+<!ATTLIST Image
+		mag          %SFFloat;    "1.0"
+		contrast     %SFFloat;    "1"
+		brightness   %SFFloat;    "0"
+		red          %SFBool;     "true"
+		green        %SFBool;     "true"
+		blue         %SFBool;     "true"
+		src          %SFString;   ""
+		proxy_src    %SFString;   ""
+		proxy_scale  %SFFloat;    "1.0">
+
+<!ELEMENT Transform ((Image,Contour)|Contour+) >
+<!ATTLIST Transform
+		dim          %SFInt32;    "6"
+		xcoef        %MFFloat;    "0 1 0 0 0 0"
+		ycoef        %MFFloat;    "0 0 1 0 0 0">
+
+<!ELEMENT Section (Transform+) >
+<!ATTLIST Section
+		index        %SFInt32;    "-1"
+		thickness    %SFFloat;    "0.05"
+		alignLocked  %SFBool;     "false">
+
