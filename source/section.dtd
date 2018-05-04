@@ -1,44 +1,84 @@
-<!ENTITY % SFBool    "(true|false)">
-<!ENTITY % SFColor   "CDATA">
-<!ENTITY % SFFloat   "CDATA">
-<!ENTITY % MFFloat   "CDATA">
-<!ENTITY % SFInt32   "CDATA">
-<!ENTITY % SFString  "CDATA">
-<!ENTITY % MFVec2f   "CDATA">
+<!-- Document Type Definition for a SECTION document as used by the RECONSTRUCT application;
+#
+#   Revision history:
+#    0.01a          Original definition 4/29/02 by JCF (fiala@bu.edu)
+#    0.02a          Non-Domain version for initial implementation. 5/31/02 JCF 
+#    0.03a          Added proxy parameters. Changed some defaults. 5/13/03 JCF 
+#    0.04a          Added Contour mode attribute. Changed some defaults. 6/12/03 JCF 
+#    0.05a          Added Section alignLocked attribute. Contour comment attribute. 7/31/03 JCF
+#    0.06a          Cummulative additions to Contour attributes. 2/27/04 JCF
+#    1.0            Updated default values of attributes. 11/11/04 JCF
+-->
 
+<!ENTITY % SFBool   "(true|false)"> <!-- a single field Boolean -->
+<!ENTITY % SFColor  "CDATA">        <!-- RGB color as 3 floats where 0 0 0 is black and 1 1 1 is white -->
+<!ENTITY % SFFloat  "CDATA">        <!-- a single 32-bit floating point value-->
+<!ENTITY % MFFloat  "CDATA">        <!-- an array of floats -->
+<!ENTITY % SFInt32  "CDATA">        <!-- a single 32-bit integer -->
+<!ENTITY % SFString "CDATA">        <!-- a string of characters excluding '/','<','>','"' -->
+<!ENTITY % MFVec2f  "CDATA">        <!-- an array of pairs of floats -->
+
+                    <!-- A Contour defines a region by a set of ordered points.
+                           name = identifier of object to which contour belongs
+			   hidden = whether contour is displayed
+                           closed = whether contour closes on itself
+			   simplified = whether contour points have been simplified
+                           border = displayed color of polygonal representation
+                           fill = color of interior of contour when shaded
+			   mode = type of filling operation used
+			   comment = string of user information
+                           points = sequence of (x,y) coordinates of contour
+                         -->
 <!ELEMENT Contour EMPTY>
 <!ATTLIST Contour
-		name         %SFString;   "unknown"
-		hidden       %SFBool;     "false"
-		closed       %SFBool;     "true"
-		simplified   %SFBool;     "false"
-		border       %SFColor;    "1 0 1"
-		fill         %SFColor;    "1 0 1"
-		mode         %SFInt32;    "9"
-		comment      %SFString;   #IMPLIED
-		points       %MFVec2f;    #IMPLIED>
+    name       %SFString;  "unknown"
+    hidden     %SFBool;    "false"
+    closed     %SFBool;    "true"
+    simplified %SFBool;    "false"
+    border     %SFColor;   "1 0 1"
+    fill       %SFColor;   "1 0 1"
+    mode       %SFInt32;   "9"
+    comment    %SFString;  #IMPLIED
+    points     %MFVec2f;   #IMPLIED>
 
+                    <!-- Images refer to external files that are (can be) mapped to rastered pixels.
+                           mag = width of a square pixel in Series units
+                           src = link to file containing the image data, e.g. the file name
+                           contrast, brightness = operate on a virtual intensity range of [0,1]
+			   proxy_src = link to file containing image data at reduced dimensions
+			   proxy_scale = dimension of proxy/dimension of src
+                          -->
 <!ELEMENT Image EMPTY>
 <!ATTLIST Image
-		mag          %SFFloat;    "1.0"
-		contrast     %SFFloat;    "1"
-		brightness   %SFFloat;    "0"
-		red          %SFBool;     "true"
-		green        %SFBool;     "true"
-		blue         %SFBool;     "true"
-		src          %SFString;   ""
-		proxy_src    %SFString;   ""
-		proxy_scale  %SFFloat;    "1.0">
+    mag         %SFFloat;   "1.0"
+    contrast    %SFFloat;   "1"
+    brightness  %SFFloat;   "0"
+    src         %SFString;  ""
+    proxy_src	%SFString;  ""
+    proxy_scale %SFFloat;   "1.0">
+
+                    <!-- A Transform maps the Section pixels to an Image. Only points falling within the
+                         Image's associated Contour are valid parts of the transformation. Alternatively,
+                         the inverse of the Transform maps the points of a set of Contours into the Section.
+                            dim = number of functions used in mapping: 0 => identity transform
+                            xcoef = coefficients of functions producing x-coordinate result 
+                            ycoef = coefficients of functions producing y-coordinate result
+                            FUTURE: include actual basis functions in definition of Transform
+                          -->
 
 <!ELEMENT Transform ((Image,Contour)|Contour+) >
 <!ATTLIST Transform
-		dim          %SFInt32;    "6"
-		xcoef        %MFFloat;    "0 1 0 0 0 0"
-		ycoef        %MFFloat;    "0 0 1 0 0 0">
+    dim     %SFInt32;   "6"
+    xcoef   %MFFloat;   "0 1 0 0 0 0"
+    ycoef   %MFFloat;   "0 0 1 0 0 0">
 
-<!ELEMENT Section (Transform+) >
+                    <!-- The Section is a set of one or more Transforms.
+                            index = position of the section in the series
+                            thickness = section thickness
+			    alignLocked = if true don't allow entire section to be moved
+                         -->
+<!ELEMENT Section (Transform+)>
 <!ATTLIST Section
-		index        %SFInt32;    "-1"
-		thickness    %SFFloat;    "0.05"
-		alignLocked  %SFBool;     "false">
-
+    index     %SFInt32;   "-1"
+    thickness %SFFloat;   "0.05"
+    alignLocked %SFBool;  "false">
