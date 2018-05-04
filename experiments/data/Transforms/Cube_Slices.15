@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE Section SYSTEM "section.dtd">
+
+<Section index="15" thickness="0.05" alignLocked="false">
+<Transform dim="6"
+ xcoef=" -0.0354882163695874 1.09561099237971 -0.0621024938315852 0.103703570308837 -5.44811591673966e-16 -3.03115822372635e-16"
+ ycoef=" 0.0475056568630034 -0.0836728601517028 0.947939425946301 0.0991276422153214 -1.1190321672766e-15 -1.4450788655973e-15">
+<Image mag="0.00254" contrast="1" brightness="0" red="true" green="true" blue="true"
+ src="cube_slice_14.jpg" />
+<Contour name="domain1" hidden="false" closed="true" simplified="false" border="1 0 1" fill="1 0 1" mode="11"
+ points="0 0,
+	399 0,
+	399 399,
+	0 399,
+	"/>
+</Transform>
+
+</Section>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE Section SYSTEM "section.dtd">
+
+<Section index="13" thickness="0.05" alignLocked="false">
+<Transform dim="6"
+ xcoef=" 0.320496671695877 0.864671555181572 -0.504518779984036 0 0 0"
+ ycoef=" -0.19204185153186 0.499562874971327 0.867551116308053 0 0 0">
+<Image mag="0.00254" contrast="1" brightness="0" red="true" green="true" blue="true"
+ src="cube_slice_12.jpg" />
+<Contour name="domain1" hidden="false" closed="true" simplified="false" border="1 0 1" fill="1 0 1" mode="11"
+ points="0 0,
+	399 0,
+	399 399,
+	0 399,
+	"/>
+</Transform>
+
+<Transform dim="0"
+ xcoef=" 0 1 0 0 0 0"
+ ycoef=" 0 0 1 0 0 0">
+<Contour name="IdealCube" hidden="false" closed="true" simplified="true" border="1 0.5 0" fill="1 0.5 0" mode="13"
+ points="0.251815 0.256335,
+	0.334462 0.255689,
+	0.66505 0.256981,
+	0.747697 0.256981,
+	0.758028 0.256981,
+	0.75932 0.257626,
+	0.759965 0.588214,
+	0.760611 0.753509,
+	0.760611 0.758674,
+	0.760611 0.759965,
+	0.430023 0.761257,
+	0.264729 0.761257,
+	0.254398 0.761257,
+	0.253107 0.760611,
+	0.252461 0.430023,
+	0.251815 0.264729,
+	0.251815 0.259563,
+	0.251815 0.256981,
+	"/>
+</Transform>
+
+</Section>
