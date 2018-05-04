@@ -48,6 +48,7 @@ class MyFileChooser extends JFileChooser {
 public class Reconstruct extends ZoomPanLib implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
   private static final long serialVersionUID = 1L;
 
+	JFrame parent_frame = null;
 	static int w=800, h=600;
 	
 	boolean drawing_mode = false;
@@ -332,7 +333,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     if (drawing_mode == true) {
       // scroll_wheel_position += e.getWheelRotation();
       int scroll_wheel_delta = -e.getWheelRotation();
-      this.series.position_by_n_sections ( scroll_wheel_delta );
+      int section_index = this.series.position_by_n_sections ( scroll_wheel_delta );
+      if (this.parent_frame != null) {
+	      this.parent_frame.setTitle ( "Reconstruct Java Demonstration: Section " + (section_index+1) );
+	    }
 	  } else {
 	    super.mouseWheelMoved ( e );
 	  }
@@ -394,7 +398,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           delta = -1;
         }
         if (delta != 0) {
-          this.series.position_by_n_sections ( delta );
+          int section_index = this.series.position_by_n_sections ( delta );
+		      if (this.parent_frame != null) {
+			      this.parent_frame.setTitle ( "Reconstruct Java Demonstration: Section " + (section_index+1) );
+			    }
           repaint();
         }
       }
@@ -553,6 +560,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				f.setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
 				
         Reconstruct zp = new Reconstruct();
+        zp.parent_frame = f;
         /* Can't use args in here
         if (args.length > 0) {
           zp.current_directory = args[0];

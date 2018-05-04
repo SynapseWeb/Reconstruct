@@ -111,13 +111,14 @@ public class SeriesClass {
 	  }
   }
 
-  public void position_by_n_sections ( int n ) {
+  public int position_by_n_sections ( int n ) {
     section_index += n;
     if (section_index < 0) {
       section_index = 0;
     } else if (section_index >= sections.length) {
       section_index = sections.length - 1;
     }
+    return ( section_index );
   }
 
 	public void paint_section (Graphics g, Reconstruct r) {
