@@ -38,7 +38,7 @@ public class XML_Parser {
     if (node_type_code == Node.ATTRIBUTE_NODE) return ( "ATTRIBUTE_NODE" );
     if (node_type_code == Node.CDATA_SECTION_NODE) return ( "CDATA_SECTION_NODE" );
     if (node_type_code == Node.COMMENT_NODE) return ( "COMMENT_NODE" );
-    if (node_type_code == Node. 	DOCUMENT_FRAGMENT_NODE) return ( " 	DOCUMENT_FRAGMENT_NODE" );
+    if (node_type_code == Node.DOCUMENT_FRAGMENT_NODE) return ( " 	DOCUMENT_FRAGMENT_NODE" );
     if (node_type_code == Node.DOCUMENT_NODE) return ( "DOCUMENT_NODE" );
     if (node_type_code == Node.DOCUMENT_NODE) return ( "DOCUMENT_NODE" );
     if (node_type_code == Node.ELEMENT_NODE) return ( "ELEMENT_NODE" );
@@ -61,7 +61,7 @@ public class XML_Parser {
   public static String firstfew ( String full ) {
     int num = 40;
     if (full.length() < num) return ( full );
-    return ( full.substring(0,num) );
+    return ( full.substring(0,num) + " ..." );
   }
 
   public static void dump_nodes_and_atts ( Node parent, int depth ) {
@@ -69,14 +69,14 @@ public class XML_Parser {
     NamedNodeMap attr_map = parent.getAttributes();
     for (int index=0; index<attr_map.getLength(); index++) {
       Node node = attr_map.item(index);
-      System.out.println ( depth_string(depth) + "Attr: " + ntn(node.getNodeType()) + " " + node.getNodeName() + " = " + firstfew(node.getNodeValue()) );
+      System.out.println ( depth_string(depth) + "Attr: " + ntn(node.getNodeType()) + " is \"" + node.getNodeName() + "\" = \"" + firstfew(node.getNodeValue()) + "\"" );
     }
 
     NodeList nodes = parent.getChildNodes();
     // System.out.println ( "Calling parent.getChildNodes() returns " + nodes.getLength() + " nodes" );
     for (int index=0; index<nodes.getLength(); index++) {
       Node node = nodes.item(index);
-      System.out.println ( depth_string(depth) + "Node: " + ntn(node.getNodeType()) + " " + node.getNodeName() );
+      System.out.println ( depth_string(depth) + "Node: " + ntn(node.getNodeType()) + " is \"" + node.getNodeName() + "\"" );
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         dump_nodes_and_atts ( (Element)node, depth+1 );
       }
@@ -94,7 +94,7 @@ public class XML_Parser {
       String doc_name = doc.getDocumentElement().getNodeName();
 
       if ( ! ( ( doc_name.equalsIgnoreCase ( "Series" ) ) || ( doc_name.equalsIgnoreCase ( "Section" ) ) ) ) {
-        System.out.println ( "Error: Series XML files must contain either a series or a section root element" );
+        System.out.println ( "Error: Reconstruct XML files must contain either a series or a section root element" );
       } else {
 
         System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
@@ -171,7 +171,13 @@ public class XML_Parser {
 
 
 	public static void main ( String[] args ) {
-		System.out.println ( "Testing XML_Parser.java ..." );
+		if (args.length <= 0) {
+			System.out.println ( "Testing XML_Parser.java with no arguments..." );
+		} else {
+			Document doc = XML_Parser.parse_xml_file_to_doc ( new File ( args[0] ) );
+			dump_doc ( doc );
+		}
+
 	}
 
 }

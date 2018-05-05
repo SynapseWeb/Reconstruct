@@ -1,0 +1,11 @@
+// Use for testing the XML Parsing code
+
+/open XML_Parser.java
+
+Document ser_doc = XML_Parser.parse_xml_file_to_doc ( new File ("../data/organelle_series/calibrated_organelle.ser") );
+Document sec_doc = XML_Parser.parse_xml_file_to_doc ( new File ("../data/organelle_series/calibrated_organelle.13") );
+
+/types
+/vars
+
+
