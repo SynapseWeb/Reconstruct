@@ -1,69 +1,78 @@
 <!-- Document Type Definition for a SERIES document as used by the RECONSTRUCT application;
-#
+# 
 #   Revision history:
 #    0.01a          Original definition 6/6/02 by JCF (fiala@bu.edu)
 #    0.02a          Added series attributes 5/13/03 by JCF (fiala@bu.edu)
-#    0.04a          Added Contour mode attribute, series attributes. 6/12/03 JCF 
+#    0.04a          Added Contour mode attribute, series attributes. 6/12/03 JCF
+#    0.05a          Removed Calibration elements 9/15/03 JCF
+#    0.06a          Added traceList options and Multisection contours 9/19/03 JCF
+#    0.07a          Cummulative additions to Series attributes. 2/27/04 JCF
+#    0.08a          Added grid attributes to Series. 4/1/04 JCF
+#    1.0            Added more list options and general options. 5/4/04 JCF
+#    1.01	    Added series attributes: zMidSection, significantDigits,
+#                    (red-green-blue)StopWhen & StopValue, Mvmt Increments. 11/10/04
+#    1.02           Added areaStopPercent and areaStopSize series attributes. 6/17/05 JCF
 -->
 
-<!ENTITY % SFBool   "(true|false)"> <!-- a single field Boolean -->
+<!ENTITY % SFBool   "(true|false)"> <!-- single field Boolean -->
 <!ENTITY % SFColor  "CDATA">        <!-- RGB color as 3 floats where 0 0 0 is black and 1 1 1 is white -->
 <!ENTITY % MFColor  "CDATA">        <!-- array of RGB color values -->
-<!ENTITY % SFFloat  "CDATA">        <!-- a single 32-bit floating point value-->
-<!ENTITY % MFFloat  "CDATA">        <!-- an array of floats -->
+<!ENTITY % SFFloat  "CDATA">        <!-- single 32-bit floating point value-->
+<!ENTITY % MFFloat  "CDATA">        <!-- array of floats -->
 <!ENTITY % SFImage  "CDATA">        <!-- Image data -->
 <!ENTITY % SFInt32  "CDATA">        <!-- a single 32-bit integer -->
-<!ENTITY % SFString "CDATA">        <!-- a string of characters excluding '/','<','>','"' -->
-<!ENTITY % MFVec2f  "CDATA">        <!-- an array of pairs of floats -->
+<!ENTITY % MFInt32  "CDATA">        <!-- array 32-bit integers -->
+<!ENTITY % SFString "CDATA">        <!-- string of characters excluding , / < > " -->
+<!ENTITY % MFVec2f  "CDATA">        <!-- array of pairs of floats -->
+<!ENTITY % MFVec3f  "CDATA">        <!-- array of triples of floating point values -->
 
                     <!-- A Contour defines a region by a set of ordered points.
-					         name = identifier of object to which contour belongs
-							 closed = whether contour closes on itself
-							 border = displayed color of polygonal representation
-							 fill = multiplicative color of interior of contour
-							 points = sequence of (x,y) coordinates of contour
-							 FUTURE: add unique ID for contour "id ID #IMPLIED"
-					-->
+                           see section.dtd for description of attributes
+                         -->
 <!ELEMENT Contour EMPTY>
 <!ATTLIST Contour
-    name    %SFString;  "unknown"
-    closed  %SFBool;    "true"
-    border  %SFColor;   "1 0 1"
-    fill    %SFColor;   "1 0 1"
-    mode    %SFInt32;	"9"
-    points  %MFVec2f;   #IMPLIED>
+    name       %SFString;  "unknown"
+    hidden     %SFBool;    "false"
+    closed     %SFBool;    "true"
+    simplified %SFBool;    "false"
+    border     %SFColor;   "1 0 1"
+    fill       %SFColor;   "1 0 1"
+    mode       %SFInt32;   "9"
+    comment    %SFString;  #IMPLIED
+    points     %MFVec2f;   #IMPLIED>
 
-                    <!-- Images refer to external files that are (can be) mapped to rastered pixels.
-                            mag = width of a square pixel in Series units
-                            src = link to file containing the image data, e.g. the file name
-                            contrast, brightness = operate on a virtual intensity range of [0,1]
-                    -->
-<!ELEMENT Image EMPTY>
-<!ATTLIST Image
-    mag         %SFFloat;   #IMPLIED
-    contrast    %SFFloat;   "1"
-    brightness  %SFFloat;   "0"
-    src         %SFImage;   #IMPLIED>
+                    <!-- ZContour is a contour that spans multiple sections
+		           so points composed of (x,y,section_index) vectors
+		    -->
+<!ELEMENT ZContour EMPTY>
+<!ATTLIST ZContour
+    name       %SFString;  "unknown"
+    hidden     %SFBool;    "false"
+    closed     %SFBool;    "true"
+    simplified %SFBool;    "false"
+    border     %SFColor;   "1 0 1"
+    fill       %SFColor;   "1 0 1"
+    mode       %SFInt32;   "9"
+    comment    %SFString;  #IMPLIED
+    points     %MFVec3f;   #IMPLIED>
 
-                    <!-- A Calibration contains the cal grid Image and a set of contour lines (in pixels)
-			             used to determine the "mag" of the Image in pixels/unit.
-                    -->
-
-<!ELEMENT Calibration (Image,Contour+) >
-
-                    <!-- The Series is a set of Calibrations and 3D Contours.
-                            index = current section in the series
-                            viewport = offset_x offset_y pixel_size of last view
-                            units = comments the units of measure
-                    -->
-<!ELEMENT Series (Calibration*,Contour*)>
+<!ELEMENT Series (Contour*,ZContour*)>
 <!ATTLIST Series
-    index                %SFInt32;   "1"
+    index                %SFInt32;   "0"
     viewport             %MFFloat;   "0 0 0.00254"
     units                %SFString;  "microns"
     autoSaveSeries       %SFBool;    "true"
     autoSaveSection      %SFBool;    "true"
     warnSaveSection      %SFBool;    "true"
+    beepDeleting         %SFBool;    "true"
+    beepPaging           %SFBool;    "true"
+    hideTraces           %SFBool;    "false"
+    unhideTraces         %SFBool;    "false"
+    hideDomains          %SFBool;    "false"
+    unhideDomains        %SFBool;    "false"
+    useAbsolutePaths     %SFBool;    "false"
+    defaultThickness     %SFFloat;   "0.05"
+    zMidSection          %SFBool;    "false"
     thumbWidth           %SFInt32;   "128"
     thumbHeight          %SFInt32;   "96"
     fitThumbSections     %SFBool;    "false"
@@ -77,9 +86,60 @@
     widthUseProxies      %SFInt32;   "2048"
     heightUseProxies     %SFInt32;   "1536"
     scaleProxies         %SFFloat;   "0.25"
+    significantDigits    %SFInt32;   "6"
     defaultBorder	 %SFColor;   "1 0 1"
     defaultFill		 %SFColor;   "1 0 1"
     defaultMode          %SFInt32;   "9"
-    defaultName		 %SFString;  "unknown"
+    defaultName		 %SFString;  "domain$+"
+    defaultComment       %SFString;  ""
+    listSectionThickness %SFBool;    "true"
+    listDomainSource     %SFBool;    "true"
+    listDomainPixelsize  %SFBool;    "true"
+    listDomainLength     %SFBool;    "false"
+    listDomainArea       %SFBool;    "false"
+    listDomainMidpoint   %SFBool;    "false"
+    listTraceComment     %SFBool;    "true"
+    listTraceLength      %SFBool;    "false"
+    listTraceArea        %SFBool;    "true"
+    listTraceCentroid    %SFBool;    "false"
+    listTraceExtent      %SFBool;    "false"
+    listTraceZ           %SFBool;    "false"
+    listTraceThickness   %SFBool;    "false"
+    listObjectRange      %SFBool;    "true"
+    listObjectCount      %SFBool;    "true"
+    listObjectSurfarea   %SFBool;    "false"
+    listObjectFlatarea   %SFBool;    "false"
+    listObjectVolume     %SFBool;    "false"
+    listZTraceNote       %SFBool;    "true"
+    listZTraceRange      %SFBool;    "true"
+    listZTraceLength     %SFBool;    "true"
     borderColors	 %MFColor;   #IMPLIED
-    fillColors		 %MFColor;   #IMPLIED >
+    fillColors		 %MFColor;   #IMPLIED
+    offset3D		 %MFFloat;   "0 0 0"
+    type3Dobject         %SFInt32;   "0"
+    first3Dsection       %SFInt32;   "1"
+    last3Dsection        %SFInt32;   "9999"
+    max3Dconnection      %SFFloat;   "-1.0"
+    upper3Dfaces         %SFBool;    "true"
+    lower3Dfaces         %SFBool;    "true"
+    faceNormals          %SFBool;    "false"
+    vertexNormals        %SFBool;    "true"
+    facets3D             %SFInt32;   "8"
+    dim3D                %MFFloat;   "-1 -1 -1"
+    gridType             %SFInt32;   "0"
+    gridSize             %MFFloat;   "1 1"
+    gridDistance         %MFFloat;   "1 1"
+    gridNumber		 %MFInt32;   "1 1"
+    hueStopWhen          %SFInt32;   "3"
+    hueStopValue         %SFInt32;   "50"
+    satStopWhen          %SFInt32;   "3"
+    satStopValue         %SFInt32;   "50"
+    brightStopWhen       %SFInt32;   "0"
+    brightStopValue      %SFInt32;   "100"
+    tracesStopWhen	 %SFBool;    "false"
+    areaStopPercent      %SFFloat;   "999"
+    areaStopSize         %SFFloat;   "0"
+    mvmtIncrement        %MFFloat;   "0.022 1 1 1.01 1.01 0.02 0.02 0.001 0.001"
+    ctrlIncrement        %MFFloat;   "0.0044 0.01 0.01 1.002 1.002 0.004 0.004 0.0002 0.0002"
+    shiftIncrement       %MFFloat;   "0.11 100 100 1.05 1.05 0.1 0.1 0.005 0.005"
+    >
