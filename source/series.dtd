@@ -9,9 +9,10 @@
 #    0.07a          Cummulative additions to Series attributes. 2/27/04 JCF
 #    0.08a          Added grid attributes to Series. 4/1/04 JCF
 #    1.0            Added more list options and general options. 5/4/04 JCF
-#    1.01	    Added series attributes: zMidSection, significantDigits,
+#    1.01	          Added series attributes: zMidSection, significantDigits,
 #                    (red-green-blue)StopWhen & StopValue, Mvmt Increments. 11/10/04
 #    1.02           Added areaStopPercent and areaStopSize series attributes. 6/17/05 JCF
+#    1.03           Added ContourMaskWidth and smoothingLength to match code. 5/5/18 BK
 -->
 
 <!ENTITY % SFBool   "(true|false)"> <!-- single field Boolean -->

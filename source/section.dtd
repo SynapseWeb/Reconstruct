@@ -8,6 +8,7 @@
 #    0.05a          Added Section alignLocked attribute. Contour comment attribute. 7/31/03 JCF
 #    0.06a          Cummulative additions to Contour attributes. 2/27/04 JCF
 #    1.0            Updated default values of attributes. 11/11/04 JCF
+#    1.03           Added red, green, and blue to match code. 5/5/18 BK
 -->
 
 <!ENTITY % SFBool   "(true|false)"> <!-- a single field Boolean -->
