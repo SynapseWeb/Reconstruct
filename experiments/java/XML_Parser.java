@@ -251,11 +251,16 @@ public class XML_Parser {
     return ( doc );
   }
 
+  public static Document parse_xml_file_to_doc ( String s ) {
+		File f = new File ( s );
+		return ( XML_Parser.parse_xml_file_to_doc(f) );
+  }
+
 	public static void main ( String[] args ) {
 		if (args.length <= 0) {
 			System.out.println ( "Testing XML_Parser.java with no arguments..." );
 		} else {
-			Document doc = XML_Parser.parse_xml_file_to_doc ( new File ( args[0] ) );
+			Document doc = XML_Parser.parse_xml_file_to_doc ( args[0] );
 			dump_doc ( doc );
 		}
 
