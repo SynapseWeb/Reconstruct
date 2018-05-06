@@ -14,6 +14,8 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,6 +23,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.ErrorHandler;
 
 
 
@@ -35,6 +39,7 @@ public class XML_Parser {
   }
 
   public static String ntn ( short node_type_code ) {
+    // Node Type Name (ntn)
     if (node_type_code == Node.ATTRIBUTE_NODE) return ( "ATTRIBUTE_NODE" );
     if (node_type_code == Node.CDATA_SECTION_NODE) return ( "CDATA_SECTION_NODE" );
     if (node_type_code == Node.COMMENT_NODE) return ( "COMMENT_NODE" );
@@ -107,9 +112,7 @@ public class XML_Parser {
 
   }
 
-  public static Document parse_xml_file_to_doc ( File f ) {
-    System.out.println ( "Parsing " + f );
-
+  public static Document parse_xml_file_to_doc_without_dtd ( File f ) {
     Document doc = null;
 
     // Read the file and convert into a string buffer while removing the "<!DOCTYPE" line
@@ -147,28 +150,106 @@ public class XML_Parser {
           doc = null;
       }
 
-      if (doc != null) {
-
-        // Process the document tree to pull out the data for this series
-
-        doc.getDocumentElement().normalize();
-
-        String doc_name = doc.getDocumentElement().getNodeName();
-
-        if ( ! ( ( doc_name.equalsIgnoreCase ( "Series" ) ) || ( doc_name.equalsIgnoreCase ( "Section" ) ) ) ) {
-          System.out.println ( "Error: Series XML files must contain either a series or a section element" );
-        } else {
-
-          System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
-
-        }
-      }
     } catch ( Exception e ) {
       System.out.println("Parsing error: " + e );
     }
     return ( doc );
   }
 
+
+  public static Document parse_xml_file_to_doc_with_dtd ( File f ) throws Exception {
+    Document doc = null;
+
+    // Parse the resulting string buffer
+    try {
+
+      // Set up the parser
+      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      dbFactory.setValidating ( true );
+      DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+      /*
+			dBuilder.setErrorHandler(new ErrorHandler() {
+					@Override
+					public void error(SAXParseException exception) throws SAXException {
+						  // do something more useful in each of these handlers
+						  exception.printStackTrace();
+					}
+					@Override
+					public void fatalError(SAXParseException exception) throws SAXException {
+						  exception.printStackTrace();
+					}
+
+					@Override
+					public void warning(SAXParseException exception) throws SAXException {
+						  exception.printStackTrace();
+					}
+			});
+			*/
+
+      doc = dBuilder.parse( new BufferedInputStream ( new FileInputStream ( f ) ) );
+
+    } catch (SAXException e) {
+        e.printStackTrace();
+        doc = null;
+        throw e;
+    } catch (IOException e) {
+        e.printStackTrace();
+        doc = null;
+        throw e;
+    } catch ( Exception e ) {
+      System.out.println("Parsing error: " + e );
+      throw e;
+    }
+
+    if (doc != null) {
+
+      // Process the document tree to pull out the data for this series
+
+      doc.getDocumentElement().normalize();
+
+      String doc_name = doc.getDocumentElement().getNodeName();
+
+      if ( ! ( ( doc_name.equalsIgnoreCase ( "Series" ) ) || ( doc_name.equalsIgnoreCase ( "Section" ) ) ) ) {
+        System.out.println ( "Error: Series XML files must contain either a series or a section element" );
+      } else {
+
+        System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+
+      }
+    }
+
+    return ( doc );
+  }
+
+
+  public static Document parse_xml_file_to_doc ( File f ) {
+    Document doc = null;
+    System.out.println ( "Parsing " + f );
+		try {
+			doc = parse_xml_file_to_doc_with_dtd ( f );
+		} catch ( Exception e ) {
+			System.out.println ( "Error parsing with DTD ... trying without DTD" );
+			doc = parse_xml_file_to_doc_without_dtd ( f );
+		}
+
+    if (doc != null) {
+
+      // Process the document tree to pull out the data for this series
+
+      doc.getDocumentElement().normalize();
+
+      String doc_name = doc.getDocumentElement().getNodeName();
+
+      if ( ! ( ( doc_name.equalsIgnoreCase ( "Series" ) ) || ( doc_name.equalsIgnoreCase ( "Section" ) ) ) ) {
+        System.out.println ( "Error: Series XML files must contain either a series or a section element" );
+      } else {
+
+        System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+
+      }
+    }
+    return ( doc );
+  }
 
 	public static void main ( String[] args ) {
 		if (args.length <= 0) {

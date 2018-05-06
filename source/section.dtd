@@ -53,6 +53,9 @@
     mag         %SFFloat;   "1.0"
     contrast    %SFFloat;   "1"
     brightness  %SFFloat;   "0"
+    red         %SFBool;    "true"
+    green       %SFBool;    "true"
+    blue        %SFBool;    "true"
     src         %SFString;  ""
     proxy_src	%SFString;  ""
     proxy_scale %SFFloat;   "1.0">
