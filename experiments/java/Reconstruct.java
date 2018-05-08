@@ -77,7 +77,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	    recalculate = false;
 	  }
     if (this.series != null) {
-      this.series.paint_section(g, this);
+			try {
+				this.series.paint_section(g, this);
+			} catch (OutOfMemoryError mem_err) {
+				System.out.println ( "Reconstruct.paint_frame: **** Out of Memory Error" );
+			}
     }
   }
 
@@ -469,15 +473,15 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		    File series_file = file_chooser.getSelectedFile();
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
         
-        try {
-          this.series = new SeriesClass ( series_file );
-        } catch (Exception oe) {
-	        // this.series.image_frame = null;
-	        System.out.println ( "Error while opening a series file:\n" + oe );
-	        oe.printStackTrace();
-	        JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
-	        repaint();
-        }
+				try {
+					this.series = new SeriesClass ( series_file );
+				} catch (Exception oe) {
+					// this.series.image_frame = null;
+					System.out.println ( "Error while opening a series file:\n" + oe );
+					oe.printStackTrace();
+					JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
+					repaint();
+				}
 		  }
 
 		} else if ( action_source == dump_menu_item ) {

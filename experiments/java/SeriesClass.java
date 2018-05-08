@@ -125,7 +125,31 @@ public class SeriesClass {
 	  // BufferedImage image_frame = null;
 	  if (sections != null) {
 	    if (section_index < sections.length) {
-	      sections[section_index].paint_section ( g, r, this );
+				OutOfMemoryError last_mem_err = null;
+				boolean section_painted = false;
+				int fartherest_section_index = ( section_index + (sections.length/2) ) % sections.length;
+				int delta = 0;
+				int purge_1 = (fartherest_section_index+delta) % sections.length;
+				int purge_2 = (fartherest_section_index-delta) % sections.length;
+				do {
+					try {
+						sections[section_index].paint_section ( g, r, this );
+						section_painted = true;
+					} catch (OutOfMemoryError mem_err) {
+						// Attempt to remove images fartherest away from this (assuming circular indexing)
+						System.out.println ( "         SeriesClass.paint_section: **** Out of Memory Error, try purging images on sections " + purge_1 + " and " + purge_2 );
+						sections[purge_1].purge_image();
+						sections[purge_2].purge_image();
+						if ( (purge_1 != section_index) && (purge_2 != section_index) ) {
+							delta += 1;
+						}
+						last_mem_err = mem_err;
+					}
+				} while ( (section_painted == false) && (purge_1 != section_index) && (purge_2 != section_index) );
+				if (section_painted == false) {
+					System.out.println ( "SeriesClass.paint_section: **** Out of Memory Error" );
+					throw ( last_mem_err );
+				}
 	    }
 	  }
 	}
@@ -202,7 +226,7 @@ public class SeriesClass {
       for (int i=0; i<matched_names.length; i++) {
         String s = matched_names[i];
         int lastdot = s.lastIndexOf('.');
-        while ( (s.charAt(lastdot+1) == '0') && (s.length() > 2+lastdot) ) {
+        while ( (s.length() > lastdot+2) && (s.charAt(lastdot+1) == '0') ) {
           s = s.substring(0,lastdot+1) + s.substring(lastdot+2);
         }
         matched_names[i] = s;

@@ -35,6 +35,12 @@ public class SectionClass {
 
 	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
 
+	static void priority_println ( int thresh, String s ) {
+		if (thresh >= 50) {
+			System.out.println ( s );
+		}
+	}
+
   public SectionClass ( String p_name, String f_name ) {
     this.path_name = p_name;
     this.file_name = f_name;
@@ -45,14 +51,25 @@ public class SectionClass {
 
     Element section_element = this.section_doc.getDocumentElement();
 
-    System.out.println ( "SectionClass: This section is index " + section_element.getAttribute("index") );
+    priority_println ( 50, "SectionClass: This section is index " + section_element.getAttribute("index") );
     if (section_element.hasChildNodes()) {
-      System.out.println ( "  SectionClass: This section has child nodes" );
+      priority_println ( 50, "  SectionClass: This section has child nodes" );
       NodeList child_nodes = section_element.getChildNodes();
       for (int cn=0; cn<child_nodes.getLength(); cn++) {
         Node child = child_nodes.item(cn);
         if (child.getNodeName() == "Transform") {
-          System.out.println ( "    SectionClass: Node " + cn + " is a transform" );
+          priority_println ( 50, "    SectionClass: Node " + cn + " is a transform" );
+          String xform_dim = ((Element)child).getAttribute("dim");
+          String xform_xcoef = ((Element)child).getAttribute("xcoef");
+          String xform_ycoef = ((Element)child).getAttribute("ycoef");
+          priority_println ( 50, "      dim = \"" + xform_dim + "\"" );
+          priority_println ( 50, "      xcoef = " + xform_xcoef );
+          priority_println ( 50, "      ycoef = " + xform_ycoef );
+					if ( (!xform_dim.trim().equals("0")) && (!xform_dim.trim().equals("1")) )  {
+						priority_println ( 100, "Transforms must be 0 or 1 dimension in this version." );
+						JOptionPane.showMessageDialog(null, "SectionClass: Dim error", "SectionClass: Dim error", JOptionPane.WARNING_MESSAGE);
+					}
+
           if (child.hasChildNodes()) {
             NodeList grandchild_nodes = child.getChildNodes();
             boolean is_image = false;
@@ -67,8 +84,8 @@ public class SectionClass {
               for (int gn=0; gn<grandchild_nodes.getLength(); gn++) {
                 Node grandchild = grandchild_nodes.item(gn);
                 if (grandchild.getNodeName() == "Image") {
-                  System.out.println ( "      SectionClass: Grandchild " + gn + " is an image" );
-                  System.out.println ( "         SectionClass: Image name is: " + ((Element)grandchild).getAttribute("src") );
+                  priority_println ( 40, "      SectionClass: Grandchild " + gn + " is an image" );
+                  priority_println ( 40, "         SectionClass: Image name is: " + ((Element)grandchild).getAttribute("src") );
                   String new_names[] = new String[image_file_names.length + 1];
                   for (int i=0; i<image_file_names.length; i++) {
                     new_names[i] = image_file_names[i];
@@ -76,13 +93,13 @@ public class SectionClass {
                   try {
                     new_names[image_file_names.length] = new File ( this.path_name + File.separator + ((Element)grandchild).getAttribute("src") ).getCanonicalPath();
                   } catch (Exception e) {
-                    System.out.println ( "SectionClass: Error getting path for " + ((Element)grandchild).getAttribute("src") );
+                    priority_println ( 20, "SectionClass: Error getting path for " + ((Element)grandchild).getAttribute("src") );
                     System.exit(1);
                   }
                   image_file_names = new_names;
                 } else if (grandchild.getNodeName() == "Contour") {
-                  System.out.println ( "      SectionClass: Grandchild " + gn + " is an image perimeter contour" );
-                  System.out.println ( "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
+                  priority_println ( 40, "      SectionClass: Grandchild " + gn + " is an image perimeter contour" );
+                  priority_println ( 40, "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
                 }
               }
             } else {
@@ -90,8 +107,8 @@ public class SectionClass {
               for (int gn=0; gn<grandchild_nodes.getLength(); gn++) {
                 Node grandchild = grandchild_nodes.item(gn);
                 if (grandchild.getNodeName() == "Contour") {
-                  System.out.println ( "      SectionClass: Grandchild " + gn + " is a trace contour" );
-                  System.out.println ( "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
+                  priority_println ( 40, "      SectionClass: Grandchild " + gn + " is a trace contour" );
+                  priority_println ( 40, "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
                   String points_str = ((Element)grandchild).getAttribute("points");
                   String xy_str[] = points_str.trim().split(",");
                   // Allocate an ArrayList to hold the double points
@@ -100,10 +117,10 @@ public class SectionClass {
                     String xy[] = xy_str[xyi].trim().split(" ");
                     double p[] = { (Double.parseDouble(xy[0])*165)-100, (-Double.parseDouble(xy[1])*165)+100 };
                     stroke.add ( p );
-                    System.out.println ( "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
+                    priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
                   strokes.add ( stroke );
-                  System.out.println ( "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
+                  priority_println ( 40, "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }
               }
             }
@@ -112,21 +129,21 @@ public class SectionClass {
       }
     }
 
-    System.out.println ( "============== Section File " + this.file_name + " ==============" );
-    // System.out.println ( "This section is index " + this.section_docs[i].getDocumentElement().getAttributes().getNamedItem("index").getNodeValue() );
-    System.out.println ( "SectionClass: This section is index " + section_element.getAttribute("index") );
-    System.out.println ( "===========================================" );
+    priority_println ( 50, "============== Section File " + this.file_name + " ==============" );
+    // priority_println ( 50, "This section is index " + this.section_docs[i].getDocumentElement().getAttributes().getNamedItem("index").getNodeValue() );
+    priority_println ( 50, "SectionClass: This section is index " + section_element.getAttribute("index") );
+    priority_println ( 50, "===========================================" );
 
   }
 
 
   public void dump_strokes() {
     for (int i=0; i<strokes.size(); i++) {
-      System.out.println ( " Stroke " + i );
+      priority_println ( 50, " Stroke " + i );
       ArrayList<double[]> s = strokes.get(i);
 	    for (int j=0; j<s.size(); j++) {
 	      double p[] = s.get(j);
-	      System.out.println ( "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
+	      priority_println ( 50, "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
 	    }
     }
   }
@@ -140,20 +157,33 @@ public class SectionClass {
   }
 
 
-  public BufferedImage get_image() {
+  public BufferedImage get_image() throws OutOfMemoryError {
     if (section_image == null) {
       try {
-        System.out.println ( " SectionClass: Opening ... " + this.image_file_names[0] );
+        priority_println ( 50, " SectionClass: Opening ... " + this.image_file_names[0] );
         File image_file = new File ( this.image_file_names[0] );
         this.section_image = ImageIO.read(image_file);
+      } catch (OutOfMemoryError mem_err) {
+        // this.series.image_frame = null;
+        priority_println ( 100, "SectionClass: **** Out of Memory Error while opening an image file:\n   " + this.image_file_names[0] );
+        throw ( mem_err );
       } catch (Exception oe) {
         // this.series.image_frame = null;
-        System.out.println ( "SectionClass: Error while opening an image file:\n" + this.image_file_names[0] );
+        priority_println ( 100, "SectionClass: Error while opening an image file:\n   " + this.image_file_names[0] );
         JOptionPane.showMessageDialog(null, "SectionClass: File error", "SectionClass: File Path Error", JOptionPane.WARNING_MESSAGE);
       }
     }
     return ( section_image );
   }
+
+	public boolean purge_image() {
+		if (section_image == null) {
+			return ( false );
+		} else {
+			section_image = null;
+			return ( true );
+		}
+	}
 
   public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r ) {
     if (s.size() > 0) {
@@ -164,7 +194,7 @@ public class SectionClass {
           for (int j=1; j<s.size(); j++) {
             double p1[] = s.get(j);
             g.drawLine (  xoffset+r.x_to_pxi(p0[0]),   yoffset+r.y_to_pyi(p0[1]),  xoffset+r.x_to_pxi(p1[0]),  yoffset+r.y_to_pyi(p1[1]) );
-            // System.out.println ( "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
+            // priority_println ( 50, "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
             p0 = new double[2];
             p0[0] = p1[0];
             p0[1] = p1[1];
@@ -175,12 +205,12 @@ public class SectionClass {
   }
 
 
-	public void paint_section (Graphics g, Reconstruct r, SeriesClass series) {
+	public void paint_section (Graphics g, Reconstruct r, SeriesClass series) throws OutOfMemoryError {
 	  BufferedImage image_frame = get_image();
 		if (image_frame == null) {
-		  System.out.println ( "Image is null" );
+		  priority_println ( 50, "Image is null" );
 		} else {
-		  // System.out.println ( "Image is NOT null" );
+		  // priority_println ( 50, "Image is NOT null" );
 		  int img_w = image_frame.getWidth();
 		  int img_h = image_frame.getHeight();
 		  double img_wf = 200;
@@ -202,7 +232,7 @@ public class SectionClass {
 
     g.setColor ( new Color ( 200, 0, 0 ) );
     for (int i=0; i<strokes.size(); i++) {
-      // System.out.println ( " Stroke " + i );
+      // priority_println ( 50, " Stroke " + i );
       ArrayList<double[]> s = strokes.get(i);
       draw_stroke ( g, s, r );
     }
@@ -223,17 +253,17 @@ public class SectionClass {
 
 
 	public static void main ( String[] args ) {
-		System.out.println ( "Testing SectionClass.java ..." );
+		priority_println ( 50, "Testing SectionClass.java ..." );
 		File sf = new File ("data/organelle_series/organelle_3_slice.ser");
 		SeriesClass sc = new SeriesClass(sf);
 		Element sec0 = sc.section_docs[0].getDocumentElement();
-		System.out.println ( "NodeName = " + sec0.getNodeName() );
-		System.out.println ( "thickness = " + sec0.getAttribute("thickness") );
-		System.out.println ( "index = " + sec0.getAttribute("index") );
+		priority_println ( 50, "NodeName = " + sec0.getNodeName() );
+		priority_println ( 50, "thickness = " + sec0.getAttribute("thickness") );
+		priority_println ( 50, "index = " + sec0.getAttribute("index") );
 		String sfnames[] = sc.get_section_file_names(sf.getParent(), sf.getName().substring(0,sf.getName().length()-4));
-		System.out.println ( "sfnames:" );
+		priority_println ( 50, "sfnames:" );
 		for (int i=0; i<sfnames.length; i++) {
-			System.out.println ( "  " + sfnames[i] );
+			priority_println ( 50, "  " + sfnames[i] );
 		}
 		Element se = sc.section_docs[0].getDocumentElement();
 	}
