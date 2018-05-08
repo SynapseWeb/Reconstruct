@@ -102,7 +102,7 @@ public class XML_Parser {
         System.out.println ( "Error: Reconstruct XML files must contain either a series or a section root element" );
       } else {
 
-        System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+        System.out.println("Dumping Root element: " + doc.getDocumentElement().getNodeName());
 
         dump_nodes_and_atts ( doc.getDocumentElement(), 1 );
 
@@ -213,7 +213,7 @@ public class XML_Parser {
         System.out.println ( "Error: Series XML files must contain either a series or a section element" );
       } else {
 
-        System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+        System.out.println("Root element (with DTD): " + doc.getDocumentElement().getNodeName());
 
       }
     }
@@ -244,7 +244,7 @@ public class XML_Parser {
         System.out.println ( "Error: Series XML files must contain either a series or a section element" );
       } else {
 
-        System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+        System.out.println("Root element of Doc: " + doc.getDocumentElement().getNodeName());
 
       }
     }

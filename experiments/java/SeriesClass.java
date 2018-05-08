@@ -202,7 +202,7 @@ public class SeriesClass {
       for (int i=0; i<matched_names.length; i++) {
         String s = matched_names[i];
         int lastdot = s.lastIndexOf('.');
-        while ( s.charAt(lastdot+1) == '0' ) {
+        while ( (s.charAt(lastdot+1) == '0') && (s.length() > 2+lastdot) ) {
           s = s.substring(0,lastdot+1) + s.substring(lastdot+2);
         }
         matched_names[i] = s;

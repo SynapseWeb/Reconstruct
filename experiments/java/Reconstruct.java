@@ -474,6 +474,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         } catch (Exception oe) {
 	        // this.series.image_frame = null;
 	        System.out.println ( "Error while opening a series file:\n" + oe );
+	        oe.printStackTrace();
 	        JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
 	        repaint();
         }
