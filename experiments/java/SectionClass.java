@@ -32,6 +32,7 @@ public class SectionClass {
 
   BufferedImage section_image = null;
   String image_file_names[] = new String[0];
+  ArrayList<String> bad_image_file_names = new ArrayList<String>();
 
 	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
 
@@ -169,8 +170,20 @@ public class SectionClass {
         throw ( mem_err );
       } catch (Exception oe) {
         // this.series.image_frame = null;
-        priority_println ( 100, "SectionClass: Error while opening an image file:\n   " + this.image_file_names[0] );
-        JOptionPane.showMessageDialog(null, "SectionClass: File error", "SectionClass: File Path Error", JOptionPane.WARNING_MESSAGE);
+        boolean found = false;
+				for (int i=0; i<bad_image_file_names.size(); i++) {
+				  String s = bad_image_file_names.get(i);
+				  if (this.image_file_names[0].equals(s)) {
+						found = true;
+						break;
+				  }
+				}
+				if (!found) {
+					// Notify of missing file and put in list to be ignored in the future
+					priority_println ( 100, "SectionClass: Error while opening an image file:\n   " + this.image_file_names[0] );
+					JOptionPane.showMessageDialog(null, "Cannot open " + this.image_file_names[0], "SectionClass: File Error", JOptionPane.WARNING_MESSAGE);
+					bad_image_file_names.add ( this.image_file_names[0] );
+	      }
       }
     }
     return ( section_image );
