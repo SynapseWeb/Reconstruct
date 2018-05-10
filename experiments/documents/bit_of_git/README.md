@@ -24,16 +24,21 @@ git uses to keep track of the history of all those files.
 Any directory on your computer can be the location for a "git" database related to the
 files in that directory (and its subdirectories). Assume you've got a subdirectory named:
 
+::
+
   ../work_stuff/new_neuron
 
 If you are in that directory and you initialize a git database there, it will create:
 
+::
 
   ../work_stuff/new_neuron/.git
 
 That subdirectory will contain the entire git repository for that project. You might
 have files named: nn.1, nn.2, nn.3, nn.ser and they would all be tracked in that ".git"
 subdirectory. You might also create related subdirectories:
+
+::
 
   ../work_stuff/new_neuron/2018_paper_data
   ../work_stuff/new_neuron/2019_grant_data
@@ -48,9 +53,13 @@ be stored in that same git database directory.
 You could then create another completely separate git database (repository) for a
 different project:
 
+::
+
   ../work_stuff/newer_neuron
 
 Again, git would create a ".git" database (repository) for all the files in that directory:
+
+::
 
   ../work_stuff/newer_neuron/.git
 
