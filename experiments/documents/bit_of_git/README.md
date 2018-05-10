@@ -56,6 +56,30 @@ Again, git would create a ".git" database (repository) for all the files in that
 So you can use git to very easily track virtually anything you're working on in any
 directory tree of your computer. It's like your own personal time machine.
 
+## What does it look like?
+
+Git can be used from a command line or from a number of GUI front ends. The simplest
+view might be a series of commands like these:
+
+  - mkdir xyz
+  - cd xyz
+  - git init
+  - cat > hello.txt
+  - git add hello.txt
+  - git status
+  - git commit
+  - git log
+  - vi hello.txt
+  - git status
+  - git diff
+  - git add -u
+  - git commit
+  - git log
+
+There are many tutorials on what these commands mean, but basically, these
+commands (in Linux) created a new project directory, initialized a "git"
+database in that directory, and added and modified a file in the database.
+
 ## Shared Use
 
 So far, everything has been done on your own local machine. Your git database is a
