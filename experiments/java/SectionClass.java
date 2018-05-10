@@ -68,7 +68,7 @@ public class SectionClass {
           priority_println ( 50, "      ycoef = " + xform_ycoef );
 					if ( (!xform_dim.trim().equals("0")) && (!xform_dim.trim().equals("1")) )  {
 						priority_println ( 100, "Transforms must be 0 or 1 dimension in this version." );
-						JOptionPane.showMessageDialog(null, "SectionClass: Dim error", "SectionClass: Dim error", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error: Dim=" + xform_dim.trim() + ", transforms must be 0 or 1 dimension in this version.", "SectionClass: Dim error", JOptionPane.WARNING_MESSAGE);
 					}
 
           if (child.hasChildNodes()) {
