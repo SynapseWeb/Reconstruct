@@ -213,7 +213,7 @@ public class XML_Parser {
         System.out.println ( "Error: Series XML files must contain either a series or a section element" );
       } else {
 
-        System.out.println("Root element (with DTD): " + doc.getDocumentElement().getNodeName());
+        // System.out.println("Root element (with DTD): " + doc.getDocumentElement().getNodeName());
 
       }
     }
@@ -244,7 +244,7 @@ public class XML_Parser {
         System.out.println ( "Error: Series XML files must contain either a series or a section element" );
       } else {
 
-        System.out.println("Root element of Doc: " + doc.getDocumentElement().getNodeName());
+        // System.out.println("Root element of Doc: " + doc.getDocumentElement().getNodeName());
 
       }
     }

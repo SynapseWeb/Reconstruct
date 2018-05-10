@@ -37,7 +37,7 @@ public class SectionClass {
 	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
 
 	static void priority_println ( int thresh, String s ) {
-		if (thresh >= 50) {
+		if (thresh >= 90) {
 			System.out.println ( s );
 		}
 	}
