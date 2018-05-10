@@ -116,7 +116,8 @@ public class SectionClass {
                   ArrayList<double[]> stroke = new ArrayList<double[]>(xy_str.length);
                   for (int xyi=0; xyi<xy_str.length; xyi++) {
                     String xy[] = xy_str[xyi].trim().split(" ");
-                    double p[] = { (Double.parseDouble(xy[0])*165)-100, (-Double.parseDouble(xy[1])*165)+100 };
+                    // double p[] = { (Double.parseDouble(xy[0])*165)-100, (-Double.parseDouble(xy[1])*165)+100 };
+                    double p[] = { Double.parseDouble(xy[0]), Double.parseDouble(xy[1]) };
                     stroke.add ( p );
                     priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
@@ -200,13 +201,14 @@ public class SectionClass {
 
   public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r ) {
     if (s.size() > 0) {
+    	double xo=r.xo, xs=r.xs, yo=r.yo, ys=r.ys;
       int line_padding = 1;
       for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
         for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
           double p0[] = s.get(0);
           for (int j=1; j<s.size(); j++) {
             double p1[] = s.get(j);
-            g.drawLine (  xoffset+r.x_to_pxi(p0[0]),   yoffset+r.y_to_pyi(p0[1]),  xoffset+r.x_to_pxi(p1[0]),  yoffset+r.y_to_pyi(p1[1]) );
+            g.drawLine (  xoffset+r.x_to_pxi(xs*(xo+p0[0])),   yoffset+r.y_to_pyi(ys*(yo+p0[1])),  xoffset+r.x_to_pxi(xs*(xo+p1[0])),  yoffset+r.y_to_pyi(ys*(yo+p1[1])) );
             // priority_println ( 50, "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
             p0 = new double[2];
             p0[0] = p1[0];

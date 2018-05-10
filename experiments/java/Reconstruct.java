@@ -56,6 +56,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	boolean stroke_started = false;
   String current_directory = "";
   MyFileChooser file_chooser = null;
+  
+  // Scale and translation temporary during testing of transforms:
+  double xo=0.0, xs=1.0, yo=0.0, ys=1.0;
 
   
   SeriesClass series = null;
@@ -354,6 +357,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem open_series_menu_item=null;
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
+	JMenuItem manual_scale_menu_item=null;
 	JMenuItem dump_menu_item=null;
 	JMenuItem clear_menu_item=null;
 	JMenuItem exit_menu_item=null;
@@ -483,7 +487,21 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 					repaint();
 				}
 		  }
-
+		} else if ( action_source == manual_scale_menu_item ) {
+      // if (this.series != null) {
+	      String in_str = JOptionPane.showInputDialog("Enter xo("+xo+") yo("+yo+") xs("+xs+") ys("+ys+")");
+	      System.out.println ( "Entered: " + in_str );
+	      String vals[] = in_str.trim().split(" ");
+	      try {
+	      	xo = Double.parseDouble ( vals[0] );
+	      	yo = Double.parseDouble ( vals[1] );
+	      	xs = Double.parseDouble ( vals[2] );
+	      	ys = Double.parseDouble ( vals[3] );
+	      } catch (Exception ee) {
+	      	System.out.println ( "Input error: " + in_str );
+	      }
+      // }
+	    repaint();
 		} else if ( action_source == dump_menu_item ) {
       if (this.series != null) {
         this.series.dump_strokes();
@@ -595,6 +613,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
               debug_menu.add ( mi = new JMenuItem("Times") );
               mi.addActionListener(zp);
               debug_menu.addSeparator();
+              debug_menu.add ( zp.manual_scale_menu_item = mi = new JMenuItem("Manual Scale") );
+              mi.addActionListener(zp);
               debug_menu.add ( zp.dump_menu_item = mi = new JMenuItem("Dump") );
               mi.addActionListener(zp);
               debug_menu.add ( zp.clear_menu_item = mi = new JMenuItem("Clear") );
