@@ -32,17 +32,30 @@ public class SeriesClass {
 
   HashMap<String, String> attributes = new HashMap<String, String>();
   String series_path = null;
+  String series_file_name = null;
   Document series_doc = null;
   Document section_docs[] = null;
 
   SectionClass sections[] = null;
   int section_index = 0;
 
-  public SeriesClass ( File series_file ) {
+  public SeriesClass ( String series_file_name ) {
+    this.series_file_name = series_file_name;
+    this.series_doc = null;
+    this.section_docs = null;
+    this.section_index = 0;
+  }
 
+  public SeriesClass ( File series_file ) {
+		this.load_from_xml ( series_file );
+  }
+
+	public void load_from_xml ( File series_file ) {
     this.series_path = series_file.getParent();
 
     String series_file_name = series_file.getName();
+
+
     this.series_doc = XML_Parser.parse_xml_file_to_doc ( series_file );
 
     String section_file_names[] = get_section_file_names ( series_path, series_file_name.substring(0,series_file_name.length()-4) );
@@ -71,6 +84,33 @@ public class SeriesClass {
     }
 
     section_index = 0;
+	}
+
+  public void import_images ( File image_files[] ) {
+		if (series_file_name != null) {
+			System.out.println ( "Importing images into " + series_file_name );
+			File series_file = new File(series_file_name);
+			String series_prefix = series_file_name.substring(0,series_file_name.length()-3);  // Subtract off the "ser" at the end of "name.ser"
+
+		  for (int i=0; i<image_files.length; i++) {
+		    System.out.println ( "  Importing " + image_files[i] + " into " + series_prefix + (i+1) );
+		    try {
+				  DataOutputStream f = new DataOutputStream ( new FileOutputStream ( series_prefix + (i+1) ) );
+				  f.writeBytes ( ReconstructDefaults.default_section_file_string_1 );
+				  f.writeBytes ( image_files[i].getName() );
+				  f.writeBytes ( ReconstructDefaults.default_section_file_string_2 );
+				  f.writeBytes ( "0 0,\n" );
+				  f.writeBytes ( "	  479 0,\n" );
+				  f.writeBytes ( "	  479 479,\n" );
+				  f.writeBytes ( "	  0 479,\n" );
+				  f.writeBytes ( ReconstructDefaults.default_section_file_string_3 );
+				  f.close();
+				} catch (Exception e) {
+					System.out.println ( "Error writing to file " + image_files[i] + " into " + series_prefix + (i+1) );
+				}
+		  }
+			this.load_from_xml ( series_file );
+		}
   }
 
   public void dump() {

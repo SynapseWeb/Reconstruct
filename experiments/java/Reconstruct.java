@@ -354,6 +354,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   JMenuItem move_menu_item = null;
   JMenuItem draw_menu_item = null;
   JMenuItem center_draw_menu_item = null;
+	JMenuItem new_series_menu_item=null;
 	JMenuItem open_series_menu_item=null;
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
@@ -427,7 +428,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   }
 
 
-
+	String new_series_file_name = null;
 
   // ActionPerformed methods (mostly menu responses):
 
@@ -468,6 +469,29 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
       }
 		  repaint();
+		} else if ( action_source == new_series_menu_item ) {
+		  file_chooser.setMultiSelectionEnabled(false);
+		  FileNameExtensionFilter filter = new FileNameExtensionFilter("Series Files", "ser");
+		  file_chooser.setFileFilter(filter);
+		  if (file_chooser.getName() == null) {
+			  // Try to set the default file name of newSeries.ser
+		  }
+		  int returnVal = file_chooser.showDialog(this, "New Series");
+		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
+		    File series_file = file_chooser.getSelectedFile();
+        System.out.println ( "You chose to create this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
+				try {
+		      DataOutputStream f = new DataOutputStream ( new FileOutputStream ( series_file ) );
+		      f.writeBytes ( ReconstructDefaults.default_series_file_string );
+		      f.close();
+		      this.new_series_file_name = series_file.getPath();
+				} catch (Exception oe) {
+					System.out.println ( "Error while writing a series file:\n" + oe );
+					oe.printStackTrace();
+					JOptionPane.showMessageDialog(null, "File write error", "File Write Error", JOptionPane.WARNING_MESSAGE);
+					repaint();
+				}
+		  }
 		} else if ( action_source == open_series_menu_item ) {
 		  file_chooser.setMultiSelectionEnabled(false);
 		  FileNameExtensionFilter filter = new FileNameExtensionFilter("Series Files", "ser");
@@ -476,7 +500,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
 		    File series_file = file_chooser.getSelectedFile();
         System.out.println ( "You chose to open this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
-        
+
 				try {
 					this.series = new SeriesClass ( series_file );
 				} catch (Exception oe) {
@@ -514,53 +538,20 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	    stroke  = null;
 	    repaint();
 		} else if ( action_source == import_images_menu_item ) {
-
-			System.out.println ( "This option is disabled!!!" );
-      JOptionPane.showMessageDialog(null, "Add Images Disabled", "Add Images Disabled", JOptionPane.WARNING_MESSAGE);
-
-		  /*
-			System.out.println ( "Opening new file ..." );
-
 		  file_chooser.setMultiSelectionEnabled(true);
-		  int returnVal = file_chooser.showDialog(this, "Image Files to Add");
+		  FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "gif", "png", "tiff");
+		  file_chooser.setFileFilter(filter);
+		  int returnVal = file_chooser.showDialog(this, "Import Images");
 		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
-		    File selected_files[] = file_chooser.getSelectedFiles();
-		    if (selected_files.length > 0) {
-		      for (int i=0; i<selected_files.length; i++) {
-            System.out.println ( "You chose this file: " + selected_files[i] );
-		      }
-		    }
-        System.out.println ( "You chose to open this file: " + file_chooser.getSelectedFile() );
-        String file_path_and_name = "?Unknown?";
-        try {
-          file_path_and_name = "" + file_chooser.getSelectedFile();
-          File image_file = new File ( file_path_and_name );
-          BufferedImage new_image;
-          new_image = ImageIO.read(image_file);
-          if (this.series != null) {
-            this.series.image_frame = new_image;
-            if (this.series.image_frames == null) {
-              this.series.image_frames = new BufferedImage[1];
-            } else {
-              BufferedImage temp[] = new BufferedImage[this.series.image_frames.length+1];
-              for (int i=0; i<this.series.image_frames.length; i++) {
-                temp[i] = this.series.image_frames[i];
-              }
-              this.series.image_frames = temp;
-            }
-            this.series.image_frames[this.series.image_frames.length-1] = this.series.image_frame;
-          }
-          repaint();
-        } catch (Exception oe) {
-	        // this.series.image_frame = null;
-	        System.out.println ( "Error while opening an image file:\n" + oe );
-	        JOptionPane.showMessageDialog(null, "File error for: " + file_path_and_name, "File Path Error", JOptionPane.WARNING_MESSAGE);
-	        repaint();
-        }
+		    File image_files[] = file_chooser.getSelectedFiles();
+        System.out.println ( "You chose to import these " + image_files.length + " images:" );
+        for (int i=0; i<image_files.length; i++) {
+	        System.out.println ( "  " + image_files[i] );
+	      }
+	      // Reconstruct.exe creates the section files as soon as the images have been imported so do it now
+	      this.series = new SeriesClass ( this.new_series_file_name );
+				this.series.import_images ( image_files );
 		  }
-		  */
-
-
 		} else if ( action_source == list_sections_menu_item ) {
 		  System.out.println ( "Sections: ..." );
 		} else if ( action_source == exit_menu_item ) {
@@ -635,6 +626,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             series_menu.addSeparator();
 
             series_menu.add ( mi = new JMenuItem("New...") );
+            zp.new_series_menu_item = mi;
             mi.addActionListener(zp);
             series_menu.add ( mi = new JMenuItem("Save") );
             mi.addActionListener(zp);

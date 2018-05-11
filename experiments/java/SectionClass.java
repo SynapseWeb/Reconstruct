@@ -42,6 +42,11 @@ public class SectionClass {
 		}
 	}
 
+	static void write_section_file ( String image_file_name, int width, int height ) {
+		// This is an alternate place to write a section file from parameters.
+		// This is currently being done in the SeriesClass.
+	}
+
   public SectionClass ( String p_name, String f_name ) {
     this.path_name = p_name;
     this.file_name = f_name;
