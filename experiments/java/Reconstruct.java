@@ -337,16 +337,20 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
   // MouseWheelListener methods:
 	public void mouseWheelMoved ( MouseWheelEvent e ) {
-    if (drawing_mode == true) {
-      // scroll_wheel_position += e.getWheelRotation();
-      int scroll_wheel_delta = -e.getWheelRotation();
-      int section_index = this.series.position_by_n_sections ( scroll_wheel_delta );
-      if (this.parent_frame != null) {
-	      this.parent_frame.setTitle ( "Reconstruct Java Demonstration: Section " + (section_index+1) );
-	    }
-	  } else {
-	    super.mouseWheelMoved ( e );
-	  }
+		if (this.series == null) {
+			// Don't change the section index in this case
+		} else {
+		  if (drawing_mode == true) {
+		    // scroll_wheel_position += e.getWheelRotation();
+		    int scroll_wheel_delta = -e.getWheelRotation();
+		    int section_index = this.series.position_by_n_sections ( scroll_wheel_delta );
+		    if (this.parent_frame != null) {
+		      this.parent_frame.setTitle ( "Series " + this.series.get_short_name() + ", Section " + (section_index+1) );
+			  }
+			} else {
+			  super.mouseWheelMoved ( e );
+			}
+		}
 		repaint();
 	}
 
@@ -409,7 +413,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         if (delta != 0) {
           int section_index = this.series.position_by_n_sections ( delta );
 		      if (this.parent_frame != null) {
-			      this.parent_frame.setTitle ( "Reconstruct Java Demonstration: Section " + (section_index+1) );
+			      this.parent_frame.setTitle ( "Series " + this.series.get_short_name() + ", Section " + (section_index+1) );
 			    }
           repaint();
         }
@@ -485,12 +489,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		      f.writeBytes ( ReconstructDefaults.default_series_file_string );
 		      f.close();
 		      this.new_series_file_name = series_file.getPath();
+		      this.series = new SeriesClass();
 				} catch (Exception oe) {
 					System.out.println ( "Error while writing a series file:\n" + oe );
 					oe.printStackTrace();
 					JOptionPane.showMessageDialog(null, "File write error", "File Write Error", JOptionPane.WARNING_MESSAGE);
-					repaint();
 				}
+				repaint();
 		  }
 		} else if ( action_source == open_series_menu_item ) {
 		  file_chooser.setMultiSelectionEnabled(false);
@@ -508,8 +513,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 					System.out.println ( "Error while opening a series file:\n" + oe );
 					oe.printStackTrace();
 					JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
-					repaint();
 				}
+				repaint();
 		  }
 		} else if ( action_source == manual_scale_menu_item ) {
       // if (this.series != null) {
@@ -558,6 +563,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			System.exit ( 0 );
 		} else {
 	    JOptionPane.showMessageDialog(null, "Option Not Implemented", "Option Not Implemented", JOptionPane.WARNING_MESSAGE);
+	  }
+    if ( (this.parent_frame != null) && (this.series != null) ) {
+      this.parent_frame.setTitle ( "Series " + this.series.get_short_name() + ", Section " + (this.series.get_position()+1) );
 	  }
 
   }

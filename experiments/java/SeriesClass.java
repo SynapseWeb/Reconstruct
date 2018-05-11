@@ -39,6 +39,13 @@ public class SeriesClass {
   SectionClass sections[] = null;
   int section_index = 0;
 
+  public SeriesClass () {
+    this.series_file_name = null;
+    this.series_doc = null;
+    this.section_docs = null;
+    this.section_index = 0;
+  }
+
   public SeriesClass ( String series_file_name ) {
     this.series_file_name = series_file_name;
     this.series_doc = null;
@@ -151,13 +158,29 @@ public class SeriesClass {
 	  }
   }
 
+	public int get_position() {
+    return ( section_index );
+	}
+
+	public String get_short_name() {
+	  if (series_file_name != null) {
+	    return ( new File(series_file_name).getName() );
+	  } else {
+			return ( "No Series" );
+	  }
+	}
+
   public int position_by_n_sections ( int n ) {
-    section_index += n;
-    if (section_index < 0) {
-      section_index = 0;
-    } else if (section_index >= sections.length) {
-      section_index = sections.length - 1;
-    }
+		if (sections == null) {
+			section_index = 0;
+		} else {
+		  section_index += n;
+		  if (section_index < 0) {
+		    section_index = 0;
+		  } else if (section_index >= sections.length) {
+		    section_index = sections.length - 1;
+		  }
+		}
     return ( section_index );
   }
 
