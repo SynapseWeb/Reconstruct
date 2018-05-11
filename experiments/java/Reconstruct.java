@@ -578,7 +578,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		System.out.println ( "Reconstruct: Use the mouse wheel to zoom, and drag to pan." );
 		javax.swing.SwingUtilities.invokeLater ( new Runnable() {
 			public void run() {
-			  JFrame f = new JFrame("Reconstruct Java Demonstration");
+			  JFrame f = new JFrame("Reconstruct - No Active Series");
 				f.setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
 				
         Reconstruct zp = new Reconstruct();
