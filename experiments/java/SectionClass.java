@@ -35,6 +35,7 @@ public class SectionClass {
   ArrayList<String> bad_image_file_names = new ArrayList<String>();
 
 	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
+	ArrayList<ContourClass> contours = new ArrayList<ContourClass>();  // Argument (if any) specifies initial capacity (default 10)
 
 	static void priority_println ( int thresh, String s ) {
 		if (thresh >= 90) {

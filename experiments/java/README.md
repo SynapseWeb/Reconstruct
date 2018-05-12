@@ -1,10 +1,18 @@
 # Reconstruct Java Experiments
 
-## Current Reconstruct.jar can read XML data and display images and traces: (May 11th, 2018):
+## Current Reconstruct.jar can read XML data and display images and traces (May 11th, 2018):
 
 ![CompareJavaExe](Compare_Java_Exe_2018_05_11.gif?raw=true "Compare Java and Original Exe")
 
-This image shows a snapshot from the Windows version of Reconstruct 1.1.0.0 and a snapshot of the current Java version (as of this commit). The snapshots were taken from two different versions (1.1.0.0 and Java) running on two different computers using the same image files and XML files. The image snapshots were not perfectly registered (but close). The Java version shows traces as wide red strokes. The 1.1.0.0 version shows the same traces as thin multi-colored strokes. The images were scaled down for size and this reduced the already thin multi-colored strokes. Note that this Java version used manual trace scaling to verify that the XML data is being correctly read. The application of the XML transforms has yet to be completed in the code.
+This image shows a snapshot from the Windows version of Reconstruct 1.1.0.0 and a snapshot of
+the current Java version (as of this commit). The snapshots were taken from two different
+versions (1.1.0.0 and Java) running on two different computers (Windows and Linux) using the
+same image files and XML files. The image snapshots were not perfectly registered (but close).
+The Java version shows traces as wide red strokes. The 1.1.0.0 version shows the same traces
+as thin multi-colored strokes. The images were scaled down for size and this reduced the already
+thin multi-colored strokes. Note that this Java version used manual trace scaling to verify that
+the XML data is being correctly read. The application of the XML transforms has yet to be completed
+in the code.
 
 ## Prototype Bezier Tracing Interface with BezierTracing.jar (April 16th, 2018):
 

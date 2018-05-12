@@ -58,7 +58,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   MyFileChooser file_chooser = null;
   
   // Scale and translation temporary during testing of transforms:
-  double xo=0.0, xs=1.0, yo=0.0, ys=1.0;
+  double xo=-8.55, yo=-5.05, xs=19.8, ys=-20.0;
 
   
   SeriesClass series = null;

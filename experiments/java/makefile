@@ -12,10 +12,13 @@ SeriesClass.class: SeriesClass.java makefile
 SectionClass.class: SectionClass.java makefile
 	javac -nowarn -source 1.5 SectionClass.java
 
+ContourClass.class: ContourClass.java makefile
+	javac -nowarn -source 1.5 ContourClass.java
+
 ReconstructDefaults.class: ReconstructDefaults.java makefile
 	javac -nowarn -source 1.5 ReconstructDefaults.java
 
-Reconstruct.jar: Reconstruct.java ZoomPanLib.class XML_Parser.class SeriesClass.class SectionClass.class ReconstructDefaults.class makefile
+Reconstruct.jar: Reconstruct.java ZoomPanLib.class XML_Parser.class SeriesClass.class SectionClass.class ContourClass.class ReconstructDefaults.class makefile
 	javac Reconstruct.java
 	jar -cfe Reconstruct.jar Reconstruct *.class
 
