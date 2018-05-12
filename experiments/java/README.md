@@ -1,6 +1,12 @@
 # Reconstruct Java Experiments
 
-## Current Reconstruct.jar can read XML data and display images and traces (May 11th, 2018):
+## Reconstruct.jar can read XML data and display images and color traces (May 11th, 2018):
+
+![ColorTracesFromXML](images/2018_05_11_2303.gif?raw=true "Color Traces from XML")
+
+This image shows a short series of traces (with color) viewed with the current Reconstruct.jar.
+
+## Comparison of Reconstruct.jar and Reconstruct.exe (May 11th, 2018):
 
 ![CompareJavaExe](Compare_Java_Exe_2018_05_11.gif?raw=true "Compare Java and Original Exe")
 
