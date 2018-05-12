@@ -1,4 +1,9 @@
 # Reconstruct Java Experiments
+
+## Current Reconstruct.jar can read XML data and display images and traces: (May 11th, 2018):
+
+![CompareJavaExe](Compare_Java_Exe_2018_05_11.gif?raw=true "Compare Java and Original Exe")
+
 ## Prototype Bezier Tracing Interface with BezierTracing.jar (April 16th, 2018):
 
 ![Bezier Tracing](Trace_Round.gif?raw=true "Bezier Tracing")
