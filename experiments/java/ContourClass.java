@@ -28,10 +28,15 @@ public class ContourClass {
 
   String contour_name = null;
 	ArrayList<double[]> stroke_points = new ArrayList<double[]>();  // Argument (if any) specifies initial capacity (default 10)
-	double r=0, g=0, b=0;
+	double r=1.0, g=0.0, b=0.0;
 
   public ContourClass ( ArrayList<double[]> stroke, String color_string ) {
-		this.stroke_points = stroke;
+		stroke_points = stroke;
+  	// System.out.println ( "Setting color to " + color_string );
+  	String color_part_strings[] = color_string.trim().split(" ");
+  	try { r = Double.parseDouble ( color_part_strings[0].trim() ); } catch (Exception e) { r = 0.5; }
+  	try { g = Double.parseDouble ( color_part_strings[1].trim() ); } catch (Exception e) { g = 0.5; }
+  	try { b = Double.parseDouble ( color_part_strings[2].trim() ); } catch (Exception e) { b = 0.5; }
   }
 
 	static void priority_println ( int thresh, String s ) {

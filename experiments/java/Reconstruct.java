@@ -563,8 +563,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	    repaint();
 		} else if ( action_source == dump_menu_item ) {
       if (this.series != null) {
+      	System.out.println ( ">>>>>>>>>>>>>>>>>>> Action: dump_menu_item" );
+      	System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_strokes" );
         this.series.dump_strokes();
-        this.series.dump();
+      	System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_xml" );
+        this.series.dump_xml();
       }
 		} else if ( action_source == clear_menu_item ) {
       if (this.series != null) {

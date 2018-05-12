@@ -147,12 +147,22 @@ public class SectionClass {
 
 
   public void dump_strokes() {
+  	System.out.println ( "Dumping a Section:" );
     for (int i=0; i<strokes.size(); i++) {
-      priority_println ( 50, " Stroke " + i );
+      priority_println ( 150, " Stroke " + i );
       ArrayList<double[]> s = strokes.get(i);
 	    for (int j=0; j<s.size(); j++) {
 	      double p[] = s.get(j);
-	      priority_println ( 50, "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
+	      priority_println ( 150, "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
+	    }
+    }
+    for (int i=0; i<contours.size(); i++) {
+      priority_println ( 150, " Contour " + i );
+      ContourClass contour = contours.get(i);
+      ArrayList<double[]> s = contour.stroke_points;
+	    for (int j=0; j<s.size(); j++) {
+	      double p[] = s.get(j);
+	      priority_println ( 150, "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
 	    }
     }
   }
@@ -253,9 +263,18 @@ public class SectionClass {
     }
 
     g.setColor ( new Color ( 200, 0, 0 ) );
+    /*
     for (int i=0; i<strokes.size(); i++) {
       // priority_println ( 50, " Stroke " + i );
       ArrayList<double[]> s = strokes.get(i);
+      draw_stroke ( g, s, r );
+    }
+    */
+    for (int i=0; i<contours.size(); i++) {
+      // priority_println ( 50, " Stroke " + i );
+      ContourClass c = contours.get(i);
+      g.setColor ( new Color ( (int)(255*c.r), (int)(255*c.g), (int)(255*c.b) ) );
+      ArrayList<double[]> s = c.stroke_points;
       draw_stroke ( g, s, r );
     }
     if (r.stroke != null) {
