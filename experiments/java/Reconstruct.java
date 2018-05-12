@@ -368,11 +368,15 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem organelle_scale_menu_item=null;
 	JMenuItem BBCHZ_scale_menu_item=null;
 	JMenuItem BBCHZ_cal_scale_menu_item=null;
+  JMenuItem line_menu_none_item = null;
   JMenuItem line_menu_0_item = null;
   JMenuItem line_menu_1_item = null;
   JMenuItem line_menu_2_item = null;
+
+  JMenuItem purge_images_menu_item = null;
 	JMenuItem dump_menu_item=null;
 	JMenuItem clear_menu_item=null;
+
 	JMenuItem exit_menu_item=null;
 
   // KeyListener methods:
@@ -565,6 +569,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			xs= 26.25;
 			ys=-26.25;
 	    repaint();
+		} else if ( action_source == line_menu_none_item ) {
+			line_padding = -1; // This signals to not draw at all
+	    repaint();
 		} else if ( action_source == line_menu_0_item ) {
 			line_padding = 0;
 	    repaint();
@@ -582,6 +589,12 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       	System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_xml" );
         this.series.dump_xml();
       }
+		} else if ( action_source == purge_images_menu_item ) {
+      if (this.series != null) {
+        this.series.purge_images();
+      }
+	    stroke  = null;
+	    repaint();
 		} else if ( action_source == clear_menu_item ) {
       if (this.series != null) {
         this.series.clear_strokes();
@@ -887,6 +900,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 		        JMenu line_menu = new JMenu("Line");
 		          bg = new ButtonGroup();
+		          line_menu.add ( zp.line_menu_none_item = mi = new JRadioButtonMenuItem("None", zp.line_padding==-1) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
 		          line_menu.add ( zp.line_menu_0_item = mi = new JRadioButtonMenuItem("Width = 1", zp.line_padding==0) );
 		          mi.addActionListener(zp);
 		          bg.add ( mi );
@@ -917,6 +933,12 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		          // mode_menu.add ( mi = new JMenuItem("Clear") );
 		          // mi.addActionListener(zp);
             extras_menu.add ( mode_menu );
+
+            extras_menu.addSeparator();
+
+            extras_menu.add ( zp.purge_images_menu_item = mi = new JMenuItem("Purge Images") );
+            mi.addActionListener(zp);
+
 	          menu_bar.add ( extras_menu );
 
 				f.setJMenuBar ( menu_bar );

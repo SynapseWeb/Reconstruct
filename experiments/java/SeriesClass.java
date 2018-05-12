@@ -145,6 +145,14 @@ public class SeriesClass {
     }
   }
 
+  public void purge_images() {
+	  if (sections != null) {
+	    for (int i=0; i<sections.length; i++) {
+	      sections[i].purge_images();
+	    }
+    }
+  }
+
   public void clear_strokes() {
 	  if (sections != null) {
 	    if (section_index < sections.length) {
@@ -204,8 +212,8 @@ public class SeriesClass {
 					} catch (OutOfMemoryError mem_err) {
 						// Attempt to remove images fartherest away from this (assuming circular indexing)
 						System.out.println ( "         SeriesClass.paint_section: **** Out of Memory Error, try purging images on sections " + purge_1 + " and " + purge_2 );
-						sections[purge_1].purge_image();
-						sections[purge_2].purge_image();
+						sections[purge_1].purge_images();
+						sections[purge_2].purge_images();
 						if ( (purge_1 != section_index) && (purge_2 != section_index) ) {
 							delta += 1;
 						}

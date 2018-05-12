@@ -207,7 +207,7 @@ public class SectionClass {
     return ( section_image );
   }
 
-	public boolean purge_image() {
+	public boolean purge_images() {
 		if (section_image == null) {
 			return ( false );
 		} else {
@@ -220,19 +220,21 @@ public class SectionClass {
     if (s.size() > 0) {
     	double xo=r.xo, xs=r.xs, yo=r.yo, ys=r.ys;
       int line_padding = r.line_padding;
-      for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
-        for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
-          double p0[] = s.get(0);
-          for (int j=1; j<s.size(); j++) {
-            double p1[] = s.get(j);
-            g.drawLine (  xoffset+r.x_to_pxi(xs*(xo+p0[0])),   yoffset+r.y_to_pyi(ys*(yo+p0[1])),  xoffset+r.x_to_pxi(xs*(xo+p1[0])),  yoffset+r.y_to_pyi(ys*(yo+p1[1])) );
-            // priority_println ( 50, "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
-            p0 = new double[2];
-            p0[0] = p1[0];
-            p0[1] = p1[1];
-          }
-        }
-      }
+      if (line_padding >= 0) {
+		    for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
+		      for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
+		        double p0[] = s.get(0);
+		        for (int j=1; j<s.size(); j++) {
+		          double p1[] = s.get(j);
+		          g.drawLine (  xoffset+r.x_to_pxi(xs*(xo+p0[0])),   yoffset+r.y_to_pyi(ys*(yo+p0[1])),  xoffset+r.x_to_pxi(xs*(xo+p1[0])),  yoffset+r.y_to_pyi(ys*(yo+p1[1])) );
+		          // priority_println ( 50, "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
+		          p0 = new double[2];
+		          p0[0] = p1[0];
+		          p0[1] = p1[1];
+		        }
+		      }
+		    }
+		  }
     }
   }
 
