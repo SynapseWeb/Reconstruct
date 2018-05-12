@@ -60,6 +60,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   // Scale and translation temporary during testing of transforms:
   double xo=-8.55, yo=-5.05, xs=19.8, ys=-20.0;
 
+	int line_padding = 0;
   
   SeriesClass series = null;
 
@@ -367,6 +368,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem organelle_scale_menu_item=null;
 	JMenuItem BBCHZ_scale_menu_item=null;
 	JMenuItem BBCHZ_cal_scale_menu_item=null;
+  JMenuItem line_menu_0_item = null;
+  JMenuItem line_menu_1_item = null;
+  JMenuItem line_menu_2_item = null;
 	JMenuItem dump_menu_item=null;
 	JMenuItem clear_menu_item=null;
 	JMenuItem exit_menu_item=null;
@@ -561,6 +565,15 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			xs= 26.25;
 			ys=-26.25;
 	    repaint();
+		} else if ( action_source == line_menu_0_item ) {
+			line_padding = 0;
+	    repaint();
+		} else if ( action_source == line_menu_1_item ) {
+			line_padding = 1;
+	    repaint();
+		} else if ( action_source == line_menu_2_item ) {
+			line_padding = 2;
+	    repaint();
 		} else if ( action_source == dump_menu_item ) {
       if (this.series != null) {
       	System.out.println ( ">>>>>>>>>>>>>>>>>>> Action: dump_menu_item" );
@@ -645,16 +658,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
               debug_menu.add ( mi = new JMenuItem("Times") );
               mi.addActionListener(zp);
               debug_menu.addSeparator();
-              debug_menu.add ( zp.identity_scale_menu_item = mi = new JMenuItem("Identity Scale") );
-              mi.addActionListener(zp);
-              debug_menu.add ( zp.organelle_scale_menu_item = mi = new JMenuItem("Organelle Scale") );
-              mi.addActionListener(zp);
-              debug_menu.add ( zp.BBCHZ_scale_menu_item = mi = new JMenuItem("BBCHZ Section Scale") );
-              mi.addActionListener(zp);
-              debug_menu.add ( zp.BBCHZ_cal_scale_menu_item = mi = new JMenuItem("BBCHZ Cal Scale") );
-              mi.addActionListener(zp);
-              debug_menu.add ( zp.manual_scale_menu_item = mi = new JMenuItem("Manual Scale") );
-              mi.addActionListener(zp);
               debug_menu.add ( zp.dump_menu_item = mi = new JMenuItem("Dump") );
               mi.addActionListener(zp);
               debug_menu.add ( zp.clear_menu_item = mi = new JMenuItem("Clear") );
@@ -868,23 +871,53 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             mi.addActionListener(zp);
             menu_bar.add ( help_menu );
 
-          JMenu mode_menu = new JMenu("Mode");
-            bg = new ButtonGroup();
-            System.out.println ( "Initializing Drawing Mode with drawing_mode: "  + zp.drawing_mode );
-            mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", !zp.drawing_mode) );
+          JMenu extras_menu = new JMenu("Extras");
+            extras_menu.add ( zp.identity_scale_menu_item = mi = new JMenuItem("Identity Scale") );
             mi.addActionListener(zp);
-            bg.add ( mi );
-            mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw", zp.drawing_mode) );
+            extras_menu.add ( zp.organelle_scale_menu_item = mi = new JMenuItem("Organelle Scale") );
             mi.addActionListener(zp);
-            bg.add ( mi );
-            System.out.println ( "Initializing Center Drawing check box with: "  + zp.center_draw );
-            mode_menu.add ( zp.center_draw_menu_item = mi = new JCheckBoxMenuItem("Center Drawing", zp.center_draw) );
+            extras_menu.add ( zp.BBCHZ_scale_menu_item = mi = new JMenuItem("BBCHZ Section Scale") );
             mi.addActionListener(zp);
-            // mode_menu.add ( zp.dump_menu_item );
-            // mi.addActionListener(zp);
-            // mode_menu.add ( mi = new JMenuItem("Clear") );
-            // mi.addActionListener(zp);
-            menu_bar.add ( mode_menu );
+            extras_menu.add ( zp.BBCHZ_cal_scale_menu_item = mi = new JMenuItem("BBCHZ Cal Scale") );
+            mi.addActionListener(zp);
+            extras_menu.add ( zp.manual_scale_menu_item = mi = new JMenuItem("Manual Scale") );
+            mi.addActionListener(zp);
+
+            extras_menu.addSeparator();
+
+		        JMenu line_menu = new JMenu("Line");
+		          bg = new ButtonGroup();
+		          line_menu.add ( zp.line_menu_0_item = mi = new JRadioButtonMenuItem("Width = 1", zp.line_padding==0) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          line_menu.add ( zp.line_menu_1_item = mi = new JRadioButtonMenuItem("Width = 3", zp.line_padding==1) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          line_menu.add ( zp.line_menu_2_item = mi = new JRadioButtonMenuItem("Width = 5", zp.line_padding==2) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+            extras_menu.add ( line_menu );
+
+            extras_menu.addSeparator();
+
+		        JMenu mode_menu = new JMenu("Mode");
+		          bg = new ButtonGroup();
+		          System.out.println ( "Initializing Drawing Mode with drawing_mode: "  + zp.drawing_mode );
+		          mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", !zp.drawing_mode) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw", zp.drawing_mode) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          System.out.println ( "Initializing Center Drawing check box with: "  + zp.center_draw );
+		          mode_menu.add ( zp.center_draw_menu_item = mi = new JCheckBoxMenuItem("Center Drawing", zp.center_draw) );
+		          mi.addActionListener(zp);
+		          // mode_menu.add ( zp.dump_menu_item );
+		          // mi.addActionListener(zp);
+		          // mode_menu.add ( mi = new JMenuItem("Clear") );
+		          // mi.addActionListener(zp);
+            extras_menu.add ( mode_menu );
+	          menu_bar.add ( extras_menu );
 
 				f.setJMenuBar ( menu_bar );
 				

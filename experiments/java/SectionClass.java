@@ -219,7 +219,7 @@ public class SectionClass {
   public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r ) {
     if (s.size() > 0) {
     	double xo=r.xo, xs=r.xs, yo=r.yo, ys=r.ys;
-      int line_padding = 1;
+      int line_padding = r.line_padding;
       for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
         for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
           double p0[] = s.get(0);
