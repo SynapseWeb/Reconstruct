@@ -128,7 +128,7 @@ public class SectionClass {
                     priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
                   strokes.add ( stroke );
-                  contours.add ( new ContourClass ( stroke, ((Element)grandchild).getAttribute("border") ) );
+                  contours.add ( new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true") ) );
                   priority_println ( 40, "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }
               }
@@ -216,21 +216,32 @@ public class SectionClass {
 		}
 	}
 
-  public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r ) {
+	public void draw_scaled_line ( Graphics g, Reconstruct r, int xoffset, int yoffset, double x0, double y0, double x1, double y1 ) {
+	  g.drawLine ( xoffset+r.x_to_pxi(r.xs*(r.xo+x0)),   yoffset+r.y_to_pyi(r.ys*(r.yo+y0)),  xoffset+r.x_to_pxi(r.xs*(r.xo+x1)),  yoffset+r.y_to_pyi(r.ys*(r.yo+y1)) );
+	}
+
+  public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r, boolean closed ) {
     if (s.size() > 0) {
-    	double xo=r.xo, xs=r.xs, yo=r.yo, ys=r.ys;
+			// double xo=r.xo, xs=r.xs, yo=r.yo, ys=r.ys;
       int line_padding = r.line_padding;
+      double p0[] = null;
+      double p1[] = null;
       if (line_padding >= 0) {
 		    for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
 		      for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
-		        double p0[] = s.get(0);
+		        p0 = s.get(0);
 		        for (int j=1; j<s.size(); j++) {
-		          double p1[] = s.get(j);
-		          g.drawLine (  xoffset+r.x_to_pxi(xs*(xo+p0[0])),   yoffset+r.y_to_pyi(ys*(yo+p0[1])),  xoffset+r.x_to_pxi(xs*(xo+p1[0])),  yoffset+r.y_to_pyi(ys*(yo+p1[1])) );
+		          p1 = s.get(j);
+		          draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
+		          // g.drawLine (  xoffset+r.x_to_pxi(xs*(xo+p0[0])),   yoffset+r.y_to_pyi(ys*(yo+p0[1])),  xoffset+r.x_to_pxi(xs*(xo+p1[0])),  yoffset+r.y_to_pyi(ys*(yo+p1[1])) );
 		          // priority_println ( 50, "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
 		          p0 = new double[2];
 		          p0[0] = p1[0];
 		          p0[1] = p1[1];
+		        }
+		        if (closed) {
+							p1 = s.get(0);
+		          draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
 		        }
 		      }
 		    }
@@ -269,7 +280,7 @@ public class SectionClass {
     for (int i=0; i<strokes.size(); i++) {
       // priority_println ( 50, " Stroke " + i );
       ArrayList<double[]> s = strokes.get(i);
-      draw_stroke ( g, s, r );
+      draw_stroke ( g, s, r, true );
     }
     */
     for (int i=0; i<contours.size(); i++) {
@@ -277,11 +288,11 @@ public class SectionClass {
       ContourClass c = contours.get(i);
       g.setColor ( new Color ( (int)(255*c.r), (int)(255*c.g), (int)(255*c.b) ) );
       ArrayList<double[]> s = c.stroke_points;
-      draw_stroke ( g, s, r );
+      draw_stroke ( g, s, r, c.closed );
     }
     if (r.stroke != null) {
       g.setColor ( new Color ( 255, 0, 0 ) );
-      draw_stroke ( g, r.stroke, r );
+      draw_stroke ( g, r.stroke, r, false );
     }
     if (r.center_draw) {
       g.setColor ( new Color ( 255, 255, 255 ) );

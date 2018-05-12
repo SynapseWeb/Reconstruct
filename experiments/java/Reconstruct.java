@@ -60,7 +60,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   // Scale and translation temporary during testing of transforms:
   double xo=-8.55, yo=-5.05, xs=19.8, ys=-20.0;
 
-	int line_padding = 0;
+	int line_padding = 1;
   
   SeriesClass series = null;
 

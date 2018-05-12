@@ -28,10 +28,12 @@ public class ContourClass {
 
   String contour_name = null;
 	ArrayList<double[]> stroke_points = new ArrayList<double[]>();  // Argument (if any) specifies initial capacity (default 10)
+	boolean closed = true;
 	double r=1.0, g=0.0, b=0.0;
 
-  public ContourClass ( ArrayList<double[]> stroke, String color_string ) {
+  public ContourClass ( ArrayList<double[]> stroke, String color_string, boolean closed ) {
 		stroke_points = stroke;
+		this.closed = closed;
   	// System.out.println ( "Setting color to " + color_string );
   	String color_part_strings[] = color_string.trim().split(" ");
   	try { r = Double.parseDouble ( color_part_strings[0].trim() ); } catch (Exception e) { r = 0.5; }
