@@ -128,6 +128,7 @@ public class SectionClass {
                     priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
                   strokes.add ( stroke );
+                  contours.add ( new ContourClass ( stroke, ((Element)grandchild).getAttribute("border") ) );
                   priority_println ( 40, "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }
               }

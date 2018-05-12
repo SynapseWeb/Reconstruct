@@ -364,6 +364,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem list_sections_menu_item=null;
 	JMenuItem manual_scale_menu_item=null;
 	JMenuItem identity_scale_menu_item=null;
+	JMenuItem organelle_scale_menu_item=null;
 	JMenuItem BBCHZ_scale_menu_item=null;
 	JMenuItem BBCHZ_cal_scale_menu_item=null;
 	JMenuItem dump_menu_item=null;
@@ -542,16 +543,22 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			xs = 1.0;
 			ys = 1.0;
 	    repaint();
+		} else if ( action_source == organelle_scale_menu_item ) {
+			xo = -0.61;
+			yo = -0.61;
+			xs =  160.0;
+			ys = -160.0;
+	    repaint();
 		} else if ( action_source == BBCHZ_scale_menu_item ) {
-			xo=-8.55;
-			yo=-5.05;
-			xs=19.8;
+			xo= -8.55;
+			yo= -5.05;
+			xs= 19.8;
 			ys=-20.0;
 	    repaint();
 		} else if ( action_source == BBCHZ_cal_scale_menu_item ) {
-			xo=-3.8;
-			yo=-3.8;
-			xs=26.25;
+			xo= -3.8;
+			yo= -3.8;
+			xs= 26.25;
 			ys=-26.25;
 	    repaint();
 		} else if ( action_source == dump_menu_item ) {
@@ -636,6 +643,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
               mi.addActionListener(zp);
               debug_menu.addSeparator();
               debug_menu.add ( zp.identity_scale_menu_item = mi = new JMenuItem("Identity Scale") );
+              mi.addActionListener(zp);
+              debug_menu.add ( zp.organelle_scale_menu_item = mi = new JMenuItem("Organelle Scale") );
               mi.addActionListener(zp);
               debug_menu.add ( zp.BBCHZ_scale_menu_item = mi = new JMenuItem("BBCHZ Section Scale") );
               mi.addActionListener(zp);

@@ -27,8 +27,12 @@ import org.xml.sax.SAXException;
 public class ContourClass {
 
   String contour_name = null;
-
 	ArrayList<double[]> stroke_points = new ArrayList<double[]>();  // Argument (if any) specifies initial capacity (default 10)
+	double r=0, g=0, b=0;
+
+  public ContourClass ( ArrayList<double[]> stroke, String color_string ) {
+		this.stroke_points = stroke;
+  }
 
 	static void priority_println ( int thresh, String s ) {
 		if (thresh >= 90) {
