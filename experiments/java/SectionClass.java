@@ -34,7 +34,10 @@ public class SectionClass {
   String image_file_names[] = new String[0];
   ArrayList<String> bad_image_file_names = new ArrayList<String>();
 
-	ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
+  int highest_xform_dim = 0;
+  double image_magnification = 1.0; // This is in units per pixel, equivalent to 1 / (pixels per unit)
+
+	// ArrayList<ArrayList<double[]>> strokes = new ArrayList<ArrayList<double[]>>();  // Argument (if any) specifies initial capacity (default 10)
 	ArrayList<ContourClass> contours = new ArrayList<ContourClass>();  // Argument (if any) specifies initial capacity (default 10)
 
 	static void priority_println ( int thresh, String s ) {
@@ -51,6 +54,8 @@ public class SectionClass {
   public SectionClass ( String p_name, String f_name ) {
     this.path_name = p_name;
     this.file_name = f_name;
+		this.highest_xform_dim = 0;
+		this.image_magnification = 1.0;
 
     File section_file = new File ( this.path_name + File.separator + this.file_name );
 
@@ -66,15 +71,18 @@ public class SectionClass {
         Node child = child_nodes.item(cn);
         if (child.getNodeName() == "Transform") {
           priority_println ( 50, "    SectionClass: Node " + cn + " is a transform" );
-          String xform_dim = ((Element)child).getAttribute("dim");
+          int xform_dim = Integer.parseInt( ((Element)child).getAttribute("dim") );
           String xform_xcoef = ((Element)child).getAttribute("xcoef");
           String xform_ycoef = ((Element)child).getAttribute("ycoef");
           priority_println ( 50, "      dim = \"" + xform_dim + "\"" );
           priority_println ( 50, "      xcoef = " + xform_xcoef );
           priority_println ( 50, "      ycoef = " + xform_ycoef );
-					if ( (!xform_dim.trim().equals("0")) && (!xform_dim.trim().equals("1")) )  {
+					if ( (!(xform_dim == 0)) && (!(xform_dim == 1)) )  {
 						priority_println ( 100, "Transforms must be 0 or 1 dimension in this version." );
-						JOptionPane.showMessageDialog(null, "Error: Dim=" + xform_dim.trim() + ", transforms must be 0 or 1 dimension in this version.", "SectionClass: Dim error", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Error: Dim=" + xform_dim + ", transforms must be 0 or 1 dimension in this version.", "SectionClass: Dim error", JOptionPane.WARNING_MESSAGE);
+					}
+					if (xform_dim > highest_xform_dim) {
+						highest_xform_dim = xform_dim;
 					}
 
           if (child.hasChildNodes()) {
@@ -103,6 +111,12 @@ public class SectionClass {
                     priority_println ( 20, "SectionClass: Error getting path for " + ((Element)grandchild).getAttribute("src") );
                     System.exit(1);
                   }
+                  try {
+                    this.image_magnification = Double.parseDouble ( ((Element)grandchild).getAttribute("mag") );
+                  } catch (Exception e) {
+                    priority_println ( 20, "SectionClass: Error getting image magnification for " + ((Element)grandchild).getAttribute("src") );
+                    this.image_magnification = 1.0;
+                  }
                   image_file_names = new_names;
                 } else if (grandchild.getNodeName() == "Contour") {
                   priority_println ( 40, "      SectionClass: Grandchild " + gn + " is an image perimeter contour" );
@@ -127,7 +141,7 @@ public class SectionClass {
                     stroke.add ( p );
                     priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
-                  strokes.add ( stroke );
+                  // strokes.add ( stroke );
                   contours.add ( new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true") ) );
                   priority_println ( 40, "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }
@@ -147,7 +161,8 @@ public class SectionClass {
 
 
   public void dump_strokes() {
-  	System.out.println ( "Dumping a Section:" );
+		System.out.println ( "Dumping Contours for a Section:" );
+		/*
     for (int i=0; i<strokes.size(); i++) {
       priority_println ( 150, " Stroke " + i );
       ArrayList<double[]> s = strokes.get(i);
@@ -156,6 +171,7 @@ public class SectionClass {
 	      priority_println ( 150, "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
 	    }
     }
+    */
     for (int i=0; i<contours.size(); i++) {
       priority_println ( 150, " Contour " + i );
       ContourClass contour = contours.get(i);
@@ -168,11 +184,11 @@ public class SectionClass {
   }
 
   public void clear_strokes() {
-    strokes = new ArrayList<ArrayList<double[]>>();
+    // strokes = new ArrayList<ArrayList<double[]>>();
   }
 
   public void add_stroke (	ArrayList<double[]> stroke ) {
-    strokes.add ( stroke );
+    // strokes.add ( stroke );
   }
 
 
@@ -301,6 +317,11 @@ public class SectionClass {
       g.drawLine ( cx-10, cy, cx+10, cy );
       g.drawLine ( cx, cy-10, cx, cy+10 );
     }
+    // if (highest_xform_dim > 0) {
+      g.setColor ( new Color ( 255, 255, 255 ) );
+			g.drawString ( "Transform Dimension = " + highest_xform_dim, 10, 24 );
+			g.drawString ( "Image Magnification = " + image_magnification, 10, 44 );
+    // }
 	}
 
 
