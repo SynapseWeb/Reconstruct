@@ -248,12 +248,7 @@ public class SectionClass {
 		        p0 = s.get(0);
 		        for (int j=1; j<s.size(); j++) {
 		          p1 = s.get(j);
-
-
-//		          draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-
-						  g.drawLine ( xoffset+r.x_to_pxi(p0[0]), yoffset+r.y_to_pyi(p0[1]), xoffset+r.x_to_pxi(p1[0]), yoffset+r.y_to_pyi(p1[1]) );
-
+		          draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
 		          // g.drawLine (  xoffset+r.x_to_pxi(xs*(xo+p0[0])),   yoffset+r.y_to_pyi(ys*(yo+p0[1])),  xoffset+r.x_to_pxi(xs*(xo+p1[0])),  yoffset+r.y_to_pyi(ys*(yo+p1[1])) );
 		          // priority_println ( 50, "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
 		          p0 = new double[2];
@@ -272,15 +267,15 @@ public class SectionClass {
 
 
 	public void paint_section (Graphics g, Reconstruct r, SeriesClass series) throws OutOfMemoryError {
-	  BufferedImage image_frame = this.get_image();
+	  BufferedImage image_frame = get_image();
 		if (image_frame == null) {
 		  priority_println ( 50, "Image is null" );
 		} else {
 		  // priority_println ( 50, "Image is NOT null" );
 		  int img_w = image_frame.getWidth();
 		  int img_h = image_frame.getHeight();
-		  double img_wf = image_magnification * img_w;
-		  double img_hf = image_magnification * img_h;
+		  double img_wf = 200;
+		  double img_hf = 200;
 		  if (img_w >= img_h) {
 		    // Make the image wider to fit
 		    img_wf = img_w * img_wf / img_h;
@@ -288,25 +283,10 @@ public class SectionClass {
 		    // Make the height shorter to fit
 		    img_hf = img_h * img_hf / img_w;
 		  }
-		  int draw_x, draw_y, draw_w, draw_h;
-
-      /*
-		  draw_x = r.x_to_pxi(-img_wf/2.0);
-		  draw_y = r.y_to_pyi(-img_hf/2.0);
-		  draw_w = r.x_to_pxi(img_wf/2.0) - draw_x;
-		  draw_h = r.y_to_pyi(img_hf/2.0) - draw_y;
-		  
-		  draw_x = r.x_to_pxi(0);
-		  draw_y = r.y_to_pyi(0);
-		  draw_w = r.x_to_pxi(img_wf) - draw_x;
-		  draw_h = r.y_to_pyi(img_hf) - draw_y;
-		  */
-
-		  draw_x = r.x_to_pxi(0);
-		  draw_y = r.y_to_pyi(0);
-		  draw_w = r.x_to_pxi(img_wf) - draw_x;
-		  draw_h = r.y_to_pyi(img_hf) - draw_y;
-
+		  int draw_x = r.x_to_pxi(-img_wf/2.0);
+		  int draw_y = r.y_to_pyi(-img_hf/2.0);
+		  int draw_w = r.x_to_pxi(img_wf/2.0) - draw_x;
+		  int draw_h = r.y_to_pyi(img_hf/2.0) - draw_y;
       g.drawImage ( image_frame, draw_x, draw_y, draw_w, draw_h, r );
       //g.drawImage ( image_frame, (win_w-img_w)/2, (win_h-img_h)/2, img_w, img_h, this );
     }

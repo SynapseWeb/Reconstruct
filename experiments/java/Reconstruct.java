@@ -58,7 +58,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   MyFileChooser file_chooser = null;
   
   // Scale and translation temporary during testing of transforms:
-  double xo=0, yo=0, xs=1, ys=1;
+  double xo=-8.55, yo=-5.05, xs=19.8, ys=-20.0;
 
 	int line_padding = 1;
   
@@ -77,7 +77,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	  int win_w = win_s.width;
 	  int win_h = win_s.height;
 	  if (recalculate) {
-      set_scale_to_fit ( -2, 10, -2, 10, win_w, win_h );
+      set_scale_to_fit ( -100, 100, -100, 100, win_w, win_h );
 	    recalculate = false;
 	  }
     if (this.series != null) {
@@ -364,7 +364,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
 	JMenuItem manual_scale_menu_item=null;
-	JMenuItem auto_scale_menu_item=null;
 	JMenuItem identity_scale_menu_item=null;
 	JMenuItem organelle_scale_menu_item=null;
 	JMenuItem BBCHZ_scale_menu_item=null;
@@ -545,12 +544,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			    }
 			  }
       // }
-	    repaint();
-		} else if ( action_source == auto_scale_menu_item ) {
-			xo = 0.0;
-			yo = 0.0;
-			xs = 1.0;
-			ys = 1.0;
 	    repaint();
 		} else if ( action_source == identity_scale_menu_item ) {
 			xo = 0.0;
@@ -892,8 +885,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             menu_bar.add ( help_menu );
 
           JMenu extras_menu = new JMenu("Extras");
-            extras_menu.add ( zp.auto_scale_menu_item = mi = new JMenuItem("Auto Scale") );
-            mi.addActionListener(zp);
             extras_menu.add ( zp.identity_scale_menu_item = mi = new JMenuItem("Identity Scale") );
             mi.addActionListener(zp);
             extras_menu.add ( zp.organelle_scale_menu_item = mi = new JMenuItem("Organelle Scale") );
