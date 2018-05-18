@@ -544,7 +544,7 @@ public:
 	int		ContourMaskWidth;				// width of the masked strip along contours. 
 	int		smoothingLength;
 	Mvmt	Increment, ShiftIncrement, CtrlIncrement;
-	Contours	*contours;					// default contours: ordered list 0-9
+	Contours	*contours;					// default contours: ordered list 0-9 (these are the contours for the stamp tool)
 	Contours	*zcontours;					// multisection spanning contours
 	Series();
 	Series( Series &copyfrom );				// copy constructor

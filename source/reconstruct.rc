@@ -1349,7 +1349,7 @@ FONT 8, "MS Sans Serif"
 
 
 1 VERSIONINFO
-FILEVERSION 1, 2, 0, 6
+FILEVERSION 1, 2, 0, 7
 FILEOS 4
 FILETYPE 1
 	BEGIN
@@ -1363,8 +1363,8 @@ FILETYPE 1
 			VALUE "ProductName", "Reconstruct\0"
 			VALUE "WebPage", "http://synapses.bu.edu/\0"
 			VALUE "Builder", "fiala@bu.edu\0"
-			VALUE "BuildDate", "July, 2007\0"
-			VALUE "Compiler", "Borland C++ 5.5\0"
+			VALUE "BuildDate", "May, 2018\0"
+			VALUE "Compiler", "g++ 4.9.2\0"
 			VALUE "Language", "English (United States)\0"
 			VALUE "License", "GNU General Public License, version 2\0"
 			END
