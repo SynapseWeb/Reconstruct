@@ -440,7 +440,7 @@ void CmHideTraces( void )									// hide selected traces
 			}
 }
 
-void CmHideAllTraces( void )									// hide selected traces
+void CmHideAllTraces( void )									// hide all traces
 {
 	Contour *contour;
 
@@ -483,6 +483,12 @@ void CmHideAllTraces( void )									// hide selected traces
 			}
 		}
 		FrontView->needsDrawing = true;
+	}
+	if ( FrontView->needsDrawing ) {
+		InvalidateRect( appWnd, NULL, FALSE );
+		if ( IsWindow(traceList) ) {
+			FillTraceList( traceList, FrontView->section );
+		}
 	}
 }
 
