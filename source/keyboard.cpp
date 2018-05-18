@@ -444,242 +444,46 @@ void CmHideAllTraces( void )									// hide selected traces
 {
 	Contour *contour;
 
-    cout << "\nHiding/unhiding all traces in CmHideAllTraces." << endl;
-
 	if ( (FrontView == NULL) || (FrontView->section == NULL) ) {
 		cout << "FrontView Section is NULL" << endl;
 	} else {
-		cout << "FrontView Section is NOT null" << endl;
 		// Find the first section
 		// Section *sect = CurrSection;
 		Section *sect = FrontView->section;
-		int num_transforms = 0;
-		int num_contours = 0;
 		Transform *trans;
 
+		// First determine if any traces are currently visible (for toggling)
+        bool any_visible = false;
 		if (sect->transforms != NULL) {
-			cout << "4" << endl;    fflush (stdout);
-			cout << "NumTrans: " << sect->transforms->Number() << endl;
 			trans = sect->transforms->first;
-			cout << "5" << endl;    fflush (stdout);
 			while (trans != NULL) {
-				cout << "6" << endl;    fflush (stdout);
 				if (trans->contours != NULL) {
 					Contour *c = trans->contours->first;
 					while (c != NULL) {
-						c->hidden = true;
-						cout << "7" << endl;    fflush (stdout);
-						num_contours += 1;
-						c = c->next;
+						if (!(c->hidden)) {
+							any_visible = true;
+						}
 						sect->hasChanged = true;
+						c = c->next;
 					}
 				}
-				num_transforms += 1;
 				trans = trans->next;
 			}
-			cout << "8" << endl;    fflush (stdout);
+			trans = sect->transforms->first;
+			while (trans != NULL) {
+				if (trans->contours != NULL) {
+					Contour *c = trans->contours->first;
+					while (c != NULL) {
+						c->hidden = any_visible;
+						sect->hasChanged = true;
+						c = c->next;
+					}
+				}
+				trans = trans->next;
+			}
 		}
-		sect = sect->next;
 		FrontView->needsDrawing = true;
-
-/*
-
-	if ( CurrSection == NULL ) {
-		cout << "CurrSection is NULL" << endl;
-	} else {
-		cout << "CurrSection is NOT null" << endl;
-		// Find the first section
-		// Section *sect = CurrSection;
-		Section *sect = CurrSection;
-*/
-/*
-		Section *first_sect = sect;
-		while (sect != NULL) {
-			cout << "1" << endl;    fflush (stdout);
-			first_sect = sect;
-			if (sect->prev == NULL) {
-				break;
-			}
-			sect = sect->prev;
-		}
-		cout << "2" << endl;    fflush (stdout);
-		// Count the sections and transforms
-		int num_sections = 0;
-		int num_transforms = 0;
-		Transform *trans;
-		sect = first_sect;
-		while (sect != NULL) {
-			cout << "3" << endl;    fflush (stdout);
-			num_sections += 1;
-			if (sect->transforms != NULL) {
-				cout << "4" << endl;    fflush (stdout);
-				// cout << "NumTrans: " << sect->transforms->Number() << endl;
-				trans = sect->transforms->first;
-				cout << "5" << endl;    fflush (stdout);
-				while (trans != NULL) {
-					cout << "6" << endl;    fflush (stdout);
-					num_transforms += 1;
-					trans = trans->next;
-				}
-				cout << "7" << endl;    fflush (stdout);
-			}
-			sect = sect->next;
-		}
-		cout << "Num Sections = " << num_sections << endl;    fflush (stdout);
-		cout << "Num Transforms = " << num_transforms << endl;    fflush (stdout);
-*/
-/*
-        // Find if there are any visible contours
-        bool any_visible = false;
-		sect = first_sect;
-        contour = CurrSeries->contours->first;
-        while ( contour ) {
-            if (!(contour->hidden)) {
-                any_visible = true;
-                break;
-            }
-            contour = contour->next;
-        }
-        cout << "Any contours visible = " << any_visible << endl;
-        contour = CurrSeries->contours->first;
-        while ( contour ) {
-            contour->hidden = (any_visible != false);
-            contour = contour->next;
-        }
-
-		if (CurrContours != NULL) {
-			contour = CurrContours->first;
-	        while ( contour ) {
-	            contour->hidden = (any_visible != false);
-	            contour = contour->next;
-	        }
-		}
-
-*/
 	}
-/*
-	if ( (FrontView == NULL) || (FrontView->section == NULL) ) {
-		cout << "CurrSection is NULL" << endl;
-	} else {
-		cout << "CurrSection is NOT null" << endl;
-		// Find the first section
-		// Section *sect = CurrSection;
-		Section *sect = FrontView->section;
-		while (sect != NULL) {
-			if (sect->prev == NULL) {
-				break;
-			}
-			sect = sect->prev;
-		}
-		Section *first_sect = sect;
-		// Count the sections
-		int num_sections = 0;
-		while (sect != NULL) {
-			num_sections += 1;
-			sect = sect->next;
-		}
-		cout << "Num Sections = " << num_sections << endl;
-
-        // Find if there are any visible contours
-        bool any_visible = false;
-		sect = first_sect;
-        contour = CurrSeries->contours->first;
-        while ( contour ) {
-            if (!(contour->hidden)) {
-                any_visible = true;
-                break;
-            }
-            contour = contour->next;
-        }
-        cout << "Any contours visible = " << any_visible << endl;
-        contour = CurrSeries->contours->first;
-        while ( contour ) {
-            contour->hidden = (any_visible != false);
-            contour = contour->next;
-        }
-
-		if (CurrContours != NULL) {
-			contour = CurrContours->first;
-	        while ( contour ) {
-	            contour->hidden = (any_visible != false);
-	            contour = contour->next;
-	        }
-		}
-	}
-
-    // These may have been the symbol contours and not the actual contours
-    if (CurrContours == NULL) {
-      cout << "CurrContours is NULL" << endl;
-    } else {
-      cout << "# CurrContours = " << CurrContours->Number() << endl;
-    }
-    cout << endl;
-    fflush (stdout);
-
-    if (CurrSeries == NULL) {
-      cout << "CurrSeries is NULL" << endl;
-    } else if (CurrSeries->contours == NULL) {
-      cout << "CurrSeries->contours is NULL" << endl;
-    } else {
-      cout << "# CurrSeries->Contours = " << CurrSeries->contours->Number() << endl;
-      if (CurrSeries->contours->Number() > 0) {
-        // Find if there are any visible contours
-        bool any_visible = false;
-        contour = CurrSeries->contours->first;
-        while ( contour ) {
-            if (!(contour->hidden)) {
-                any_visible = true;
-                break;
-            }
-            contour = contour->next;
-        }
-        cout << "Any contours visible = " << any_visible << endl;
-        contour = CurrSeries->contours->first;
-        while ( contour ) {
-            contour->hidden = (any_visible != false);
-            contour = contour->next;
-        }
-
-		if (CurrContours != NULL) {
-			contour = CurrContours->first;
-	        while ( contour ) {
-	            contour->hidden = (any_visible != false);
-	            contour = contour->next;
-	        }
-		}
-      }
-    }
-
-*/
-    cout << endl;
-    fflush (stdout);
-
-	/*
-	if ( FrontView )
-	  if ( FrontView->section)
-		if ( FrontView->section->active )						// do only if there are active contours
-		  if ( FrontView->section->active->contours )
-			{
-            cout << "# FrontView->section->active->contours = " << FrontView->section->active->contours->Number() << endl;
-            fflush (stdout);
-			FrontView->section->PushUndoState();
-			contour = FrontView->section->active->contours->first;
-			while ( contour )
-				{
-				contour->hidden = true;
-				FrontView->section->hasChanged = true;			// flag change for save
-				FrontView->needsDrawing = true;
-				contour = contour->next;						// check all active contours
-				}
-			FrontView->section->active->isActive = false;		// remove hidden contours from active list
-			FrontView->section->active = NULL;
-			if ( FrontView->needsDrawing )
-				{
-				InvalidateRect( appWnd, NULL, FALSE );
-				if ( IsWindow(traceList) ) FillTraceList( traceList, FrontView->section );
-				}
-			}
-	*/
 }
 
 void CmNextWindow( HWND currWnd )			// switch active foreground window in response to ctrl-Tab
