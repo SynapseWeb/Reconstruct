@@ -58,7 +58,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   MyFileChooser file_chooser = null;
   
   // Scale and translation temporary during testing of transforms:
-  double xo=-8.55, yo=-5.05, xs=19.8, ys=-20.0;
+  double xo=0.0, yo=0.0, xs=1.0, ys=1.0;
 
 	int line_padding = 1;
   
@@ -552,22 +552,22 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			ys = 1.0;
 	    repaint();
 		} else if ( action_source == organelle_scale_menu_item ) {
-			xo = -0.61;
-			yo = -0.61;
-			xs =  160.0;
-			ys = -160.0;
+			xo =  0.0;
+			yo = -1.22;
+			xs =  1.0;
+			ys = -1.0;
 	    repaint();
 		} else if ( action_source == BBCHZ_scale_menu_item ) {
-			xo= -8.55;
-			yo= -5.05;
-			xs= 19.8;
-			ys=-20.0;
+			xo=   0.0;
+			yo= -10.0822;
+			xs=   1.0;
+			ys=  -1.0;
 	    repaint();
 		} else if ( action_source == BBCHZ_cal_scale_menu_item ) {
-			xo= -3.8;
-			yo= -3.8;
-			xs= 26.25;
-			ys=-26.25;
+			xo=  0.0;
+			yo= -7.617;
+			xs=  1.0;
+			ys= -1.0;
 	    repaint();
 		} else if ( action_source == line_menu_none_item ) {
 			line_padding = -1; // This signals to not draw at all
