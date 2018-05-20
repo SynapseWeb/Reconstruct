@@ -76,10 +76,10 @@ public class ContourClass {
 					// System.out.println ( "Fill this contour when mode == " + this.mode + " ?" );
 					GeneralPath path = new GeneralPath();
 					p0 = stroke_points.get(0);
-					path.moveTo ( r.x_to_pxi(dx+p0[0]), r.y_to_pyi(dy-p0[1]) );
+					path.moveTo ( r.x_to_pxi(p0[0]-dx), r.y_to_pyi(dy-p0[1]) );
 					for (int j=1; j<stroke_points.size(); j++) {
 						p0 = stroke_points.get(j);
-						path.lineTo ( r.x_to_pxi(dx+p0[0]), r.y_to_pyi(dy-p0[1]) );
+						path.lineTo ( r.x_to_pxi(p0[0]-dx), r.y_to_pyi(dy-p0[1]) );
 					}
 					if (closed) {
 						path.closePath();
