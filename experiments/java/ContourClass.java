@@ -1,4 +1,4 @@
-/* This Class represents a Reconstruct Section. */
+/* This Class represents a Reconstruct Contour. */
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,39 +62,28 @@ public class ContourClass {
 
 			  g.setColor ( new Color ( (int)(255*this.r), (int)(255*this.g), (int)(255*this.b) ) );
 
-			  if (this.mode < 0) {
+				// System.out.println ( "Fill this contour when mode == " + this.mode + " ?" );
+				GeneralPath path = new GeneralPath();
+				p0 = stroke_points.get(0);
+				path.moveTo ( r.x_to_pxi(p0[0]), r.y_to_pyi(-p0[1]) );
+				for (int j=1; j<stroke_points.size(); j++) {
+					p0 = stroke_points.get(j);
+					path.lineTo ( r.x_to_pxi(p0[0]), r.y_to_pyi(-p0[1]) );
+				}
+				if (closed) {
+					path.closePath();
+				}
 
-					// System.out.println ( "Fill this contour when mode == " + this.mode + " ?" );
-					GeneralPath path = new GeneralPath();
-					p0 = stroke_points.get(0);
-					path.moveTo ( r.x_to_pxi(p0[0]), r.y_to_pyi(-p0[1]) );
-					for (int j=1; j<stroke_points.size(); j++) {
-						p0 = stroke_points.get(j);
-						path.lineTo ( r.x_to_pxi(p0[0]), r.y_to_pyi(-p0[1]) );
-					}
-					if (closed) {
-						path.closePath();
-					}
+				// It's not clear what the "mode" means, but -13 seems to match objects to fill
+			  if (this.mode == -13) {
 					g2.fill ( path );
-
-			  } else {
-
-				  for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
-				    for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
-				      p0 = stroke_points.get(0);
-				      for (int j=1; j<stroke_points.size(); j++) {
-				        p1 = stroke_points.get(j);
-				        draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-				        p0 = new double[2];
-				        p0[0] = p1[0];
-				        p0[1] = p1[1];
-				      }
-				      if (closed) {
-								p1 = stroke_points.get(0);
-				        draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-				      }
-				    }
-				  }
+				} else {
+					Stroke previous_stroke = g2.getStroke();
+					if (line_padding >= 1) {
+						g2.setStroke ( new BasicStroke(1 + (2*line_padding)) );
+					}
+					g2.draw ( path );
+					g2.setStroke(previous_stroke);
 				}
 
 			}
