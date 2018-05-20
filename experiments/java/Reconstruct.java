@@ -58,10 +58,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   MyFileChooser file_chooser = null;
   
 	int line_padding = 1;
+	int new_trace_color = 0xff0000;
   
   SeriesClass series = null;
 
-	ArrayList<double[]> stroke  = null;
+	ArrayList<double[]> active_stroke  = null;
 
   void dump_strokes() {
     if (series != null) {
@@ -69,12 +70,43 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     }
   }
 
+	void draw_scaled_line ( Graphics g, int xoffset, int yoffset, double x0, double y0, double x1, double y1 ) {
+	  g.drawLine ( xoffset+this.x_to_pxi(x0),   yoffset+this.y_to_pyi(y0),  xoffset+this.x_to_pxi(x1),  yoffset+this.y_to_pyi(y1) );
+	}
+
+  void draw_active_stroke ( Graphics g, ArrayList<double[]> s, boolean closed ) {
+    if (s.size() > 0) {
+      int line_padding = this.line_padding;
+      double p0[] = null;
+      double p1[] = null;
+      if (line_padding >= 0) {
+		    for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
+		      for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
+		        p0 = s.get(0);
+		        for (int j=1; j<s.size(); j++) {
+		          p1 = s.get(j);
+		          draw_scaled_line ( g, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
+		          p0 = new double[2];
+		          p0[0] = p1[0];
+		          p0[1] = p1[1];
+		        }
+		        if (closed) {
+							p1 = s.get(0);
+		          draw_scaled_line ( g, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
+		        }
+		      }
+		    }
+		  }
+    }
+  }
+
+
   public void paint_frame (Graphics g) {
 	  Dimension win_s = getSize();
 	  int win_w = win_s.width;
 	  int win_h = win_s.height;
 	  if (recalculate) {
-      set_scale_to_fit ( -100, 100, -100, 100, win_w, win_h );
+      set_scale_to_fit ( -10, 10, -10, 10, win_w, win_h );
 	    recalculate = false;
 	  }
     if (this.series != null) {
@@ -84,6 +116,20 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				System.out.println ( "Reconstruct.paint_frame: **** Out of Memory Error" );
 			}
     }
+
+
+    if (this.active_stroke != null) {
+      g.setColor ( new Color ( new_trace_color ) );
+      this.draw_active_stroke ( g, this.active_stroke, false );
+    }
+    if (this.center_draw) {
+      g.setColor ( new Color ( 255, 255, 255 ) );
+      int cx = this.getSize().width / 2;
+      int cy = this.getSize().height / 2;
+      g.drawLine ( cx-10, cy, cx+10, cy );
+      g.drawLine ( cx, cy-10, cx, cy+10 );
+    }
+
   }
 
 
@@ -264,21 +310,21 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     super.mousePressed(e);
     if (e.getButton() == MouseEvent.BUTTON1) {
       if (drawing_mode == true) {
-        if (stroke != null) {
+        if (active_stroke != null) {
           // System.out.println ( "Saving previous stroke" );
           if (series != null) {
-            series.add_stroke ( stroke );
+            series.add_screen_stroke ( active_stroke, new_trace_color );
           }
         }
         // System.out.println ( "Making new stroke" );
-        stroke = new ArrayList<double[]>(100);
+        active_stroke = new ArrayList<double[]>(100);
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
           p[0] = px_to_x(getSize().width / 2);
           p[1] = py_to_y(getSize().height / 2);
         }
         // System.out.println ( "Adding point " + p[0] + "," + p[1] );
-        stroke.add ( p );
+        active_stroke.add ( p );
         repaint();
       }
     }
@@ -289,15 +335,17 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     if (drawing_mode == false) {
       super.mouseReleased(e);
     } else {
-      if (stroke != null) {
+      if (active_stroke != null) {
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
           p[0] = px_to_x(getSize().width / 2);
           p[1] = py_to_y(getSize().height / 2);
         }
-        stroke.add ( p );
-        series.add_stroke ( stroke );
-        stroke = null;
+        active_stroke.add ( p );
+        if (series != null) {
+	        series.add_screen_stroke ( active_stroke, new_trace_color );
+	      }
+        active_stroke = null;
         repaint();
       }
     }
@@ -314,16 +362,16 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       if (center_draw) {
         super.mouseDragged(e);
       }
-      if (stroke == null) {
-        stroke  = new ArrayList<double[]>(100);
+      if (active_stroke == null) {
+        active_stroke  = new ArrayList<double[]>(100);
       }
-      if (stroke != null) {
+      if (active_stroke != null) {
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
           p[0] = px_to_x(getSize().width / 2);
           p[1] = py_to_y(getSize().height / 2);
         }
-        stroke.add ( p );
+        active_stroke.add ( p );
         repaint();
       }
     }
@@ -360,10 +408,24 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem open_series_menu_item=null;
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
+
   JMenuItem line_menu_none_item = null;
   JMenuItem line_menu_0_item = null;
   JMenuItem line_menu_1_item = null;
   JMenuItem line_menu_2_item = null;
+
+  JMenuItem color_menu_red_item = null;
+  JMenuItem color_menu_green_item = null;
+  JMenuItem color_menu_blue_item = null;
+  JMenuItem color_menu_yellow_item = null;
+  JMenuItem color_menu_magenta_item = null;
+  JMenuItem color_menu_cyan_item = null;
+  JMenuItem color_menu_black_item = null;
+  JMenuItem color_menu_white_item = null;
+
+  JMenuItem color_menu_light_item = null;
+  JMenuItem color_menu_dark_item = null;
+
 
   JMenuItem purge_images_menu_item = null;
 	JMenuItem dump_menu_item=null;
@@ -540,17 +602,60 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       	System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_xml" );
         this.series.dump_xml();
       }
+
+		} else if ( action_source == color_menu_red_item ) {
+		  new_trace_color=0xff0000;
+	    repaint();
+		} else if ( action_source == color_menu_green_item ) {
+		  new_trace_color=0x00ff00;
+	    repaint();
+		} else if ( action_source == color_menu_blue_item ) {
+		  new_trace_color=0x0000ff;
+	    repaint();
+		} else if ( action_source == color_menu_yellow_item ) {
+		  new_trace_color=0xffff00;
+	    repaint();
+		} else if ( action_source == color_menu_magenta_item ) {
+		  new_trace_color=0xff00ff;
+	    repaint();
+		} else if ( action_source == color_menu_cyan_item ) {
+		  new_trace_color=0x00ffff;
+	    repaint();
+		} else if ( action_source == color_menu_black_item ) {
+		  new_trace_color=0x000000;
+	    repaint();
+		} else if ( action_source == color_menu_white_item ) {
+		  new_trace_color=0xffffff;
+	    repaint();
+		} else if ( action_source == color_menu_light_item ) {
+			int r = (new_trace_color & 0xff0000) >> 16;
+			int g = (new_trace_color & 0x00ff00) >>  8;
+			int b = (new_trace_color & 0x0000ff);
+			r = 4 * r / 3; if (r > 255) r = 255;
+			g = 4 * g / 3; if (g > 255) g = 255;
+			b = 4 * b / 3; if (b > 255) b = 255;
+		  new_trace_color = (r << 16) + (g << 8) + b;
+	    repaint();
+		} else if ( action_source == color_menu_dark_item ) {
+			int r = (new_trace_color & 0xff0000) >> 16;
+			int g = (new_trace_color & 0x00ff00) >>  8;
+			int b = (new_trace_color & 0x0000ff);
+			r = 3 * r / 4; if (r < 0) r = 0;
+			g = 3 * g / 4; if (g < 0) g = 0;
+			b = 3 * b / 4; if (b < 0) b = 0;
+		  new_trace_color = (r << 16) + (g << 8) + b;
+	    repaint();
 		} else if ( action_source == purge_images_menu_item ) {
       if (this.series != null) {
         this.series.purge_images();
       }
-	    stroke  = null;
+	    active_stroke  = null;
 	    repaint();
 		} else if ( action_source == clear_menu_item ) {
       if (this.series != null) {
         this.series.clear_strokes();
       }
-	    stroke  = null;
+	    active_stroke  = null;
 	    repaint();
 		} else if ( action_source == import_images_menu_item ) {
 		  file_chooser.setMultiSelectionEnabled(true);
@@ -836,6 +941,41 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             menu_bar.add ( help_menu );
 
           JMenu extras_menu = new JMenu("Extras");
+
+		        JMenu color_menu = new JMenu("Color");
+		          bg = new ButtonGroup();
+		          color_menu.add ( zp.color_menu_red_item = mi = new JRadioButtonMenuItem("Red", zp.new_trace_color==0xff0000) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_green_item = mi = new JRadioButtonMenuItem("Green", zp.new_trace_color==0x00ff00) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_blue_item = mi = new JRadioButtonMenuItem("Blue", zp.new_trace_color==0x0000ff) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_yellow_item = mi = new JRadioButtonMenuItem("Yellow", zp.new_trace_color==0xffff00) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_magenta_item = mi = new JRadioButtonMenuItem("Magenta", zp.new_trace_color==0xff00ff) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_cyan_item = mi = new JRadioButtonMenuItem("Cyan", zp.new_trace_color==0x00ffff) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_black_item = mi = new JRadioButtonMenuItem("Black", zp.new_trace_color==0x000000) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_white_item = mi = new JRadioButtonMenuItem("White", zp.new_trace_color==0xffffff) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+              color_menu.addSeparator();
+		          color_menu.add ( zp.color_menu_light_item = mi = new JMenuItem("Lighter") );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+		          color_menu.add ( zp.color_menu_dark_item = mi = new JMenuItem("Darker") );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+            extras_menu.add ( color_menu );
 
 		        JMenu line_menu = new JMenu("Line");
 		          bg = new ButtonGroup();

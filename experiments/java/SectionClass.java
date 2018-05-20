@@ -194,11 +194,6 @@ public class SectionClass {
     // strokes = new ArrayList<ArrayList<double[]>>();
   }
 
-  public void add_stroke (	ArrayList<double[]> stroke ) {
-    // strokes.add ( stroke );
-  }
-
-
   public BufferedImage get_image() throws OutOfMemoryError {
     if (section_image == null) {
       try {
@@ -239,37 +234,6 @@ public class SectionClass {
 		}
 	}
 
-	public void draw_scaled_line ( Graphics g, Reconstruct r, int xoffset, int yoffset, double x0, double y0, double x1, double y1 ) {
-	  g.drawLine ( xoffset+r.x_to_pxi(x0),   yoffset+r.y_to_pyi(-y0),  xoffset+r.x_to_pxi(x1),  yoffset+r.y_to_pyi(-y1) );
-	}
-
-  public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r, boolean closed ) {
-    if (s.size() > 0) {
-      int line_padding = r.line_padding;
-      double p0[] = null;
-      double p1[] = null;
-      if (line_padding >= 0) {
-		    for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
-		      for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
-		        p0 = s.get(0);
-		        for (int j=1; j<s.size(); j++) {
-		          p1 = s.get(j);
-		          draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-		          p0 = new double[2];
-		          p0[0] = p1[0];
-		          p0[1] = p1[1];
-		        }
-		        if (closed) {
-							p1 = s.get(0);
-		          draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-		        }
-		      }
-		    }
-		  }
-    }
-  }
-
-
 	public void paint_section (Graphics g, Reconstruct r, SeriesClass series) throws OutOfMemoryError {
 	  BufferedImage image_frame = get_image();
 		if (image_frame == null) {
@@ -278,23 +242,9 @@ public class SectionClass {
 		  // priority_println ( 50, "Image is NOT null" );
 		  int img_w = image_frame.getWidth();
 		  int img_h = image_frame.getHeight();
+
 		  double img_wf = img_w * image_magnification;
 		  double img_hf = img_h * image_magnification;
-		  /*
-		  if (img_w >= img_h) {
-		    // Make the image wider to fit
-		    img_wf = img_w * img_wf / img_h;
-		  } else {
-		    // Make the height shorter to fit
-		    img_hf = img_h * img_hf / img_w;
-		  }
-		  */
-		  /*
-		  int draw_x = r.x_to_pxi(-img_wf/2.0);
-		  int draw_y = r.y_to_pyi(-img_hf/2.0);
-		  int draw_w = r.x_to_pxi(img_wf/2.0) - draw_x;
-		  int draw_h = r.y_to_pyi(img_hf/2.0) - draw_y;
-		  */
 
 		  int draw_x = r.x_to_pxi(0);
 		  int draw_y = r.y_to_pyi(0);
@@ -306,28 +256,11 @@ public class SectionClass {
     }
 
     g.setColor ( new Color ( 200, 0, 0 ) );
-    /*
-    for (int i=0; i<strokes.size(); i++) {
-      // priority_println ( 50, " Stroke " + i );
-      ArrayList<double[]> s = strokes.get(i);
-      draw_stroke ( g, s, r, true );
-    }
-    */
+
     for (int i=0; i<contours.size(); i++) {
       // priority_println ( 50, " Stroke " + i );
       ContourClass c = contours.get(i);
       c.draw ( g, r );
-    }
-    if (r.stroke != null) {
-      g.setColor ( new Color ( 255, 0, 0 ) );
-      draw_stroke ( g, r.stroke, r, false );
-    }
-    if (r.center_draw) {
-      g.setColor ( new Color ( 255, 255, 255 ) );
-      int cx = r.getSize().width / 2;
-      int cy = r.getSize().height / 2;
-      g.drawLine ( cx-10, cy, cx+10, cy );
-      g.drawLine ( cx, cy-10, cx, cy+10 );
     }
     // if (highest_xform_dim > 0) {
       g.setColor ( new Color ( 255, 255, 255 ) );
@@ -335,6 +268,29 @@ public class SectionClass {
 			g.drawString ( "Image Magnification = " + image_magnification, 10, 44 );
     // }
 	}
+
+
+  public void add_screen_stroke (	ArrayList<double[]> stroke, int new_color ) {
+		// System.out.println ( "SectionClass has been asked to add a screen stroke of " + stroke.size() + " points" );
+
+		// Invert the points before putting in the contour
+		// Note that there may need to be some consideration of the current transform here?
+		for (int i=0; i<stroke.size(); i++) {
+			double p[] = stroke.get(i);
+			// System.out.println ( "  Stroke[" + i + "] = " + p[0] + "," + p[1] );
+			p[1] = -p[1];
+		}
+
+		String xml_color = "";
+		xml_color = xml_color +       ( ((new_color & 0xff0000) >> 16) / 255.0 );
+		xml_color = xml_color + " " + ( ((new_color & 0x00ff00) >>  8) / 255.0 );
+		xml_color = xml_color + " " + ( ((new_color & 0x0000ff)      ) / 255.0 );
+		ContourClass cc = new ContourClass ( stroke, xml_color, true );
+		cc.set_mode ( 9 );
+		cc.set_hidden ( false );
+		// cc.set_transform ( current_transform );
+		contours.add ( cc );
+  }
 
 
 
