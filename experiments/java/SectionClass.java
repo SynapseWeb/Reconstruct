@@ -142,7 +142,9 @@ public class SectionClass {
                     priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
                   // strokes.add ( stroke );
-                  contours.add ( new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true") ) );
+                  ContourClass cc = new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true") );
+                  cc.set_mode ( Integer.parseInt ( ((Element)grandchild).getAttribute("mode").trim() ) );
+                  contours.add ( cc );
                   priority_println ( 40, "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }
               }
@@ -309,9 +311,7 @@ public class SectionClass {
     for (int i=0; i<contours.size(); i++) {
       // priority_println ( 50, " Stroke " + i );
       ContourClass c = contours.get(i);
-      g.setColor ( new Color ( (int)(255*c.r), (int)(255*c.g), (int)(255*c.b) ) );
-      ArrayList<double[]> s = c.stroke_points;
-      draw_stroke ( g, s, r, c.closed );
+      c.draw ( g, r );
     }
     if (r.stroke != null) {
       g.setColor ( new Color ( 255, 0, 0 ) );
