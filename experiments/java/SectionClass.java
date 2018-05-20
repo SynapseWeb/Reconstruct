@@ -298,7 +298,7 @@ public class SectionClass {
 		  int draw_w = r.x_to_pxi(img_wf) - draw_x;
 		  int draw_h = r.y_to_pyi(img_hf) - draw_y;
 
-      g.drawImage ( image_frame, draw_x, draw_y, draw_w, draw_h, r );
+      g.drawImage ( image_frame, draw_x, draw_y-draw_h, draw_w, draw_h, r );
       //g.drawImage ( image_frame, (win_w-img_w)/2, (win_h-img_h)/2, img_w, img_h, this );
     }
 
