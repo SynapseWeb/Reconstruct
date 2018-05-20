@@ -57,9 +57,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   String current_directory = "";
   MyFileChooser file_chooser = null;
   
-  // Scale and translation temporary during testing of transforms:
-  double xo=0.0, yo=0.0, xs=1.0, ys=-1.0;
-
 	int line_padding = 1;
   
   SeriesClass series = null;
@@ -363,11 +360,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem open_series_menu_item=null;
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
-	JMenuItem manual_scale_menu_item=null;
-	JMenuItem identity_scale_menu_item=null;
-	JMenuItem organelle_scale_menu_item=null;
-	JMenuItem BBCHZ_scale_menu_item=null;
-	JMenuItem BBCHZ_cal_scale_menu_item=null;
   JMenuItem line_menu_none_item = null;
   JMenuItem line_menu_0_item = null;
   JMenuItem line_menu_1_item = null;
@@ -528,47 +520,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				}
 				repaint();
 		  }
-		} else if ( action_source == manual_scale_menu_item ) {
-      // if (this.series != null) {
-	      String in_str = JOptionPane.showInputDialog("Enter xo("+xo+") yo("+yo+") xs("+xs+") ys("+ys+")");
-	      if (in_str != null) {
-			    System.out.println ( "Entered: " + in_str );
-			    try {
-						String vals[] = in_str.trim().split(" ");
-						xo = Double.parseDouble ( vals[0] );
-						yo = Double.parseDouble ( vals[1] );
-						xs = Double.parseDouble ( vals[2] );
-						ys = Double.parseDouble ( vals[3] );
-					} catch (Exception ee) {
-						System.out.println ( "Input error: " + in_str );
-			    }
-			  }
-      // }
-	    repaint();
-		} else if ( action_source == identity_scale_menu_item ) {
-			xo = 0.0;
-			yo = 0.0;
-			xs = 1.0;
-			ys = 1.0;
-	    repaint();
-		} else if ( action_source == organelle_scale_menu_item ) {
-			xo =  0.0;
-			yo = -1.22;
-			xs =  1.0;
-			ys = -1.0;
-	    repaint();
-		} else if ( action_source == BBCHZ_scale_menu_item ) {
-			xo=   0.0;
-			yo= -10.0822;
-			xs=   1.0;
-			ys=  -1.0;
-	    repaint();
-		} else if ( action_source == BBCHZ_cal_scale_menu_item ) {
-			xo=  0.0;
-			yo= -7.617;
-			xs=  1.0;
-			ys= -1.0;
-	    repaint();
 		} else if ( action_source == line_menu_none_item ) {
 			line_padding = -1; // This signals to not draw at all
 	    repaint();
@@ -885,18 +836,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             menu_bar.add ( help_menu );
 
           JMenu extras_menu = new JMenu("Extras");
-            extras_menu.add ( zp.identity_scale_menu_item = mi = new JMenuItem("Identity Scale") );
-            mi.addActionListener(zp);
-            extras_menu.add ( zp.organelle_scale_menu_item = mi = new JMenuItem("Organelle Scale") );
-            mi.addActionListener(zp);
-            extras_menu.add ( zp.BBCHZ_scale_menu_item = mi = new JMenuItem("BBCHZ Section Scale") );
-            mi.addActionListener(zp);
-            extras_menu.add ( zp.BBCHZ_cal_scale_menu_item = mi = new JMenuItem("BBCHZ Cal Scale") );
-            mi.addActionListener(zp);
-            extras_menu.add ( zp.manual_scale_menu_item = mi = new JMenuItem("Manual Scale") );
-            mi.addActionListener(zp);
-
-            extras_menu.addSeparator();
 
 		        JMenu line_menu = new JMenu("Line");
 		          bg = new ButtonGroup();

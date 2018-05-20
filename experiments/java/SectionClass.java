@@ -233,12 +233,11 @@ public class SectionClass {
 	}
 
 	public void draw_scaled_line ( Graphics g, Reconstruct r, int xoffset, int yoffset, double x0, double y0, double x1, double y1 ) {
-	  g.drawLine ( xoffset+r.x_to_pxi(r.xs*(r.xo+x0)),   yoffset+r.y_to_pyi(r.ys*(r.yo+y0)),  xoffset+r.x_to_pxi(r.xs*(r.xo+x1)),  yoffset+r.y_to_pyi(r.ys*(r.yo+y1)) );
+	  g.drawLine ( xoffset+r.x_to_pxi(x0),   yoffset+r.y_to_pyi(-y0),  xoffset+r.x_to_pxi(x1),  yoffset+r.y_to_pyi(-y1) );
 	}
 
   public void draw_stroke ( Graphics g, ArrayList<double[]> s, Reconstruct r, boolean closed ) {
     if (s.size() > 0) {
-			// double xo=r.xo, xs=r.xs, yo=r.yo, ys=r.ys;
       int line_padding = r.line_padding;
       double p0[] = null;
       double p1[] = null;
@@ -249,9 +248,6 @@ public class SectionClass {
 		        for (int j=1; j<s.size(); j++) {
 		          p1 = s.get(j);
 		          draw_scaled_line ( g, r, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-		          // g.drawLine (  xoffset+r.x_to_pxi(p0[0]),   yoffset+r.y_to_pyi(p0[1]),  xoffset+r.x_to_pxi(p1[0]),  yoffset+r.y_to_pyi(p1[1]) );
-		          // g.drawLine (  xoffset+r.x_to_pxi(xs*(xo+p0[0])),   yoffset+r.y_to_pyi(ys*(yo+p0[1])),  xoffset+r.x_to_pxi(xs*(xo+p1[0])),  yoffset+r.y_to_pyi(ys*(yo+p1[1])) );
-		          // priority_println ( 50, "   Line " + j + " = [" + p0[0] + "," + p0[1] + "] to [" + p1[0] + "," + p1[1] + "]" );
 		          p0 = new double[2];
 		          p0[0] = p1[0];
 		          p0[1] = p1[1];
