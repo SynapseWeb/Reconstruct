@@ -56,6 +56,7 @@ public class SectionClass {
     this.file_name = f_name;
 		this.highest_xform_dim = 0;
 		this.image_magnification = 1.0;
+		TransformClass current_transform = null;
 
     File section_file = new File ( this.path_name + File.separator + this.file_name );
 
@@ -81,6 +82,8 @@ public class SectionClass {
 						priority_println ( 100, "Transforms must be 0 or 1 dimension in this version." );
 						JOptionPane.showMessageDialog(null, "Error: Dim=" + xform_dim + ", transforms must be 0 or 1 dimension in this version.", "SectionClass: Dim error", JOptionPane.WARNING_MESSAGE);
 					}
+					current_transform = new TransformClass ( xform_dim, xform_xcoef, xform_ycoef );
+
 					if (xform_dim > highest_xform_dim) {
 						highest_xform_dim = xform_dim;
 					}
@@ -144,6 +147,8 @@ public class SectionClass {
                   // strokes.add ( stroke );
                   ContourClass cc = new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true") );
                   cc.set_mode ( Integer.parseInt ( ((Element)grandchild).getAttribute("mode").trim() ) );
+                  cc.set_hidden ( ((Element)grandchild).getAttribute("hidden").trim().equals("true") );
+                  cc.set_transform ( current_transform );
                   contours.add ( cc );
                   priority_println ( 40, "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }

@@ -1,4 +1,4 @@
-/* This Class represents a Reconstruct Contour. */
+/* This Class represents a Reconstruct Section. */
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,9 @@ public class ContourClass {
 
   String contour_name = null;
 	ArrayList<double[]> stroke_points = new ArrayList<double[]>();  // Argument (if any) specifies initial capacity (default 10)
+	TransformClass xform = null;
 	boolean closed = true;
+	boolean hidden = false;
 	double r=1.0, g=0.0, b=0.0;
 	int mode=0;
 
@@ -49,46 +51,56 @@ public class ContourClass {
 	}
 
   public void draw ( Graphics g, Reconstruct r ) {
-    Graphics2D g2 = (Graphics2D)g;
-
-    if (stroke_points.size() > 0) {
-
-	    double p0[] = null;
-	    double p1[] = null;
-
-	    int line_padding = r.line_padding;
-
-	    if (line_padding >= 0) {
-
-			  g.setColor ( new Color ( (int)(255*this.r), (int)(255*this.g), (int)(255*this.b) ) );
-
-				// System.out.println ( "Fill this contour when mode == " + this.mode + " ?" );
-				GeneralPath path = new GeneralPath();
-				p0 = stroke_points.get(0);
-				path.moveTo ( r.x_to_pxi(p0[0]), r.y_to_pyi(-p0[1]) );
-				for (int j=1; j<stroke_points.size(); j++) {
-					p0 = stroke_points.get(j);
-					path.lineTo ( r.x_to_pxi(p0[0]), r.y_to_pyi(-p0[1]) );
+		if ( !hidden ) {
+			Graphics2D g2 = (Graphics2D)g;
+			double dx=0;
+			double dy=0;
+			if (this.xform != null) {
+				if (this.xform.dim > 0) {
+					dx = this.xform.xcoef[0];
+					dy = this.xform.ycoef[0];
 				}
-				if (closed) {
-					path.closePath();
-				}
+			}
 
-				// It's not clear what the "mode" means, but -13 seems to match objects to fill
-			  if (this.mode == -13) {
-					g2.fill ( path );
-				} else {
-					Stroke previous_stroke = g2.getStroke();
-					if (line_padding >= 1) {
-						g2.setStroke ( new BasicStroke(1 + (2*line_padding)) );
+			if (stroke_points.size() > 0) {
+
+				double p0[] = null;
+				double p1[] = null;
+
+				int line_padding = r.line_padding;
+
+				if (line_padding >= 0) {
+
+					g.setColor ( new Color ( (int)(255*this.r), (int)(255*this.g), (int)(255*this.b) ) );
+
+					// System.out.println ( "Fill this contour when mode == " + this.mode + " ?" );
+					GeneralPath path = new GeneralPath();
+					p0 = stroke_points.get(0);
+					path.moveTo ( r.x_to_pxi(dx+p0[0]), r.y_to_pyi(dy-p0[1]) );
+					for (int j=1; j<stroke_points.size(); j++) {
+						p0 = stroke_points.get(j);
+						path.lineTo ( r.x_to_pxi(dx+p0[0]), r.y_to_pyi(dy-p0[1]) );
 					}
-					g2.draw ( path );
-					g2.setStroke(previous_stroke);
+					if (closed) {
+						path.closePath();
+					}
+
+					// It's not clear what the "mode" means, but -13 seems to match objects to fill
+					if (this.mode == -13) {
+						g2.fill ( path );
+					} else {
+						Stroke previous_stroke = g2.getStroke();
+						if (line_padding >= 1) {
+							g2.setStroke ( new BasicStroke(1 + (2*line_padding)) );
+						}
+						g2.draw ( path );
+						g2.setStroke(previous_stroke);
+					}
+
 				}
 
 			}
-
-    }
+		}
   }
 
 
@@ -102,6 +114,14 @@ public class ContourClass {
 
 	public void set_mode ( int mode ) {
 		this.mode = mode;
+	}
+
+	public void set_hidden ( boolean hidden ) {
+		this.hidden = hidden;
+	}
+
+	public void set_transform ( TransformClass xform ) {
+		this.xform = xform;
 	}
 
 	static void priority_println ( int thresh, String s ) {
