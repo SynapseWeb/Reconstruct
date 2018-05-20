@@ -2,7 +2,7 @@
 
 ## Top Suggestions
 
-* **1. Add a key to hide/unhide all traces without picking a domain**
+* **1. Add a key to hide/unhide all traces without picking a domain (Preliminary fix in 1.2.0.9)**
 
 * **2. Add support for an Object Comment**
 
