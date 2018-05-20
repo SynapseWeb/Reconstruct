@@ -53,6 +53,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	
 	boolean drawing_mode = false;
   boolean center_draw = false;
+  boolean segment_draw = false;
 	boolean stroke_started = false;
   String current_directory = "";
   MyFileChooser file_chooser = null;
@@ -137,6 +138,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     if (drawing_mode) {
       current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
       if (center_draw) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+      }
+      if (segment_draw) {
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
       }
       setCursor ( current_cursor );
@@ -295,8 +299,17 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   }
 
   public void mouseClicked ( MouseEvent e ) {
-    System.out.println ( "Mouse clicked: " + e );
+    // System.out.println ( "Mouse clicked: " + e );
     if (e.getButton() == MouseEvent.BUTTON3) {
+			if (segment_draw) {
+				if (active_stroke != null) {
+					if (series != null) {
+						series.add_screen_stroke ( active_stroke, new_trace_color );
+					}
+				}
+				active_stroke = null;
+				// segment_draw = false;
+			}
       drawing_mode = !drawing_mode;
       set_cursor();
       repaint();
@@ -306,18 +319,23 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   }
 
   public void mousePressed ( MouseEvent e ) {
-    // System.out.println ( "Mouse pressed" );
+    // System.out.println ( "Mouse pressed with drawing_mode = " + drawing_mode );
     super.mousePressed(e);
     if (e.getButton() == MouseEvent.BUTTON1) {
       if (drawing_mode == true) {
-        if (active_stroke != null) {
-          // System.out.println ( "Saving previous stroke" );
-          if (series != null) {
-            series.add_screen_stroke ( active_stroke, new_trace_color );
-          }
-        }
-        // System.out.println ( "Making new stroke" );
-        active_stroke = new ArrayList<double[]>(100);
+				if (segment_draw) {
+				} else {
+		      if (active_stroke != null) {
+		        // System.out.println ( "Saving previous stroke" );
+		        if (series != null) {
+		          series.add_screen_stroke ( active_stroke, new_trace_color );
+		        }
+		      }
+		    }
+		    if (active_stroke == null) {
+	        // System.out.println ( "Making new stroke" );
+	        active_stroke = new ArrayList<double[]>(100);
+	      }
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
           p[0] = px_to_x(getSize().width / 2);
@@ -337,15 +355,19 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     } else {
       if (active_stroke != null) {
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
-        if (center_draw) {
-          p[0] = px_to_x(getSize().width / 2);
-          p[1] = py_to_y(getSize().height / 2);
-        }
-        active_stroke.add ( p );
-        if (series != null) {
-	        series.add_screen_stroke ( active_stroke, new_trace_color );
-	      }
-        active_stroke = null;
+        if (segment_draw) {
+		      // active_stroke.add ( p );
+        } else {
+		      if (center_draw) {
+		        p[0] = px_to_x(getSize().width / 2);
+		        p[1] = py_to_y(getSize().height / 2);
+		      }
+		      active_stroke.add ( p );
+		      if (series != null) {
+			      series.add_screen_stroke ( active_stroke, new_trace_color );
+			    }
+		      active_stroke = null;
+		    }
         repaint();
       }
     }
@@ -359,21 +381,25 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     if (drawing_mode == false) {
       super.mouseDragged(e);
     } else {
-      if (center_draw) {
-        super.mouseDragged(e);
-      }
-      if (active_stroke == null) {
-        active_stroke  = new ArrayList<double[]>(100);
-      }
-      if (active_stroke != null) {
-        double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
-        if (center_draw) {
-          p[0] = px_to_x(getSize().width / 2);
-          p[1] = py_to_y(getSize().height / 2);
-        }
-        active_stroke.add ( p );
-        repaint();
-      }
+      if (segment_draw) {
+				// Ignore mouse drags
+      } else {
+		    if (center_draw) {
+		      super.mouseDragged(e);
+		    }
+		    if (active_stroke == null) {
+		      active_stroke  = new ArrayList<double[]>(100);
+		    }
+		    if (active_stroke != null) {
+		      double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
+		      if (center_draw) {
+		        p[0] = px_to_x(getSize().width / 2);
+		        p[1] = py_to_y(getSize().height / 2);
+		      }
+		      active_stroke.add ( p );
+		      repaint();
+		    }
+		  }
     }
   }
 
@@ -404,6 +430,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   JMenuItem move_menu_item = null;
   JMenuItem draw_menu_item = null;
   JMenuItem center_draw_menu_item = null;
+  JMenuItem segment_draw_menu_item = null;
+
 	JMenuItem new_series_menu_item=null;
 	JMenuItem open_series_menu_item=null;
 	JMenuItem import_images_menu_item=null;
@@ -536,6 +564,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
 		  center_draw = item.getState();
 		  if (drawing_mode) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+      }
+		  repaint();
+		} else if ( action_source == segment_draw_menu_item ) {
+		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+		  segment_draw = item.getState();
+		  if (segment_draw) {
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
       }
 		  repaint();
@@ -997,14 +1032,14 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 		        JMenu mode_menu = new JMenu("Mode");
 		          bg = new ButtonGroup();
-		          System.out.println ( "Initializing Drawing Mode with drawing_mode: "  + zp.drawing_mode );
 		          mode_menu.add ( zp.move_menu_item = mi = new JRadioButtonMenuItem("Move", !zp.drawing_mode) );
 		          mi.addActionListener(zp);
 		          bg.add ( mi );
 		          mode_menu.add ( zp.draw_menu_item = mi = new JRadioButtonMenuItem("Draw", zp.drawing_mode) );
 		          mi.addActionListener(zp);
 		          bg.add ( mi );
-		          System.out.println ( "Initializing Center Drawing check box with: "  + zp.center_draw );
+		          mode_menu.add ( zp.segment_draw_menu_item = mi = new JCheckBoxMenuItem("Segment Drawing", zp.segment_draw) );
+		          mi.addActionListener(zp);
 		          mode_menu.add ( zp.center_draw_menu_item = mi = new JCheckBoxMenuItem("Center Drawing", zp.center_draw) );
 		          mi.addActionListener(zp);
 		          // mode_menu.add ( zp.dump_menu_item );
