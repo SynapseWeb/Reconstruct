@@ -63,7 +63,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   
   SeriesClass series = null;
 	ContourClass active_contour = null;
-	ArrayList<double[]> active_stroke  = null;
 
 
   void dump_strokes() {
@@ -75,33 +74,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	void draw_scaled_line ( Graphics g, int xoffset, int yoffset, double x0, double y0, double x1, double y1 ) {
 	  g.drawLine ( xoffset+this.x_to_pxi(x0),   yoffset+this.y_to_pyi(y0),  xoffset+this.x_to_pxi(x1),  yoffset+this.y_to_pyi(y1) );
 	}
-
-  void draw_active_stroke ( Graphics g, ArrayList<double[]> s, boolean closed ) {
-    if (s.size() > 0) {
-      int line_padding = this.line_padding;
-      double p0[] = null;
-      double p1[] = null;
-      if (line_padding >= 0) {
-		    for (int xoffset=-line_padding; xoffset<=line_padding; xoffset++) {
-		      for (int yoffset=-line_padding; yoffset<=line_padding; yoffset++) {
-		        p0 = s.get(0);
-		        for (int j=1; j<s.size(); j++) {
-		          p1 = s.get(j);
-		          draw_scaled_line ( g, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-		          p0 = new double[2];
-		          p0[0] = p1[0];
-		          p0[1] = p1[1];
-		        }
-		        if (closed) {
-							p1 = s.get(0);
-		          draw_scaled_line ( g, xoffset, yoffset, p0[0], p0[1], p1[0], p1[1] );
-		        }
-		      }
-		    }
-		  }
-    }
-  }
-
 
   public void paint_frame (Graphics g) {
 	  Dimension win_s = getSize();
@@ -119,11 +91,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			}
     }
 
-
-    if (this.active_stroke != null) {
-      g.setColor ( new Color ( new_trace_color ) );
-      this.draw_active_stroke ( g, this.active_stroke, false );
-    }
     if (active_contour != null) {
     	active_contour.draw ( g, this );
     }
@@ -307,17 +274,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     // System.out.println ( "Mouse clicked: " + e );
     if (e.getButton() == MouseEvent.BUTTON3) {
 			if (segment_draw) {
-				if (active_stroke != null) {
-					if (series != null) {
-						// series.add_screen_stroke ( active_stroke, new_trace_color );
-					}
-				}
 				if (active_contour != null) {
 					// Add active contour to the series ... not yet to not duplicate the add_screen_stroke above.
 					active_contour.close();
 					series.add_contour ( active_contour );
 				}
-				active_stroke = null;
 				active_contour = null;
 				// segment_draw = false;
 			}
@@ -336,12 +297,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       if (drawing_mode == true) {
 				if (segment_draw) {
 				} else {
-		      if (active_stroke != null) {
-		        // System.out.println ( "Saving previous stroke" );
-		        if (series != null) {
-		          series.add_screen_stroke ( active_stroke, new_trace_color );
-		        }
-		      }
 		      if (active_contour != null) {
 		        // System.out.println ( "Saving previous stroke" );
 		        if (series != null) {
@@ -351,13 +306,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		        }
 		      }
 		    }
-		    if (active_stroke == null) {
-	        // System.out.println ( "Making new stroke" );
-	        active_stroke = new ArrayList<double[]>(100);
-	      }
 		    if (active_contour == null) {
 	        // System.out.println ( "Making new stroke" );
-	        active_contour = new ContourClass ( new ArrayList<double[]>(100), 0x0ffffff, false );
+	        active_contour = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false );
 	      }
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
@@ -365,8 +316,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
           p[1] = py_to_y(getSize().height / 2);
         }
         // System.out.println ( "Adding point " + p[0] + "," + p[1] );
-        active_stroke.add ( p );
-        double contour_point[] = { p[0]+0.1, -p[1] };
+        double contour_point[] = { p[0], -p[1] };
         active_contour.add_point ( contour_point );
         repaint();
       }
@@ -378,36 +328,18 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     if (drawing_mode == false) {
       super.mouseReleased(e);
     } else {
-      if (active_stroke != null) {
-        double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
-        if (segment_draw) {
-		      // active_stroke.add ( p );
-        } else {
-		      if (center_draw) {
-		        p[0] = px_to_x(getSize().width / 2);
-		        p[1] = py_to_y(getSize().height / 2);
-		      }
-		      active_stroke.add ( p );
-		      if (series != null) {
-			      series.add_screen_stroke ( active_stroke, new_trace_color );
-			    }
-		      active_stroke = null;
-		    }
-        repaint();
-      }
       if (active_contour != null) {
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (segment_draw) {
-		      // active_stroke.add ( p );
+		      // ?? active_contour.add_point ( p );
         } else {
 		      if (center_draw) {
 		        p[0] = px_to_x(getSize().width / 2);
 		        p[1] = py_to_y(getSize().height / 2);
 		      }
-	        double contour_point[] = { p[0]+0.1, -p[1] };
+	        double contour_point[] = { p[0], -p[1] };
 		      active_contour.add_point ( contour_point );
 		      if (series != null) {
-			      // series.add_screen_stroke ( active_stroke, new_trace_color );
 						active_contour.close();
 						series.add_contour ( active_contour );
 			    }
@@ -432,20 +364,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		    if (center_draw) {
 		      super.mouseDragged(e);
 		    }
-		    if (active_stroke == null) {
-		      active_stroke  = new ArrayList<double[]>(100);
-		    }
 		    if (active_contour == null) {
 		      active_contour  = new ContourClass ( new ArrayList<double[]>(100), 0x0ffffff, false );
-		    }
-		    if (active_stroke != null) {
-		      double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
-		      if (center_draw) {
-		        p[0] = px_to_x(getSize().width / 2);
-		        p[1] = py_to_y(getSize().height / 2);
-		      }
-		      active_stroke.add ( p );
-		      repaint();
 		    }
 		    if (active_contour != null) {
 		      double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
@@ -453,7 +373,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		        p[0] = px_to_x(getSize().width / 2);
 		        p[1] = py_to_y(getSize().height / 2);
 		      }
-	        double contour_point[] = { p[0]+0.1, -p[1] };
+	        double contour_point[] = { p[0], -p[1] };
 		      active_contour.add_point ( contour_point );
 		      repaint();
 		    }
@@ -742,14 +662,12 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       if (this.series != null) {
         this.series.purge_images();
       }
-	    active_stroke  = null;
 	    active_contour = null;
 	    repaint();
 		} else if ( action_source == clear_menu_item ) {
       if (this.series != null) {
         this.series.clear_strokes();
       }
-	    active_stroke  = null;
 	    active_contour = null;
 	    repaint();
 		} else if ( action_source == import_images_menu_item ) {
