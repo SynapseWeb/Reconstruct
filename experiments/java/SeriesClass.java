@@ -169,6 +169,14 @@ public class SeriesClass {
 	  }
   }
 
+  public void add_contour (	ContourClass contour ) {
+	  if (sections != null) {
+	    if (section_index < sections.length) {
+	      sections[section_index].add_contour ( contour );
+	    }
+	  }
+  }
+
 	public int get_position() {
     return ( section_index );
 	}

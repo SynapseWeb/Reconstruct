@@ -270,6 +270,12 @@ public class SectionClass {
 	}
 
 
+  public void add_contour ( ContourClass contour ) {
+		contours.add ( contour );
+  }
+
+
+
   public void add_screen_stroke (	ArrayList<double[]> stroke, int new_color ) {
 		// System.out.println ( "SectionClass has been asked to add a screen stroke of " + stroke.size() + " points" );
 

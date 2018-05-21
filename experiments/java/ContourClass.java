@@ -46,6 +46,14 @@ public class ContourClass {
   	try { b = Double.parseDouble ( color_part_strings[2].trim() ); } catch (Exception e) { b = 0.5; }
   }
 
+  public ContourClass ( ArrayList<double[]> stroke, int trace_color, boolean closed ) {
+		stroke_points = stroke;
+		this.closed = closed;
+		r = ( (trace_color & 0x00ff0000) >> 16 ) / 255.0;
+		g = ( (trace_color & 0x0000ff00) >>  8 ) / 255.0;
+		b = ( (trace_color & 0x000000ff)       ) / 255.0;
+  }
+
 	public void draw_scaled_line ( Graphics g, Reconstruct r, int xoffset, int yoffset, double x0, double y0, double x1, double y1 ) {
 	  g.drawLine ( xoffset+r.x_to_pxi(x0),   yoffset+r.y_to_pyi(-y0),  xoffset+r.x_to_pxi(x1),  yoffset+r.y_to_pyi(-y1) );
 	}
@@ -106,6 +114,10 @@ public class ContourClass {
 
   public void clear_strokes() {
     stroke_points = new ArrayList<double[]>();
+  }
+
+  public void close() {
+    closed = true;
   }
 
   public void add_point (	double[] point ) {
