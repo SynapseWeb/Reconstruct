@@ -54,6 +54,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	boolean drawing_mode = false;
   boolean center_draw = false;
   boolean segment_draw = false;
+  boolean bezier_draw = false;
 	boolean stroke_started = false;
   String current_directory = "";
   MyFileChooser file_chooser = null;
@@ -114,6 +115,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       }
       if (segment_draw) {
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+      }
+      if (bezier_draw) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.CROSSHAIR_CURSOR );
       }
       setCursor ( current_cursor );
       if (draw_menu_item != null) {
@@ -273,7 +277,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   public void mouseClicked ( MouseEvent e ) {
     // System.out.println ( "Mouse clicked: " + e );
     if (e.getButton() == MouseEvent.BUTTON3) {
-			if (segment_draw) {
+			if (segment_draw || bezier_draw) {
 				if (active_contour != null) {
 					active_contour.close();
 					series.add_contour ( active_contour );
@@ -295,6 +299,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     if (e.getButton() == MouseEvent.BUTTON1) {
       if (drawing_mode == true) {
 				if (segment_draw) {
+				} else if (bezier_draw) {
 				} else {
 		      if (active_contour != null) {
 		        // System.out.println ( "Saving previous stroke" );
@@ -307,6 +312,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		    if (active_contour == null) {
 	        // System.out.println ( "Making new stroke" );
 	        active_contour = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false );
+	        active_contour.is_bezier = bezier_draw;
 	      }
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (center_draw) {
@@ -330,6 +336,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
         if (segment_draw) {
 		      // ?? active_contour.add_point ( p );
+		    } else if (bezier_draw) {
         } else {
 		      if (center_draw) {
 		        p[0] = px_to_x(getSize().width / 2);
@@ -358,12 +365,14 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     } else {
       if (segment_draw) {
 				// Ignore mouse drags
+			} else if (bezier_draw) {
       } else {
 		    if (center_draw) {
 		      super.mouseDragged(e);
 		    }
 		    if (active_contour == null) {
-		      active_contour  = new ContourClass ( new ArrayList<double[]>(100), 0x0ffffff, false );
+		      active_contour  = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false );
+	        active_contour.is_bezier = bezier_draw;
 		    }
 		    if (active_contour != null) {
 		      double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
@@ -407,6 +416,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   JMenuItem draw_menu_item = null;
   JMenuItem center_draw_menu_item = null;
   JMenuItem segment_draw_menu_item = null;
+  JMenuItem bezier_draw_menu_item = null;
 
 	JMenuItem new_series_menu_item=null;
 	JMenuItem open_series_menu_item=null;
@@ -547,6 +557,13 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
 		  segment_draw = item.getState();
 		  if (segment_draw) {
+        current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
+      }
+		  repaint();
+		} else if ( action_source == bezier_draw_menu_item ) {
+		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+		  bezier_draw = item.getState();
+		  if (bezier_draw) {
         current_cursor = Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR );
       }
 		  repaint();
@@ -1015,6 +1032,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		          mi.addActionListener(zp);
 		          bg.add ( mi );
 		          mode_menu.add ( zp.segment_draw_menu_item = mi = new JCheckBoxMenuItem("Segment Drawing", zp.segment_draw) );
+		          mi.addActionListener(zp);
+		          mode_menu.add ( zp.bezier_draw_menu_item = mi = new JCheckBoxMenuItem("Bezier Drawing", zp.bezier_draw) );
 		          mi.addActionListener(zp);
 		          mode_menu.add ( zp.center_draw_menu_item = mi = new JCheckBoxMenuItem("Center Drawing", zp.center_draw) );
 		          mi.addActionListener(zp);
