@@ -161,14 +161,6 @@ public class SeriesClass {
     }
   }
 
-  public void add_screen_stroke (	ArrayList<double[]> stroke, int new_color ) {
-	  if (sections != null) {
-	    if (section_index < sections.length) {
-	      sections[section_index].add_screen_stroke ( stroke, new_color );
-	    }
-	  }
-  }
-
   public void add_contour (	ContourClass contour ) {
 	  if (sections != null) {
 	    if (section_index < sections.length) {

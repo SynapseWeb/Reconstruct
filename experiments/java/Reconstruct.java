@@ -275,7 +275,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
     if (e.getButton() == MouseEvent.BUTTON3) {
 			if (segment_draw) {
 				if (active_contour != null) {
-					// Add active contour to the series ... not yet to not duplicate the add_screen_stroke above.
 					active_contour.close();
 					series.add_contour ( active_contour );
 				}
@@ -300,7 +299,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		      if (active_contour != null) {
 		        // System.out.println ( "Saving previous stroke" );
 		        if (series != null) {
-							// Add active contour to the series ... not yet to not duplicate the add_screen_stroke above.
 							active_contour.close();
 							series.add_contour ( active_contour );
 		        }

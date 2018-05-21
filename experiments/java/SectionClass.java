@@ -275,32 +275,6 @@ public class SectionClass {
   }
 
 
-
-  public void add_screen_stroke (	ArrayList<double[]> stroke, int new_color ) {
-		// System.out.println ( "SectionClass has been asked to add a screen stroke of " + stroke.size() + " points" );
-
-		// Invert the points before putting in the contour
-		// Note that there may need to be some consideration of the current transform here?
-		for (int i=0; i<stroke.size(); i++) {
-			double p[] = stroke.get(i);
-			// System.out.println ( "  Stroke[" + i + "] = " + p[0] + "," + p[1] );
-			p[1] = -p[1];
-		}
-
-		String xml_color = "";
-		xml_color = xml_color +       ( ((new_color & 0xff0000) >> 16) / 255.0 );
-		xml_color = xml_color + " " + ( ((new_color & 0x00ff00) >>  8) / 255.0 );
-		xml_color = xml_color + " " + ( ((new_color & 0x0000ff)      ) / 255.0 );
-		ContourClass cc = new ContourClass ( stroke, xml_color, true );
-		cc.set_mode ( 9 );
-		cc.set_hidden ( false );
-		// cc.set_transform ( current_transform );
-		contours.add ( cc );
-  }
-
-
-
-
 	public static void main ( String[] args ) {
 		priority_println ( 50, "Testing SectionClass.java ..." );
 		File sf = new File ("data/organelle_series/organelle_3_slice.ser");

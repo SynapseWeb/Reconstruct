@@ -35,6 +35,7 @@ public class ContourClass {
 	boolean hidden = false;
 	double r=1.0, g=0.0, b=0.0;
 	int mode=0;
+	boolean is_bezier=false;
 
   public ContourClass ( ArrayList<double[]> stroke, String color_string, boolean closed ) {
 		stroke_points = stroke;
