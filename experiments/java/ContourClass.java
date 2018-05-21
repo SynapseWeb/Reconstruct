@@ -76,6 +76,20 @@ public class ContourClass {
 		return ( t );
 	}
 
+	CubicCurve2D.Double default_curve ( double p0[], double p1[] ) {
+    double mid_x, mid_y;
+    mid_x = p0[0] + ((p1[0]-p0[0])/3);
+    mid_y = p0[1] + ((p1[1]-p0[1])/3);
+    double h0[] = { mid_x, mid_y };
+    //this.h0 = new CurvePoint ( mid_x, mid_y );
+    mid_x = p0[0] + (2*(p1[0]-p0[0])/3);
+    mid_y = p0[1] + (2*(p1[1]-p0[1])/3);
+    double h1[] = { mid_x, mid_y };
+    //this.h1 = new CurvePoint ( mid_x, mid_y );
+
+		return ( new CubicCurve2D.Double ( p0[0], p0[1], h0[0], h0[1], h1[0], h1[1], p1[0], p1[1] ) );
+	}
+
   public void draw ( Graphics g, Reconstruct r ) {
 
 		if ( !hidden ) {
@@ -110,12 +124,12 @@ public class ContourClass {
 						// path.moveTo ( r.x_to_pxi(p0[0]-dx), r.y_to_pyi(dy-p0[1]) );
 						for (int j=1; j<stroke_points.size(); j++) {
 							p1 = translate_to_screen ( stroke_points.get(j), r );
-							curves.add ( new CubicCurve2D.Double ( p0[0], p0[1], p1[0], p0[1], p0[0], p1[1], p1[0], p1[1] ) );
+							curves.add ( default_curve ( p0, p1 ) );
 							p0 = p1;
 						}
 						if (closed) {
 							p1 = translate_to_screen ( stroke_points.get(0), r );
-							curves.add ( new CubicCurve2D.Double ( p0[0], p0[1], p1[0], p0[1], p0[0], p1[1], p1[0], p1[1] ) );
+							curves.add ( default_curve ( p0, p1 ) );
 						}
 
 						// Smooth the handles on all of the curves
