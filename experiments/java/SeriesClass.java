@@ -93,7 +93,49 @@ public class SeriesClass {
     section_index = 0;
 	}
 
+	String series_attr_names[] = {
+		"index", "viewport", "units", "autoSaveSeries", "autoSaveSection", "warnSaveSection",
+		"beepDeleting", "beepPaging=", "hideTraces", "unhideTraces", "hideDomains", "unhideDomains",
+		"useAbsolutePaths", "defaultThickness", "zMidSection", "thumbWidth", "thumbHeight",
+		"fitThumbSections", "firstThumbSection", "lastThumbSection", "skipSections", "displayThumbContours",
+		"useFlipbookStyle", "flipRate", "useProxies", "widthUseProxies", "heightUseProxies", "scaleProxies",
+		"significantDigits", "defaultBorder", "defaultFill", "defaultMode", "defaultName", "defaultComment",
+		"listSectionThickness", "listDomainSource", "listDomainPixelsize", "listDomainLength", "listDomainArea",
+		"listDomainMidpoint", "listTraceComment", "listTraceLength", "listTraceArea", "listTraceCentroid",
+		"listTraceExtent", "listTraceZ", "listTraceThickness", "listObjectRange", "listObjectCount",
+		"listObjectSurfarea", "listObjectFlatarea", "listObjectVolume", "listZTraceNote", "listZTraceRange",
+		"listZTraceLength", "borderColors", "fillColors", "offset3D", "type3Dobject", "first3Dsection",
+		"last3Dsection", "max3Dconnection", "upper3Dfaces", "lower3Dfaces", "faceNormals", "vertexNormals",
+		"facets3D", "dim3D", "gridType", "gridSize", "gridDistance", "gridNumber", "hueStopWhen", "hueStopValue",
+		"satStopWhen", "satStopValue", "brightStopWhen", "brightStopValue", "tracesStopWhen", "areaStopPercent",
+		"areaStopSize", "ContourMaskWidth", "smoothingLength", "mvmtIncrement", "ctrlIncrement", "shiftIncrement"
+	};
+
+	public void write_as_xml ( File series_file ) {
+		// In order to guarantee repeatability, this version exports "by hand" rather than using XML library functions
+		System.out.println ( "Writing XML to file " + series_file.getName() );
+    try {
+		  PrintStream sf = new PrintStream ( series_file );
+		  sf.print ( "<?xml version=\"1.0\"?>\n" );
+		  sf.print ( "<!DOCTYPE Series SYSTEM \"series.dtd\">\n\n" );
+		  if (this.series_doc != null) {
+				Element series_element = this.series_doc.getDocumentElement();
+		    if ( series_element.getNodeName().equalsIgnoreCase ( "Series" ) ) {
+					sf.print ( "<" + series_element.getNodeName() + "\n" );
+					for (int sa=0; sa<series_attr_names.length; sa++) {
+						sf.print ( "\t" + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) + "\"\n" );
+					}
+					sf.print ( "\t>\n" );
+				}
+		  }
+		  sf.close();
+		} catch (Exception e) {
+			System.out.println ( "Error writing to file " + series_file.getName() );
+		}
+	}
+
   public void import_images ( File image_files[] ) {
+    // This version builds its own XML files to eventually use "load_from_xml".
 		if (series_file_name != null) {
 			System.out.println ( "Importing images into " + series_file_name );
 			File series_file = new File(series_file_name);

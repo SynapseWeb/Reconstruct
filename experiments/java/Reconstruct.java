@@ -420,6 +420,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 	JMenuItem new_series_menu_item=null;
 	JMenuItem open_series_menu_item=null;
+	JMenuItem save_series_menu_item=null;
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
 
@@ -610,6 +611,24 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				}
 				repaint();
 		  }
+		} else if ( action_source == save_series_menu_item ) {
+		  file_chooser.setMultiSelectionEnabled(false);
+		  FileNameExtensionFilter filter = new FileNameExtensionFilter("Series Files", "ser");
+		  file_chooser.setFileFilter(filter);
+		  int returnVal = file_chooser.showDialog(this, "Save Series");
+		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
+		    File series_file = file_chooser.getSelectedFile();
+        System.out.println ( "You chose to save to this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
+				try {
+					this.series.write_as_xml ( series_file );
+				} catch (Exception oe) {
+					// this.series.image_frame = null;
+					System.out.println ( "Error while saving a series file:\n" + oe );
+					oe.printStackTrace();
+					JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
+				}
+				repaint();
+		  }
 		} else if ( action_source == line_menu_none_item ) {
 			line_padding = -1; // This signals to not draw at all
 	    repaint();
@@ -778,6 +797,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             zp.new_series_menu_item = mi;
             mi.addActionListener(zp);
             series_menu.add ( mi = new JMenuItem("Save") );
+            zp.save_series_menu_item = mi;
             mi.addActionListener(zp);
             series_menu.add ( mi = new JMenuItem("Options...") );
             mi.addActionListener(zp);
