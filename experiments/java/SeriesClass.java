@@ -111,6 +111,15 @@ public class SeriesClass {
 		"areaStopSize", "ContourMaskWidth", "smoothingLength", "mvmtIncrement", "ctrlIncrement", "shiftIncrement"
 	};
 
+	public String format_colors ( String color_line ) {
+		String colors[] = color_line.trim().split(",");
+		String formatted = "";
+		for (int i=0; i<colors.length; i++) {
+			formatted += colors[i].trim() + ",\n\t\t";
+		}
+		return ( formatted );
+	}
+
 	public void write_as_xml ( File series_file ) {
 		// In order to guarantee repeatability, this version exports "by hand" rather than using XML library functions
 		System.out.println ( "Writing XML to file " + series_file.getName() );
@@ -121,9 +130,24 @@ public class SeriesClass {
 		  if (this.series_doc != null) {
 				Element series_element = this.series_doc.getDocumentElement();
 		    if ( series_element.getNodeName().equalsIgnoreCase ( "Series" ) ) {
-					sf.print ( "<" + series_element.getNodeName() + "\n" );
-					for (int sa=0; sa<series_attr_names.length; sa++) {
-						sf.print ( "\t" + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) + "\"\n" );
+					int sa = 0;
+					sf.print ( "<" + series_element.getNodeName() );
+					if ( series_attr_names[sa].equals("index") ) {  // Put the index on the opening line
+						sf.print ( " " + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) );
+						sa += 1;
+						if ( series_attr_names[sa].equals("viewport") ) {  // Put the viewport on the opening line
+							sf.print ( " " + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) );
+							sa += 1;
+						}
+					}
+					sf.print ( "\n" );
+					// Handle the remaining attributes normally
+					for ( /*int sa=0 */; sa<series_attr_names.length; sa++) {
+						if (series_attr_names[sa].equals("borderColors") || series_attr_names[sa].equals("fillColors")) {
+							sf.print ( "\t" + series_attr_names[sa] + "=\"" + format_colors(series_element.getAttribute(series_attr_names[sa])) + "\"\n" );
+						} else {
+							sf.print ( "\t" + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) + "\"\n" );
+						}
 					}
 					sf.print ( "\t>\n" );
 				}
