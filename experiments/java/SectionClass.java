@@ -150,8 +150,9 @@ public class SectionClass {
               }
             }
           }
+
         }
-      }
+      } // end for (int cn=0; cn<child_nodes.getLength(); cn++)
     }
 
     priority_println ( 50, "============== Section File " + this.file_name + " ==============" );
@@ -164,6 +165,22 @@ public class SectionClass {
 		// This is an alternate place to write a section file from parameters.
 		// This is currently being done in the SeriesClass.
 	}
+
+	String section_attr_names[] = {
+		"index", "thickness", "alignLocked"
+	};
+
+	String transform_attr_names[] = {
+		"dim", "xcoef", "ycoef"
+	};
+
+	String image_attr_names[] = {
+		"mag", "contrast", "brightness", "red", "green", "blue", "src"
+	};
+
+	String contour_attr_names[] = {
+		"name", "hidden", "closed", "simplified", "border", "fill", "mode", "points"
+	};
 
 	public void write_as_xml ( File series_file ) {
 		// Use the path and file name from the series file, but append the index (number) from the section file
@@ -181,6 +198,71 @@ public class SectionClass {
 		  PrintStream sf = new PrintStream ( section_file );
 		  sf.print ( "<?xml version=\"1.0\"?>\n" );
 		  sf.print ( "<!DOCTYPE Section SYSTEM \"section.dtd\">\n\n" );
+		  
+		  if (this.section_doc != null) {
+				Element section_element = this.section_doc.getDocumentElement();
+		    if ( section_element.getNodeName().equalsIgnoreCase ( "Section" ) ) {
+					int seca = 0;
+					sf.print ( "<" + section_element.getNodeName() );
+					// Write section attributes in line
+					for ( /*int seca=0 */; seca<section_attr_names.length; seca++) {
+						sf.print ( " " + section_attr_names[seca] + "=\"" + section_element.getAttribute(section_attr_names[seca]) + "\"" );
+					}
+					sf.print ( ">\n" );
+
+					// Handle the child nodes
+					if (section_element.hasChildNodes()) {
+					  NodeList child_nodes = section_element.getChildNodes();
+						for (int cn=0; cn<child_nodes.getLength(); cn++) {
+						  Node child = child_nodes.item(cn);
+						  if (child.getNodeName().equalsIgnoreCase ( "Transform")) {
+						  	Element transform_element = (Element)child;
+						  	int tfa = 0;
+								sf.print ( "<" + child.getNodeName() );
+								for ( /*int tfa=0 */; tfa<transform_attr_names.length; tfa++) {
+									sf.print ( " " + transform_attr_names[tfa] + "=\"" + transform_element.getAttribute(transform_attr_names[tfa]) + "\"\n" );
+								}
+								sf.print ( ">\n" );
+								if (transform_element.hasChildNodes()) {
+									NodeList transform_child_nodes = transform_element.getChildNodes();
+									for (int gcn=0; gcn<transform_child_nodes.getLength(); gcn++) {
+										Node grandchild = transform_child_nodes.item(gcn);
+										if (grandchild.getNodeName().equalsIgnoreCase ( "Image")) {
+											Element image_element = (Element)grandchild;
+											int ia = 0;
+											sf.print ( "<" + image_element.getNodeName() );
+											for ( /*int ia=0 */; ia<image_attr_names.length; ia++) {
+												sf.print ( " " + image_attr_names[ia] + "=\"" + image_element.getAttribute(image_attr_names[ia]) + "\"\n" );
+											}
+											sf.print ( "/>\n" );
+										} else if (grandchild.getNodeName().equalsIgnoreCase ( "Contour")) {
+											Element contour_element = (Element)grandchild;
+											int ca = 0;
+											sf.print ( "<" + contour_element.getNodeName() );
+											for ( /*int ca=0 */; ca<contour_attr_names.length; ca++) {
+												sf.print ( " " + contour_attr_names[ca] + "=\"" + contour_element.getAttribute(contour_attr_names[ca]) + "\"\n" );
+											}
+											sf.print ( "/>\n" );
+										}
+									}
+								}
+								sf.print ( "</" + child.getNodeName() + ">\n\n" );
+						  } else if (child.getNodeName().equalsIgnoreCase ( "Contour")) {
+								int ca = 0;
+								sf.print ( "<" + child.getNodeName() );
+								sf.print ( " name=\"" + ((Element)child).getAttribute("name") + "\"" );
+								sf.print ( " closed=\"" + ((Element)child).getAttribute("closed") + "\"" );
+								sf.print ( " border=\"" + ((Element)child).getAttribute("border") + "\"" );
+								sf.print ( " fill=\"" + ((Element)child).getAttribute("fill") + "\"" );
+								sf.print ( " mode=\"" + ((Element)child).getAttribute("mode") + "\"\n" );
+								// sf.print ( " points=\"" + format_comma_sep(((Element)child).getAttribute("points"),"\t") + "\"/>\n" );
+						  }
+						}
+					}
+					sf.print ( "</" + section_element.getNodeName() + ">\n" );
+				}
+		  }
+		  sf.close();
 
 		} catch (Exception e) {
 		}
