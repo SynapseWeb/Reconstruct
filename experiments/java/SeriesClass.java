@@ -34,7 +34,6 @@ public class SeriesClass {
   String series_path = null;
   String series_file_name = null;
   Document series_doc = null;
-  Document section_docs[] = null;
 
   SectionClass sections[] = null;
   int section_index = 0;
@@ -42,14 +41,12 @@ public class SeriesClass {
   public SeriesClass () {
     this.series_file_name = null;
     this.series_doc = null;
-    this.section_docs = null;
     this.section_index = 0;
   }
 
   public SeriesClass ( String series_file_name ) {
     this.series_file_name = series_file_name;
     this.series_doc = null;
-    this.section_docs = null;
     this.section_index = 0;
   }
 
@@ -71,23 +68,13 @@ public class SeriesClass {
     Element series_element = this.series_doc.getDocumentElement();
     System.out.println ( "Series is currently viewing index: " + series_element.getAttribute("index") );
 
-    this.section_docs = new Document[section_file_names.length];
-
     sections = new SectionClass[section_file_names.length];
-
 
     for (int i=0; i<section_file_names.length; i++) {
       File section_file;
 
       section_file = new File ( series_path + File.separator + section_file_names[i] );
-
-      this.section_docs[i] = XML_Parser.parse_xml_file_to_doc ( section_file );
-
       sections[i] = new SectionClass ( series_path, section_file_names[i] );
-
-      Element section_element = this.section_docs[i].getDocumentElement();
-
-      // System.out.println ( "This section is index " + this.section_docs[i].getDocumentElement().getAttributes().getNamedItem("index").getNodeValue() );
     }
 
     section_index = 0;
@@ -209,11 +196,11 @@ public class SeriesClass {
     XML_Parser.dump_doc(this.series_doc);
     // XML_Parser.dump_doc(this.series_doc);
     System.out.println ( "============== End Series File  ================" );
-    if (this.section_docs != null) {
-      for (int i=0; i<this.section_docs.length; i++) {
-        System.out.println ( "============== Begin Section File  ================" );
-        XML_Parser.dump_doc(this.section_docs[i]);
-        System.out.println ( "============== End Section File  ================" );
+    if (this.sections != null) {
+	    for (int i=0; i<sections.length; i++) {
+        System.out.println ( "============== Begin Section  ================" );
+        XML_Parser.dump_doc(this.sections[i].section_doc);
+        System.out.println ( "============== End Section  ================" );
       }
     }
   }

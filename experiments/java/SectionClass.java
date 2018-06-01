@@ -160,7 +160,6 @@ public class SectionClass {
     }
 
     priority_println ( 50, "============== Section File " + this.file_name + " ==============" );
-    // priority_println ( 50, "This section is index " + this.section_docs[i].getDocumentElement().getAttributes().getNamedItem("index").getNodeValue() );
     priority_println ( 50, "SectionClass: This section is index " + section_element.getAttribute("index") );
     priority_println ( 50, "===========================================" );
 
@@ -279,16 +278,6 @@ public class SectionClass {
 		priority_println ( 50, "Testing SectionClass.java ..." );
 		File sf = new File ("data/organelle_series/organelle_3_slice.ser");
 		SeriesClass sc = new SeriesClass(sf);
-		Element sec0 = sc.section_docs[0].getDocumentElement();
-		priority_println ( 50, "NodeName = " + sec0.getNodeName() );
-		priority_println ( 50, "thickness = " + sec0.getAttribute("thickness") );
-		priority_println ( 50, "index = " + sec0.getAttribute("index") );
-		String sfnames[] = sc.get_section_file_names(sf.getParent(), sf.getName().substring(0,sf.getName().length()-4));
-		priority_println ( 50, "sfnames:" );
-		for (int i=0; i<sfnames.length; i++) {
-			priority_println ( 50, "  " + sfnames[i] );
-		}
-		Element se = sc.section_docs[0].getDocumentElement();
 	}
 
 }
