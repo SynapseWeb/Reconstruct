@@ -95,7 +95,7 @@ public class SeriesClass {
 
 	String series_attr_names[] = {
 		"index", "viewport", "units", "autoSaveSeries", "autoSaveSection", "warnSaveSection",
-		"beepDeleting", "beepPaging=", "hideTraces", "unhideTraces", "hideDomains", "unhideDomains",
+		"beepDeleting", "beepPaging", "hideTraces", "unhideTraces", "hideDomains", "unhideDomains",
 		"useAbsolutePaths", "defaultThickness", "zMidSection", "thumbWidth", "thumbHeight",
 		"fitThumbSections", "firstThumbSection", "lastThumbSection", "skipSections", "displayThumbContours",
 		"useFlipbookStyle", "flipRate", "useProxies", "widthUseProxies", "heightUseProxies", "scaleProxies",
@@ -111,11 +111,11 @@ public class SeriesClass {
 		"areaStopSize", "ContourMaskWidth", "smoothingLength", "mvmtIncrement", "ctrlIncrement", "shiftIncrement"
 	};
 
-	public String format_colors ( String color_line ) {
-		String colors[] = color_line.trim().split(",");
+	public String format_comma_sep ( String comma_sep_string, String indent_with ) {
+		String comma_sep_terms[] = comma_sep_string.trim().split(",");
 		String formatted = "";
-		for (int i=0; i<colors.length; i++) {
-			formatted += colors[i].trim() + ",\n\t\t";
+		for (int i=0; i<comma_sep_terms.length; i++) {
+			formatted += comma_sep_terms[i].trim() + ",\n" + indent_with;
 		}
 		return ( formatted );
 	}
@@ -133,10 +133,10 @@ public class SeriesClass {
 					int sa = 0;
 					sf.print ( "<" + series_element.getNodeName() );
 					if ( series_attr_names[sa].equals("index") ) {  // Put the index on the opening line
-						sf.print ( " " + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) );
+						sf.print ( " " + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) + "\"" );
 						sa += 1;
 						if ( series_attr_names[sa].equals("viewport") ) {  // Put the viewport on the opening line
-							sf.print ( " " + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) );
+							sf.print ( " " + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) + "\"" );
 							sa += 1;
 						}
 					}
@@ -144,12 +144,30 @@ public class SeriesClass {
 					// Handle the remaining attributes normally
 					for ( /*int sa=0 */; sa<series_attr_names.length; sa++) {
 						if (series_attr_names[sa].equals("borderColors") || series_attr_names[sa].equals("fillColors")) {
-							sf.print ( "\t" + series_attr_names[sa] + "=\"" + format_colors(series_element.getAttribute(series_attr_names[sa])) + "\"\n" );
+							sf.print ( "\t" + series_attr_names[sa] + "=\"" + format_comma_sep(series_element.getAttribute(series_attr_names[sa]),"\t\t") + "\"\n" );
 						} else {
 							sf.print ( "\t" + series_attr_names[sa] + "=\"" + series_element.getAttribute(series_attr_names[sa]) + "\"\n" );
 						}
 					}
 					sf.print ( "\t>\n" );
+					// Handle the child nodes
+					if (series_element.hasChildNodes()) {
+					  NodeList child_nodes = series_element.getChildNodes();
+						for (int cn=0; cn<child_nodes.getLength(); cn++) {
+						  Node child = child_nodes.item(cn);
+						  if (child.getNodeName().equalsIgnoreCase ( "Contour")) {
+								int ca = 0;
+								sf.print ( "<" + child.getNodeName() );
+								sf.print ( " name=\"" + ((Element)child).getAttribute("name") + "\"" );
+								sf.print ( " closed=\"" + ((Element)child).getAttribute("closed") + "\"" );
+								sf.print ( " border=\"" + ((Element)child).getAttribute("border") + "\"" );
+								sf.print ( " fill=\"" + ((Element)child).getAttribute("fill") + "\"" );
+								sf.print ( " mode=\"" + ((Element)child).getAttribute("mode") + "\"\n" );
+								sf.print ( " points=\"" + format_comma_sep(((Element)child).getAttribute("points"),"\t") + "\"/>\n" );
+						  }
+						}
+					}
+					sf.print ( "</" + series_element.getNodeName() + ">\n" );
 				}
 		  }
 		  sf.close();
