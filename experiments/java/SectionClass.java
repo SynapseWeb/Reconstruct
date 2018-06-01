@@ -182,6 +182,15 @@ public class SectionClass {
 		"name", "hidden", "closed", "simplified", "border", "fill", "mode", "points"
 	};
 
+	public String format_comma_sep ( String comma_sep_string, String indent_with ) {
+		String comma_sep_terms[] = comma_sep_string.trim().split(",");
+		String formatted = "";
+		for (int i=0; i<comma_sep_terms.length; i++) {
+			formatted += comma_sep_terms[i].trim() + ",\n" + indent_with;
+		}
+		return ( formatted );
+	}
+
 	public void write_as_xml ( File series_file ) {
 		// Use the path and file name from the series file, but append the index (number) from the section file
 		try {
@@ -220,7 +229,10 @@ public class SectionClass {
 						  	int tfa = 0;
 								sf.print ( "<" + child.getNodeName() );
 								for ( /*int tfa=0 */; tfa<transform_attr_names.length; tfa++) {
-									sf.print ( " " + transform_attr_names[tfa] + "=\"" + transform_element.getAttribute(transform_attr_names[tfa]) + "\"\n" );
+								  sf.print ( " " + transform_attr_names[tfa] + "=\"" + transform_element.getAttribute(transform_attr_names[tfa]) + "\"" );
+									if (transform_attr_names[tfa].equals("dim") || transform_attr_names[tfa].equals("xcoef")) {
+									  sf.print ( "\n" );
+									}
 								}
 								sf.print ( ">\n" );
 								if (transform_element.hasChildNodes()) {
@@ -232,15 +244,25 @@ public class SectionClass {
 											int ia = 0;
 											sf.print ( "<" + image_element.getNodeName() );
 											for ( /*int ia=0 */; ia<image_attr_names.length; ia++) {
-												sf.print ( " " + image_attr_names[ia] + "=\"" + image_element.getAttribute(image_attr_names[ia]) + "\"\n" );
+												sf.print ( " " + image_attr_names[ia] + "=\"" + image_element.getAttribute(image_attr_names[ia]) + "\"" );
+												if (image_attr_names[ia].equals("blue")) {
+													sf.print ( "\n" );
+												}
 											}
-											sf.print ( "/>\n" );
+											sf.print ( " />\n" );
 										} else if (grandchild.getNodeName().equalsIgnoreCase ( "Contour")) {
 											Element contour_element = (Element)grandchild;
 											int ca = 0;
 											sf.print ( "<" + contour_element.getNodeName() );
 											for ( /*int ca=0 */; ca<contour_attr_names.length; ca++) {
-												sf.print ( " " + contour_attr_names[ca] + "=\"" + contour_element.getAttribute(contour_attr_names[ca]) + "\"\n" );
+												if (contour_attr_names[ca].equals("points")) {
+													sf.print ( " " + contour_attr_names[ca] + "=\"" + format_comma_sep(contour_element.getAttribute(contour_attr_names[ca]),"\t") + "\"" );
+												} else {
+													sf.print ( " " + contour_attr_names[ca] + "=\"" + contour_element.getAttribute(contour_attr_names[ca]) + "\"" );
+													if (contour_attr_names[ca].equals("mode")) {
+														sf.print ( "\n" );
+													}
+												}
 											}
 											sf.print ( "/>\n" );
 										}
@@ -259,7 +281,7 @@ public class SectionClass {
 						  }
 						}
 					}
-					sf.print ( "</" + section_element.getNodeName() + ">\n" );
+					sf.print ( "</" + section_element.getNodeName() + ">" );
 				}
 		  }
 		  sf.close();
