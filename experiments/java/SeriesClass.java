@@ -158,6 +158,11 @@ public class SeriesClass {
 				}
 		  }
 		  sf.close();
+		  if (this.sections != null) {
+			  for (int i=0; i<sections.length; i++) {
+		      this.sections[i].write_as_xml(series_file);
+		    }
+		  }
 		} catch (Exception e) {
 			System.out.println ( "Error writing to file " + series_file.getName() );
 		}
@@ -192,23 +197,22 @@ public class SeriesClass {
   }
 
   public void dump_xml() {
-    System.out.println ( "============== Begin Series File  ================" );
+    System.out.println ( "============== Begin Series ================" );
     XML_Parser.dump_doc(this.series_doc);
     // XML_Parser.dump_doc(this.series_doc);
-    System.out.println ( "============== End Series File  ================" );
+    System.out.println ( "============== End Series ================" );
     if (this.sections != null) {
 	    for (int i=0; i<sections.length; i++) {
-        System.out.println ( "============== Begin Section  ================" );
+        System.out.println ( "============== Begin Section ================" );
         XML_Parser.dump_doc(this.sections[i].section_doc);
-        System.out.println ( "============== End Section  ================" );
+        System.out.println ( "============== End Section ================" );
       }
     }
   }
 
   public void dump_strokes() {
-  	System.out.println ( "Dumping Series Strokes:" );
+		System.out.println ( "Dumping Strokes:" );
 	  if (sections != null) {
-	  	System.out.println ( "  Dumping Section Strokes:" );
 	    if (section_index < sections.length) {
 		  	System.out.println ( "    Dumping Section Stroke:" );
 	      sections[section_index].dump_strokes();

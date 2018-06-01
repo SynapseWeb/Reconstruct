@@ -46,11 +46,6 @@ public class SectionClass {
 		}
 	}
 
-	static void write_section_file ( String image_file_name, int width, int height ) {
-		// This is an alternate place to write a section file from parameters.
-		// This is currently being done in the SeriesClass.
-	}
-
   public SectionClass ( String p_name, String f_name ) {
     this.path_name = p_name;
     this.file_name = f_name;
@@ -165,6 +160,31 @@ public class SectionClass {
 
   }
 
+	static void write_section_file ( String image_file_name, int width, int height ) {
+		// This is an alternate place to write a section file from parameters.
+		// This is currently being done in the SeriesClass.
+	}
+
+	public void write_as_xml ( File series_file ) {
+		// Use the path and file name from the series file, but append the index (number) from the section file
+		try {
+			String new_path_name = series_file.getParentFile().getCanonicalPath();
+			String ser_file_name = series_file.getName();
+			String new_file_name = ser_file_name.substring(0,ser_file_name.length()-4) + file_name.substring(file_name.lastIndexOf("."),file_name.length());
+			// At this point, there should be no more exceptions, so change the actual member data for this object
+			this.path_name = new_path_name;
+			this.file_name = new_file_name;
+		  priority_println ( 100, " Writing to Section file " + this.path_name + " / " + this.file_name );
+
+	    File section_file = new File ( this.path_name + File.separator + this.file_name );
+
+		  PrintStream sf = new PrintStream ( section_file );
+		  sf.print ( "<?xml version=\"1.0\"?>\n" );
+		  sf.print ( "<!DOCTYPE Section SYSTEM \"section.dtd\">\n\n" );
+
+		} catch (Exception e) {
+		}
+	}
 
   public void dump_strokes() {
 		System.out.println ( "Dumping Contours for a Section:" );
