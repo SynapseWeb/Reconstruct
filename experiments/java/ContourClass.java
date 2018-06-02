@@ -142,8 +142,8 @@ public class ContourClass {
 					double cdy = next_point[1] - prev_point[1];
 
 					double[][]handles = handle_points.get(i);
-					handles[0][0] = current_point[0] + (factor * cdx);
-					handles[0][1] = current_point[1] + (factor * cdy);
+					handles[0][0] = current_point[0] - (factor * cdx);
+					handles[0][1] = current_point[1] - (factor * cdy);
 
 					// These notes map the variables from BezierTracing.java to the CubicCurve2D members:
 					// p0.x = x1
@@ -174,8 +174,8 @@ public class ContourClass {
 					double cdy = next_point[1] - prev_point[1];
 
 					double[][]handles = handle_points.get(i);
-					handles[1][0] = current_point[0] - (factor * cdx);
-					handles[1][1] = current_point[1] - (factor * cdy);
+					handles[1][0] = current_point[0] + (factor * cdx);
+					handles[1][1] = current_point[1] + (factor * cdy);
 
 
 /*
@@ -259,8 +259,8 @@ public class ContourClass {
 				double p1[] = null;
 				double h0[][] = null;
 				double h1[][] = null;
-				double h[][];
-				double p[];
+				double h[][] = null;
+				double p[] = null;
 
 				int line_padding = r.line_padding;
 
@@ -272,7 +272,7 @@ public class ContourClass {
 
 						g.setColor ( new Color ( 100, 100, 100 ) );
 
-						// Draw the handle lines
+						// Draw the control handle lines
 						for (int j=0; j<handle_points.size(); j++) {
 							int x, y, hx, hy;
 							h = handle_points.get(j);
@@ -282,34 +282,43 @@ public class ContourClass {
 							y = r.y_to_pyi(dy-p[1]);
 							hx = r.x_to_pxi(h[0][0]-dx);
 							hy = r.y_to_pyi(dy-h[0][1]);
+							g.setColor ( new Color ( 100, 0, 0 ) );
 							g.drawLine ( x, y, hx, hy );
 
 							x = r.x_to_pxi(p[0]-dx);
 							y = r.y_to_pyi(dy-p[1]);
 							hx = r.x_to_pxi(h[1][0]-dx);
 							hy = r.y_to_pyi(dy-h[1][1]);
+							g.setColor ( new Color ( 0, 100, 0 ) );
 							g.drawLine ( x, y, hx, hy );
 						}
 
 						g.setColor ( new Color ( 150, 150, 150 ) );
 
-						// Draw the handle points
+						// Draw the control handle points
 						for (int j=0; j<handle_points.size(); j++) {
 							h = handle_points.get(j);
 							int l = 4;
 							int x, y;
 							x = r.x_to_pxi(h[0][0]-dx);
 							y = r.y_to_pyi(dy-h[0][1]);
+							g.setColor ( new Color ( 150, 0, 0 ) );
 							g.drawOval ( x-l, y-l, 2*l, 2*l );
 							x = r.x_to_pxi(h[1][0]-dx);
 							y = r.y_to_pyi(dy-h[1][1]);
+							g.setColor ( new Color ( 0, 150, 0 ) );
 							g.drawOval ( x-l, y-l, 2*l, 2*l );
 						}
 
 						g.setColor ( new Color ( (int)(255*this.r), (int)(255*this.g), (int)(255*this.b) ) );
 
-						// Draw the control points
+						// Draw the end points for the curves
 						for (int j=0; j<stroke_points.size(); j++) {
+							if (j == 0) {
+								g.setColor ( new Color ( 255, 255, 255 ) );
+							} else {
+								g.setColor ( new Color ( (int)(255*this.r), (int)(255*this.g), (int)(255*this.b) ) );
+							}
 							p0 = stroke_points.get(j);
 							int l = 4;
 							int x = r.x_to_pxi(p0[0]-dx);
@@ -337,6 +346,16 @@ public class ContourClass {
 							double h1y = r.y_to_py(dy-h1[0][1]);
 							double p1x = r.x_to_px(p1[0]-dx);
 							double p1y = r.y_to_py(dy-p1[1]);
+
+
+							h = handle_points.get(j);
+							h1 = handle_points.get(j-1);
+							h0x = r.x_to_px(h[0][0]-dx);
+							h0y = r.y_to_py(dy-h[0][1]);
+							h1x = r.x_to_px(h1[1][0]-dx);
+							h1y = r.y_to_py(dy-h1[1][1]);
+
+
 
 							// CubicCurve2D.Double(double x1, double y1, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double x2, double y2) 
 							curves.add ( new CubicCurve2D.Double ( p0x, p0y, h0x, h0y, h1x, h1y, p1x, p1y ) );
@@ -400,11 +419,12 @@ default_curve ( p0, p1 ) );
 */
 
 
-/*
+
 
 						double factor = 0.2;
 
-						ArrayList<CubicCurve2D.Double> curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
+						// ArrayList<CubicCurve2D.Double> curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
+						curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
 
 						p0 = translate_to_screen ( stroke_points.get(0), r );
 
@@ -471,7 +491,7 @@ default_curve ( p0, p1 ) );
 						}
 
 						g2.setStroke(previous_stroke);
-*/
+
 
 
 					} else {
