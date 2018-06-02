@@ -141,12 +141,13 @@ public class SectionClass {
                     priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
                   }
                   // strokes.add ( stroke );
-                  ContourClass cc = new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true") );
+                  boolean is_bezier = false;
                   if (type_str != null) {
 										if (type_str.equals("bezier")) {
-											cc.is_bezier = true;
+											is_bezier = true;
 										}
                   }
+                  ContourClass cc = new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true"), is_bezier );
                   cc.set_mode ( Integer.parseInt ( ((Element)grandchild).getAttribute("mode").trim() ) );
                   cc.set_hidden ( ((Element)grandchild).getAttribute("hidden").trim().equals("true") );
                   cc.set_transform ( current_transform );
