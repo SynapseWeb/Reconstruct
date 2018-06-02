@@ -187,7 +187,7 @@ public class SectionClass {
 	};
 
 	String contour_attr_names[] = {
-		"name", "hidden", "closed", "simplified", "border", "fill", "mode", "points"
+		"name", "type", "hidden", "closed", "simplified", "border", "fill", "mode", "points"
 	};
 
 	public String format_comma_sep ( String comma_sep_string, String indent_with ) {
@@ -265,6 +265,8 @@ public class SectionClass {
 											for ( /*int ca=0 */; ca<contour_attr_names.length; ca++) {
 												if (contour_attr_names[ca].equals("points")) {
 													sf.print ( " " + contour_attr_names[ca] + "=\"" + format_comma_sep(contour_element.getAttribute(contour_attr_names[ca]),"\t") + "\"" );
+												} else if (contour_attr_names[ca].equals("type")) {
+													sf.print ( " " + contour_attr_names[ca] + "=\"" + contour_element.getAttribute(contour_attr_names[ca]) + "\"" );
 												} else {
 													sf.print ( " " + contour_attr_names[ca] + "=\"" + contour_element.getAttribute(contour_attr_names[ca]) + "\"" );
 													if (contour_attr_names[ca].equals("mode")) {

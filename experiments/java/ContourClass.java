@@ -257,6 +257,8 @@ public class ContourClass {
 
 				double p0[] = null;
 				double p1[] = null;
+				double h0[][] = null;
+				double h1[][] = null;
 				double h[][];
 				double p[];
 
@@ -264,48 +266,44 @@ public class ContourClass {
 
 				if (line_padding >= 0) {
 
-					if (is_bezier) {
+					if ( (is_bezier) && (handle_points != null) ) {
 
 						Stroke previous_stroke = g2.getStroke();
 
 						g.setColor ( new Color ( 100, 100, 100 ) );
 
 						// Draw the handle lines
-						if (handle_points != null) {
-							for (int j=0; j<handle_points.size(); j++) {
-								int x, y, hx, hy;
-								h = handle_points.get(j);
-								p = stroke_points.get(j);
+						for (int j=0; j<handle_points.size(); j++) {
+							int x, y, hx, hy;
+							h = handle_points.get(j);
+							p = stroke_points.get(j);
 
-								x = r.x_to_pxi(p[0]-dx);
-								y = r.y_to_pyi(dy-p[1]);
-								hx = r.x_to_pxi(h[0][0]-dx);
-								hy = r.y_to_pyi(dy-h[0][1]);
-								g.drawLine ( x, y, hx, hy );
+							x = r.x_to_pxi(p[0]-dx);
+							y = r.y_to_pyi(dy-p[1]);
+							hx = r.x_to_pxi(h[0][0]-dx);
+							hy = r.y_to_pyi(dy-h[0][1]);
+							g.drawLine ( x, y, hx, hy );
 
-								x = r.x_to_pxi(p[0]-dx);
-								y = r.y_to_pyi(dy-p[1]);
-								hx = r.x_to_pxi(h[1][0]-dx);
-								hy = r.y_to_pyi(dy-h[1][1]);
-								g.drawLine ( x, y, hx, hy );
-							}
+							x = r.x_to_pxi(p[0]-dx);
+							y = r.y_to_pyi(dy-p[1]);
+							hx = r.x_to_pxi(h[1][0]-dx);
+							hy = r.y_to_pyi(dy-h[1][1]);
+							g.drawLine ( x, y, hx, hy );
 						}
 
 						g.setColor ( new Color ( 150, 150, 150 ) );
 
 						// Draw the handle points
-						if (handle_points != null) {
-							for (int j=0; j<handle_points.size(); j++) {
-								h = handle_points.get(j);
-								int l = 4;
-								int x, y;
-								x = r.x_to_pxi(h[0][0]-dx);
-								y = r.y_to_pyi(dy-h[0][1]);
-								g.drawOval ( x-l, y-l, 2*l, 2*l );
-								x = r.x_to_pxi(h[1][0]-dx);
-								y = r.y_to_pyi(dy-h[1][1]);
-								g.drawOval ( x-l, y-l, 2*l, 2*l );
-							}
+						for (int j=0; j<handle_points.size(); j++) {
+							h = handle_points.get(j);
+							int l = 4;
+							int x, y;
+							x = r.x_to_pxi(h[0][0]-dx);
+							y = r.y_to_pyi(dy-h[0][1]);
+							g.drawOval ( x-l, y-l, 2*l, 2*l );
+							x = r.x_to_pxi(h[1][0]-dx);
+							y = r.y_to_pyi(dy-h[1][1]);
+							g.drawOval ( x-l, y-l, 2*l, 2*l );
 						}
 
 						g.setColor ( new Color ( (int)(255*this.r), (int)(255*this.g), (int)(255*this.b) ) );
@@ -318,6 +316,62 @@ public class ContourClass {
 							int y = r.y_to_pyi(dy-p0[1]);
 							g.drawOval ( x-l, y-l, 2*l, 2*l );
 						}
+
+						// Draw the curve itself
+
+						ArrayList<CubicCurve2D.Double> curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
+
+						// Draw the curves themselves
+						for (int j=1; j<stroke_points.size(); j++) {
+							int x, y, hx, hy;
+							p0 = stroke_points.get(j-1);
+							p1 = stroke_points.get(j);
+							h0 = handle_points.get(j-1);
+							h1 = handle_points.get(j);
+
+							double p0x = r.x_to_px(p0[0]-dx);
+							double p0y = r.y_to_py(dy-p0[1]);
+							double h0x = r.x_to_px(h0[1][0]-dx);
+							double h0y = r.y_to_py(dy-h0[1][0]);
+							double h1x = r.x_to_px(h1[0][0]-dx);
+							double h1y = r.y_to_py(dy-h1[0][1]);
+							double p1x = r.x_to_px(p1[0]-dx);
+							double p1y = r.y_to_py(dy-p1[1]);
+
+							// CubicCurve2D.Double(double x1, double y1, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double x2, double y2) 
+							curves.add ( new CubicCurve2D.Double ( p0x, p0y, h0x, h0y, h1x, h1y, p1x, p1y ) );
+
+							// curves.add ( new CubicCurve2D.Double ( p0[0], p0[1], h0[1][0], h0[1][1], h1[0][0], h1[0][1], p1[0], p1[1] ) );
+
+						}
+
+
+						for (int j=0; j<curves.size(); j++) {
+							g2.draw ( curves.get(j) );
+						}
+
+						g2.setStroke(previous_stroke);
+
+/*
+						// path.moveTo ( r.x_to_pxi(p0[0]-dx), r.y_to_pyi(dy-p0[1]) );
+						p0 = translate_to_screen ( stroke_points.get(0), r );
+						for (int j=1; j<stroke_points.size(); j++) {
+							p1 = translate_to_screen ( stroke_points.get(j), r );
+							curves.add ( new CubicCurve2D.Double ( p0[0], p0[1], h0[0], h0[1], h1[0], h1[1], p1[0], p1[1] ) );
+default_curve ( p0, p1 ) );
+							p0 = p1;
+						}
+						if (closed) {
+							p1 = translate_to_screen ( stroke_points.get(0), r );
+							curves.add ( default_curve ( p0, p1 ) );
+						}
+
+						for (int j=0; j<curves.size(); j++) {
+							g2.draw ( curves.get(j) );
+						}
+
+						g2.setStroke(previous_stroke);
+*/
 
 /*
 						// Draw the curve itself
@@ -346,7 +400,7 @@ default_curve ( p0, p1 ) );
 */
 
 
-
+/*
 
 						double factor = 0.2;
 
@@ -417,7 +471,7 @@ default_curve ( p0, p1 ) );
 						}
 
 						g2.setStroke(previous_stroke);
-
+*/
 
 
 					} else {

@@ -33,6 +33,7 @@
 <!ELEMENT Contour EMPTY>
 <!ATTLIST Contour
     name       %SFString;  "unknown"
+    type       %SFString;  "line"
     hidden     %SFBool;    "false"
     closed     %SFBool;    "true"
     simplified %SFBool;    "false"
