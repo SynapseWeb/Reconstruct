@@ -325,7 +325,7 @@ public class ContourClass {
 							int y = r.y_to_pyi(dy-p0[1]);
 							g.drawOval ( x-l, y-l, 2*l, 2*l );
 						}
-
+/*
 						// Draw the curve itself
 
 						ArrayList<CubicCurve2D.Double> curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
@@ -370,6 +370,8 @@ public class ContourClass {
 						}
 
 						g2.setStroke(previous_stroke);
+
+*/
 
 /*
 						// path.moveTo ( r.x_to_pxi(p0[0]-dx), r.y_to_pyi(dy-p0[1]) );
@@ -423,8 +425,8 @@ default_curve ( p0, p1 ) );
 
 						double factor = 0.2;
 
-						// ArrayList<CubicCurve2D.Double> curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
-						curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
+						ArrayList<CubicCurve2D.Double> curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
+						// curves = new ArrayList<CubicCurve2D.Double>();  // Argument (if any) specifies initial capacity (default 10)
 
 						p0 = translate_to_screen ( stroke_points.get(0), r );
 
@@ -481,6 +483,7 @@ default_curve ( p0, p1 ) );
 							g2.draw ( curves.get(j) );
 						}
 
+/*
 						// Draw the control points
 						for (int j=0; j<stroke_points.size(); j++) {
 							p0 = stroke_points.get(j);
@@ -489,6 +492,7 @@ default_curve ( p0, p1 ) );
 							int y = r.y_to_pyi(dy-p0[1]);
 							g.drawOval ( x-l, y-l, 2*l, 2*l );
 						}
+*/
 
 						g2.setStroke(previous_stroke);
 

@@ -311,7 +311,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		    }
 		    if (active_contour == null) {
 	        // System.out.println ( "Making new stroke" );
-	        active_contour = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false );
+	        active_contour = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false, bezier_draw );
 	        active_contour.is_bezier = bezier_draw;
 	      }
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
@@ -371,7 +371,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		      super.mouseDragged(e);
 		    }
 		    if (active_contour == null) {
-		      active_contour  = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false );
+		      active_contour  = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false, bezier_draw );
 	        active_contour.is_bezier = bezier_draw;
 		    }
 		    if (active_contour != null) {
