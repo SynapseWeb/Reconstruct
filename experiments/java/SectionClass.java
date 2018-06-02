@@ -128,6 +128,7 @@ public class SectionClass {
                 if (grandchild.getNodeName() == "Contour") {
                   priority_println ( 40, "      SectionClass: Grandchild " + gn + " is a trace contour" );
                   priority_println ( 40, "         SectionClass: Contour name is: " + ((Element)grandchild).getAttribute("name") );
+                  String type_str = ((Element)grandchild).getAttribute("type");
                   String points_str = ((Element)grandchild).getAttribute("points");
                   String xy_str[] = points_str.trim().split(",");
                   // Allocate an ArrayList to hold the double points
@@ -141,6 +142,11 @@ public class SectionClass {
                   }
                   // strokes.add ( stroke );
                   ContourClass cc = new ContourClass ( stroke, ((Element)grandchild).getAttribute("border"), ((Element)grandchild).getAttribute("closed").trim().equals("true") );
+                  if (type_str != null) {
+										if (type_str.equals("bezier")) {
+											cc.is_bezier = true;
+										}
+                  }
                   cc.set_mode ( Integer.parseInt ( ((Element)grandchild).getAttribute("mode").trim() ) );
                   cc.set_hidden ( ((Element)grandchild).getAttribute("hidden").trim().equals("true") );
                   cc.set_transform ( current_transform );
@@ -291,7 +297,11 @@ public class SectionClass {
 								sf.print ( " xcoef=\" 0 1 0 0 0 0\"\n" );
 								sf.print ( " ycoef=\" 0 0 1 0 0 0\">\n" );
 								String contour_color = "\"" + contour.r + " " + contour.g + " " + contour.b + "\"";
-								sf.print ( "<Contour name=\"" + contour.contour_name + "\" hidden=\"false\" closed=\"true\" simplified=\"false\" border=" + contour_color + " fill=" + contour_color + " mode=\"13\"\n" );
+								sf.print ( "<Contour name=\"" + contour.contour_name + "\" " );
+								if (contour.is_bezier) {
+									sf.print ( "type=\"bezier\" " );
+								}
+								sf.print ( "hidden=\"false\" closed=\"true\" simplified=\"false\" border=" + contour_color + " fill=" + contour_color + " mode=\"13\"\n" );
 								sf.print ( " points=\"" );
 								for (int j=0; j<s.size(); j++) {
 									double p[] = s.get(j);
