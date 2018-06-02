@@ -291,7 +291,7 @@ public class SectionClass {
 								sf.print ( " xcoef=\" 0 1 0 0 0 0\"\n" );
 								sf.print ( " ycoef=\" 0 0 1 0 0 0\">\n" );
 								String contour_color = "\"" + contour.r + " " + contour.g + " " + contour.b + "\"";
-								sf.print ( "<Contour name=\"" + contour.contour_name + "\" hidden=\"false\" closed=\"true\" simplified=\"true\" border=" + contour_color + " fill=" + contour_color + " mode=\"13\"\n" );
+								sf.print ( "<Contour name=\"" + contour.contour_name + "\" hidden=\"false\" closed=\"true\" simplified=\"false\" border=" + contour_color + " fill=" + contour_color + " mode=\"13\"\n" );
 								sf.print ( " points=\"" );
 								for (int j=0; j<s.size(); j++) {
 									double p[] = s.get(j);
