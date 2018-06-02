@@ -144,6 +144,7 @@ public class SectionClass {
                   cc.set_mode ( Integer.parseInt ( ((Element)grandchild).getAttribute("mode").trim() ) );
                   cc.set_hidden ( ((Element)grandchild).getAttribute("hidden").trim().equals("true") );
                   cc.set_transform ( current_transform );
+                  cc.modified = false; // This is currently a way to keep contours read from XML from being duplicated.
                   contours.add ( cc );
                   priority_println ( 40, "         SectionClass: Contour points: " + ((Element)grandchild).getAttribute("points") );
                 }
@@ -269,18 +270,39 @@ public class SectionClass {
 									}
 								}
 								sf.print ( "</" + child.getNodeName() + ">\n\n" );
-						  } else if (child.getNodeName().equalsIgnoreCase ( "Contour")) {
-								int ca = 0;
-								sf.print ( "<" + child.getNodeName() );
-								sf.print ( " name=\"" + ((Element)child).getAttribute("name") + "\"" );
-								sf.print ( " closed=\"" + ((Element)child).getAttribute("closed") + "\"" );
-								sf.print ( " border=\"" + ((Element)child).getAttribute("border") + "\"" );
-								sf.print ( " fill=\"" + ((Element)child).getAttribute("fill") + "\"" );
-								sf.print ( " mode=\"" + ((Element)child).getAttribute("mode") + "\"\n" );
-								// sf.print ( " points=\"" + format_comma_sep(((Element)child).getAttribute("points"),"\t") + "\"/>\n" );
-						  }
+							}
 						}
 					}
+
+					// Also write out any new contours created by drawing
+
+					for (int i=0; i<contours.size(); i++) {
+						ContourClass contour = contours.get(i);
+						ArrayList<double[]> s = contour.stroke_points;
+						if (s.size() > 0) {
+							if (contour.modified) {
+								if (contour.contour_name == null) {
+									contour.contour_name = "RGB_";
+									if (contour.r > 0.5) { contour.contour_name += "1"; } else { contour.contour_name += "0"; }
+									if (contour.g > 0.5) { contour.contour_name += "1"; } else { contour.contour_name += "0"; }
+									if (contour.b > 0.5) { contour.contour_name += "1"; } else { contour.contour_name += "0"; }
+								}
+								sf.print ( "<Transform dim=\"0\"\n" );
+								sf.print ( " xcoef=\" 0 1 0 0 0 0\"\n" );
+								sf.print ( " ycoef=\" 0 0 1 0 0 0\">\n" );
+								String contour_color = "\"" + contour.r + " " + contour.g + " " + contour.b + "\"";
+								sf.print ( "<Contour name=\"" + contour.contour_name + "\" hidden=\"false\" closed=\"true\" simplified=\"true\" border=" + contour_color + " fill=" + contour_color + " mode=\"13\"\n" );
+								sf.print ( " points=\"" );
+								for (int j=0; j<s.size(); j++) {
+									double p[] = s.get(j);
+									sf.print ( "  " + p[0] + " " + p[1] + ",\n" );
+								}
+								sf.print ( "  \"/>\n" );
+								sf.print ( "</Transform>\n\n" );
+							}
+						}
+					}
+
 					sf.print ( "</" + section_element.getNodeName() + ">" );
 				}
 		  }

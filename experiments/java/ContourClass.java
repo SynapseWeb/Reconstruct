@@ -37,6 +37,7 @@ public class ContourClass {
 	boolean hidden = false;
 	double r=1.0, g=0.0, b=0.0;
 	int mode=0;
+	public boolean modified=true; // Any new contour can be considered "modified" because it needs to be saved
 	public boolean is_bezier=false;
 
   public ContourClass ( ArrayList<double[]> stroke, String color_string, boolean closed ) {
