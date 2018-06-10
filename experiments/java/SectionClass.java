@@ -104,7 +104,7 @@ public class SectionClass {
                     new_names[i] = image_file_names[i];
                   }
                   try {
-                    new_names[image_file_names.length] = new File ( this.path_name + File.separator + ((Element)grandchild).getAttribute("src") ).getCanonicalPath();
+                    new_names[image_file_names.length] = new File ( this.path_name + File.separator + (((Element)grandchild).getAttribute("src").replace("\\",File.separator)) ).getCanonicalPath();
                   } catch (Exception e) {
                     priority_println ( 20, "SectionClass: Error getting path for " + ((Element)grandchild).getAttribute("src") );
                     System.exit(1);
