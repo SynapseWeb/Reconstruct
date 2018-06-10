@@ -65,6 +65,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   SeriesClass series = null;
 	ContourClass active_contour = null;
 
+  String current_trace_name = null;
+
 
   void dump_strokes() {
     if (series != null) {
@@ -312,6 +314,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		    if (active_contour == null) {
 	        // System.out.println ( "Making new stroke" );
 	        active_contour = new ContourClass ( new ArrayList<double[]>(100), new_trace_color, false, bezier_draw );
+	        active_contour.contour_name = current_trace_name;
 	        active_contour.is_bezier = bezier_draw;
 	      }
         double p[] = { px_to_x(e.getX()), py_to_y(e.getY()) };
@@ -424,6 +427,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
 
+	JMenuItem series_options_menu_item=null;
+
   JMenuItem line_menu_none_item = null;
   JMenuItem line_menu_0_item = null;
   JMenuItem line_menu_1_item = null;
@@ -437,6 +442,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   JMenuItem color_menu_cyan_item = null;
   JMenuItem color_menu_black_item = null;
   JMenuItem color_menu_white_item = null;
+
+  JMenuItem color_menu_half_item = null;
 
   JMenuItem color_menu_light_item = null;
   JMenuItem color_menu_dark_item = null;
@@ -629,6 +636,18 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				}
 				repaint();
 		  }
+		} else if ( action_source == series_options_menu_item ) {
+			// Open the Series Options Dialog
+			//JOptionPane.showMessageDialog(null, "Give new traces this name:", "Series Options", JOptionPane.WARNING_MESSAGE);
+			String response = JOptionPane.showInputDialog(null, "Give new traces this name:", "Series Options", JOptionPane.QUESTION_MESSAGE);
+			current_trace_name = null;
+			if (response != null) {
+				if (response.length() > 0) {
+					current_trace_name = response;
+					System.out.println ( "Series Options Current Trace Name = " + response );
+				}
+			}
+	    repaint();
 		} else if ( action_source == line_menu_none_item ) {
 			line_padding = -1; // This signals to not draw at all
 	    repaint();
@@ -673,6 +692,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	    repaint();
 		} else if ( action_source == color_menu_white_item ) {
 		  new_trace_color=0xffffff;
+	    repaint();
+		} else if ( action_source == color_menu_half_item ) {
+			// System.out.println ( "color_menu_half_item = " + color_menu_half_item );
+		  new_trace_color=0x00777777 & new_trace_color;
 	    repaint();
 		} else if ( action_source == color_menu_light_item ) {
 			int r = (new_trace_color & 0xff0000) >> 16;
@@ -799,7 +822,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             series_menu.add ( mi = new JMenuItem("Save") );
             zp.save_series_menu_item = mi;
             mi.addActionListener(zp);
-            series_menu.add ( mi = new JMenuItem("Options...") );
+            series_menu.add ( zp.series_options_menu_item = mi = new JMenuItem("Options...") );
             mi.addActionListener(zp);
 
             series_menu.addSeparator();
@@ -1014,6 +1037,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		          mi.addActionListener(zp);
 		          bg.add ( mi );
 		          color_menu.add ( zp.color_menu_white_item = mi = new JRadioButtonMenuItem("White", zp.new_trace_color==0xffffff) );
+		          mi.addActionListener(zp);
+		          bg.add ( mi );
+              color_menu.addSeparator();
+		          color_menu.add ( zp.color_menu_half_item = mi = new JMenuItem("Half") );
 		          mi.addActionListener(zp);
 		          bg.add ( mi );
               color_menu.addSeparator();
