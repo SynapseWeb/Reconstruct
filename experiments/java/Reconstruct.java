@@ -53,7 +53,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	
 	boolean drawing_mode = false;
   boolean center_draw = false;
-  boolean segment_draw = false;
+  boolean segment_draw = true;
   boolean bezier_draw = false;
 	boolean stroke_started = false;
   String current_directory = "";
