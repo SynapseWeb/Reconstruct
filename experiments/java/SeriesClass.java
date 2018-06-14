@@ -210,6 +210,16 @@ public class SeriesClass {
     }
   }
 
+  public void reverse_all_strokes() {
+		System.out.println ( "Reversing all Traces ..." );
+	  if (sections != null) {
+	    for (int i=0; i<sections.length; i++) {
+		  	System.out.println ( "    Reversing Section " + i + " Traces ..." );
+	      sections[i].reverse_all_strokes();
+	    }
+    }
+  }
+
   public void dump_strokes() {
 		System.out.println ( "Dumping Strokes:" );
 	  if (sections != null) {

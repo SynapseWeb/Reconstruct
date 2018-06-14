@@ -574,6 +574,16 @@ default_curve ( p0, p1 ) );
   }
 
 
+  public void reverse_stroke() {
+		System.out.println ( "   Contour reversing stroke" );
+		ArrayList<double[]> reversed_stroke_points = new ArrayList<double[]>();
+	  for (int j=stroke_points.size()-1; j>=0; j--) {
+	    double p[] = stroke_points.get(j);
+	    reversed_stroke_points.add ( p );
+	  }
+	  stroke_points = reversed_stroke_points;
+  }
+
   public void clear_strokes() {
     stroke_points = new ArrayList<double[]>();
   }

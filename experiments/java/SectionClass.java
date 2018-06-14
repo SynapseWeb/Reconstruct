@@ -344,6 +344,15 @@ public class SectionClass {
     }
   }
 
+  public void reverse_all_strokes() {
+		System.out.println ( "  Reversing Contours for a Section:" );
+    for (int i=0; i<contours.size(); i++) {
+      priority_println ( 150, "   Reversing Contour " + i );
+      ContourClass contour = contours.get(i);
+      contour.reverse_stroke();
+    }
+  }
+
   public void clear_strokes() {
     // strokes = new ArrayList<ArrayList<double[]>>();
   }

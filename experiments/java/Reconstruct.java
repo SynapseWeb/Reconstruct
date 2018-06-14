@@ -428,6 +428,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
 
+	JMenuItem reverse_all_traces_menu_item=null;
+
 	JMenuItem series_options_menu_item=null;
 
   JMenuItem line_menu_none_item = null;
@@ -728,6 +730,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
       }
 	    active_contour = null;
 	    repaint();
+		} else if ( action_source == reverse_all_traces_menu_item ) {
+      if (this.series != null) {
+        this.series.reverse_all_strokes();
+      }
+	    repaint();
 		} else if ( action_source == clear_menu_item ) {
       if (this.series != null) {
         this.series.clear_strokes();
@@ -989,6 +996,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             trace_menu.add ( mi = new JMenuItem("Simplify") );
             mi.addActionListener(zp);
             trace_menu.add ( mi = new JMenuItem("Smooth") );
+            mi.addActionListener(zp);
+            trace_menu.addSeparator();
+            trace_menu.add ( mi = new JMenuItem("Reverse All") );
+            zp.reverse_all_traces_menu_item = mi;
             mi.addActionListener(zp);
           menu_bar.add ( trace_menu );
 
