@@ -81,6 +81,34 @@ public class ContourClass {
 		b = ( (trace_color & 0x000000ff)       ) / 255.0;
 	}
 
+
+	public double twice_area() {
+		double ha = 0.0;
+	  if (stroke_points != null) {
+			int n = stroke_points.size();
+			if (n >= 3) {
+				// Area = 2 * Sum over each segment of (x1-x0)(y1+y0)
+				double p0[] = null;
+				double p1[] = null;
+				p0 = stroke_points.get(0);
+				for (int i=0; i<n; i++) {
+					p1 = stroke_points.get((i+1)%n);
+					ha += ( p1[0] - p0[0] ) * ( p1[1] + p0[1] );
+					p0 = p1;
+				}
+			}
+		}
+		return ( ha );
+	}
+
+	public void dump_stroke() {
+    for (int j=0; j<stroke_points.size(); j++) {
+      double p[] = stroke_points.get(j);
+      priority_println ( 150, "   Contour Point " + j + " = [" + p[0] + "," + p[1] + "]" );
+    }
+    priority_println ( 150, "   Contour Area = " + (0.5 * twice_area()) );
+	}
+
 	double[][] default_handle_points ( double p0[], double p1[] ) {
     double mid_x, mid_y;
 
@@ -524,6 +552,18 @@ default_curve ( p0, p1 ) );
 							}
 							g2.draw ( path );
 							g2.setStroke(previous_stroke);
+						}
+
+						if (r.show_points) {
+							int l = 4;
+							int x, y;
+							for (int j=0; j<stroke_points.size(); j++) {
+								p0 = stroke_points.get(j);
+								p0 = stroke_points.get(j);
+								x = r.x_to_pxi(p0[0]-dx);
+								y = r.y_to_pyi(dy-p0[1]);
+								g.fillOval ( x-l, y-l, 2*l, 2*l );
+							}
 						}
 					}
 

@@ -340,11 +340,7 @@ public class SectionClass {
     for (int i=0; i<contours.size(); i++) {
       priority_println ( 150, " Contour " + i );
       ContourClass contour = contours.get(i);
-      ArrayList<double[]> s = contour.stroke_points;
-	    for (int j=0; j<s.size(); j++) {
-	      double p[] = s.get(j);
-	      priority_println ( 150, "   Point " + j + " = [" + p[0] + "," + p[1] + "]" );
-	    }
+      contour.dump_stroke();
     }
   }
 

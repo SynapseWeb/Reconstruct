@@ -50,7 +50,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
 	JFrame parent_frame = null;
 	static int w=800, h=600;
-	
+
+	boolean show_points = true;
 	boolean drawing_mode = false;
   boolean center_draw = false;
   boolean segment_draw = true;
@@ -662,11 +663,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	    repaint();
 		} else if ( action_source == dump_menu_item ) {
       if (this.series != null) {
-      	System.out.println ( ">>>>>>>>>>>>>>>>>>> Action: dump_menu_item" );
-      	System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_strokes" );
-        this.series.dump_strokes();
-      	System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_xml" );
-        this.series.dump_xml();
+				System.out.println ( ">>>>>>>>>>>>>>>>>>> Action: dump_menu_item" );
+				System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_xml" );
+				this.series.dump_xml();
+				System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_strokes" );
+				this.series.dump_strokes();
       }
 
 		} else if ( action_source == color_menu_red_item ) {
