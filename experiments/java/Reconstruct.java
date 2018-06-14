@@ -51,7 +51,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JFrame parent_frame = null;
 	static int w=800, h=600;
 
-	boolean show_points = true;
+	boolean show_points = false;
 	boolean drawing_mode = false;
   boolean center_draw = false;
   boolean segment_draw = true;
@@ -434,6 +434,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   JMenuItem line_menu_0_item = null;
   JMenuItem line_menu_1_item = null;
   JMenuItem line_menu_2_item = null;
+  JMenuItem show_points_menu_item = null;
 
   JMenuItem color_menu_red_item = null;
   JMenuItem color_menu_green_item = null;
@@ -661,6 +662,12 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		} else if ( action_source == line_menu_2_item ) {
 			line_padding = 2;
 	    repaint();
+
+		} else if ( action_source == show_points_menu_item ) {
+			System.out.println ( "show_points toggled." );
+		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+		  show_points = item.getState();
+		  repaint();
 		} else if ( action_source == dump_menu_item ) {
       if (this.series != null) {
 				System.out.println ( ">>>>>>>>>>>>>>>>>>> Action: dump_menu_item" );
@@ -669,7 +676,6 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_strokes" );
 				this.series.dump_strokes();
       }
-
 		} else if ( action_source == color_menu_red_item ) {
 		  new_trace_color=0xff0000;
 	    repaint();
@@ -1067,6 +1073,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		          line_menu.add ( zp.line_menu_2_item = mi = new JRadioButtonMenuItem("Width = 5", zp.line_padding==2) );
 		          mi.addActionListener(zp);
 		          bg.add ( mi );
+              line_menu.addSeparator();
+		          line_menu.add ( zp.show_points_menu_item = mi = new JCheckBoxMenuItem("Show Points", zp.show_points) );
+		          mi.addActionListener(zp);
             extras_menu.add ( line_menu );
 
             extras_menu.addSeparator();
