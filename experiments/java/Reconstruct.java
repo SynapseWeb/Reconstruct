@@ -455,6 +455,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 
   JMenuItem purge_images_menu_item = null;
 	JMenuItem dump_menu_item=null;
+	JMenuItem dump_areas_menu_item=null;
 	JMenuItem clear_menu_item=null;
 
 	JMenuItem exit_menu_item=null;
@@ -678,6 +679,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 				System.out.println ( ">>>>>>>>>>>>>>>>>>> dump_strokes" );
 				this.series.dump_strokes();
       }
+		} else if ( action_source == dump_areas_menu_item ) {
+      if (this.series != null) {
+				System.out.println ( ">>>>>>>>>>>>>>>>>>> Action: dump_areas_menu_item" );
+				this.series.dump_areas();
+      }
 		} else if ( action_source == color_menu_red_item ) {
 		  new_trace_color=0xff0000;
 	    repaint();
@@ -812,6 +818,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
               mi.addActionListener(zp);
               debug_menu.addSeparator();
               debug_menu.add ( zp.dump_menu_item = mi = new JMenuItem("Dump") );
+              mi.addActionListener(zp);
+              debug_menu.add ( zp.dump_areas_menu_item = mi = new JMenuItem("Dump Areas") );
               mi.addActionListener(zp);
               debug_menu.add ( zp.clear_menu_item = mi = new JMenuItem("Clear") );
               mi.addActionListener(zp);

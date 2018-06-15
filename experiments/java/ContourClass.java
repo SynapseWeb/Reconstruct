@@ -40,6 +40,40 @@ public class ContourClass {
 	int mode=0;
 	public boolean modified=true; // Any new contour can be considered "modified" because it needs to be saved
 	public boolean is_bezier=false;
+	Element contour_element=null;
+
+  public ContourClass ( Element element, TransformClass current_transform ) {
+    this.contour_name = element.getAttribute("name");
+    String type_str = element.getAttribute("type");
+    String points_str = element.getAttribute("points");
+    String xy_str[] = points_str.trim().split(",");
+    // Allocate an ArrayList to hold the double points
+    ArrayList<double[]> stroke = new ArrayList<double[]>(xy_str.length);
+    for (int xyi=0; xyi<xy_str.length; xyi++) {
+      String xy[] = xy_str[xyi].trim().split(" ");
+      // double p[] = { (Double.parseDouble(xy[0])*165)-100, (-Double.parseDouble(xy[1])*165)+100 };
+      double p[] = { Double.parseDouble(xy[0]), Double.parseDouble(xy[1]) };
+      stroke.add ( p );
+      priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
+    }
+    // strokes.add ( stroke );
+    boolean is_bezier = false;
+    if (type_str != null) {
+      if (type_str.equals("bezier")) {
+        is_bezier = true;
+      }
+    }
+    // ContourClass cc = new ContourClass ( stroke, element.getAttribute("border"), element.getAttribute("closed").trim().equals("true"), is_bezier );
+
+		this.init_stroke_and_closed ( stroke, element.getAttribute("closed").trim().equals("true") );
+		this.init_color ( element.getAttribute("border") );
+		this.init_bezier ( is_bezier );
+
+    set_mode ( Integer.parseInt ( element.getAttribute("mode").trim() ) );
+    set_hidden ( element.getAttribute("hidden").trim().equals("true") );
+    set_transform ( current_transform );
+    modified = false; // This is currently a way to keep contours read from XML from being duplicated.
+  }
 
   public ContourClass ( ArrayList<double[]> stroke, String color_string, boolean closed ) {
 		this.init_stroke_and_closed ( stroke, closed );
@@ -107,6 +141,14 @@ public class ContourClass {
       priority_println ( 150, "   Contour Point " + j + " = [" + p[0] + "," + p[1] + "]" );
     }
     priority_println ( 150, "   Contour Area = " + (0.5 * twice_area()) );
+	}
+
+	public void dump_area() {
+	  String name = "";
+	  if (this.contour_name != null) {
+	    name = " " + this.contour_name;
+	  }
+    priority_println ( 150, "   Contour" + name + ": Area = " + (0.5 * twice_area()) );
 	}
 
 	double[][] default_handle_points ( double p0[], double p1[] ) {

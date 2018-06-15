@@ -230,6 +230,15 @@ public class SeriesClass {
     }
   }
 
+  public void dump_areas() {
+		System.out.println ( "Series: Dumping Areas:" );
+	  if (sections != null) {
+	    for (int i=0; i<sections.length; i++) {
+	      sections[i].dump_areas(i);
+	    }
+    }
+  }
+
   public void purge_images() {
 	  if (sections != null) {
 	    for (int i=0; i<sections.length; i++) {
