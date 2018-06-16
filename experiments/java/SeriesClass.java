@@ -175,17 +175,22 @@ public class SeriesClass {
 			File series_file = new File(series_file_name);
 			String series_prefix = series_file_name.substring(0,series_file_name.length()-3);  // Subtract off the "ser" at the end of "name.ser"
 
+      BufferedImage section_image = null;
+      int w=0, h=0;
 		  for (int i=0; i<image_files.length; i++) {
 		    System.out.println ( "  Importing " + image_files[i] + " into " + series_prefix + (i+1) );
 		    try {
+		      section_image = ImageIO.read(image_files[i]); // TODO: It would be nice to NOT have to read all files at this time.
+		      w = section_image.getWidth()-1;  // Reconstruct uses w-1 in its Section Files
+		      h = section_image.getHeight()-1; // Reconstruct uses h-1 in its Section Files
 				  DataOutputStream f = new DataOutputStream ( new FileOutputStream ( series_prefix + (i+1) ) );
 				  f.writeBytes ( ReconstructDefaults.default_section_file_string_1 );
 				  f.writeBytes ( image_files[i].getName() );
 				  f.writeBytes ( ReconstructDefaults.default_section_file_string_2 );
 				  f.writeBytes ( "0 0,\n" );
-				  f.writeBytes ( "	  479 0,\n" );
-				  f.writeBytes ( "	  479 479,\n" );
-				  f.writeBytes ( "	  0 479,\n" );
+				  f.writeBytes ( "	  " + w + " 0,\n" );
+				  f.writeBytes ( "	  " + w + " " + h + ",\n" );
+				  f.writeBytes ( "	  0 " + h + ",\n" );
 				  f.writeBytes ( ReconstructDefaults.default_section_file_string_3 );
 				  f.close();
 				} catch (Exception e) {
