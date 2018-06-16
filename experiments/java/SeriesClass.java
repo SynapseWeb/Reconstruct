@@ -27,6 +27,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.nio.file.Files;  // Used to get a readAllBytes for the CRLF conversion
 
 public class SeriesClass {
 
@@ -327,8 +328,84 @@ public class SeriesClass {
 	  }
 	}
 
+  static void convert_file_to_crlf ( File f ) {
+    // Convert to CRLF by adding a CR in front of every LF
+    // Note that this could first check for CR/LF pairs (original doesn't do that)
+    // CR = 0x0a = 10 (decimal)
+    // LF = 0x0d = 13 (decimal)
+    System.out.println ( "Converting " + f + " to CRLF" );
+    final int CR = 13;
+    final int LF = 10;
+    boolean prev_cr;
+    try {
+      byte b[] = Files.readAllBytes(f.toPath());
+      System.out.println ( "  File contains " + b.length + " bytes" );
+      // Count the number of line feeds
+      int num_lone_lf = 0;
+      prev_cr = false;
+      for (int i=0; i<b.length; i++) {
+        if (b[i] == LF) {
+          if (!prev_cr) {
+            num_lone_lf++;
+          }
+          prev_cr = false;
+        } else if (b[i] == CR) {
+          prev_cr = true;
+        } else {
+          prev_cr = false;
+        }
+      }
+      System.out.println ( "  Found " + num_lone_lf + " line feeds without carriage returns" );
+      // Allocate an array to hold the original text and added CRs (one per LF)
+      byte crlf[] = new byte[b.length + num_lone_lf];
+      // Put a CR in front of each lone LF
+      int o=0;
+      prev_cr = false;
+      for (int i=0; i<b.length; i++) {
+        if (b[i] == LF) {
+          if (!prev_cr) {
+            crlf[o] = CR;
+            o++;
+          }
+          prev_cr = false;
+        } else if (b[i] == CR) {
+          prev_cr = true;
+        } else {
+          prev_cr = false;
+        }
+        crlf[o] = b[i];
+        o++;
+      }
+      // Finally, write out the data
+      System.out.println ( "  Writing " + crlf.length + " bytes" );
+      DataOutputStream out_stream = new DataOutputStream ( new BufferedOutputStream ( new FileOutputStream ( f ) ) );
+      out_stream.write ( crlf, 0, crlf.length );
+      out_stream.flush();
+    } catch (FileNotFoundException e) {
+      System.out.println ( "Error: File not found" );
+      e.printStackTrace();
+    } catch (OutOfMemoryError e) {
+      System.out.println ( "Error: Out of memory" );
+      e.printStackTrace();
+    } catch (IOException e) {
+      System.out.println ( "Error: IO Error" );
+      e.printStackTrace();
+    }
+  }
 
-  public String[] get_section_file_names ( String path, String root_name ) {
+	public static void convert_series_to_crlf ( File series_file ) {
+	  String series_path = series_file.getParent();
+    String series_file_name = series_file.getName();
+    String section_file_names[] = get_section_file_names ( series_path, series_file_name.substring(0,series_file_name.length()-4) );
+
+    convert_file_to_crlf ( series_file );
+    for (int i=0; i<section_file_names.length; i++) {
+      File section_file = new File ( series_path + File.separator + section_file_names[i] );
+      convert_file_to_crlf ( section_file );
+    }
+	}
+
+  public static String[] get_section_file_names ( String path, String root_name ) {
     // System.out.println ( "Looking for " + root_name + " in " + path );
     File all_files[] = new File (path).listFiles();
 

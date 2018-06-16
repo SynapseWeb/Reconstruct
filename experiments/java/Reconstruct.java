@@ -428,6 +428,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	JMenuItem import_images_menu_item=null;
 	JMenuItem list_sections_menu_item=null;
 
+
+	JMenuItem crlf_series_menu_item=null;
+
 	JMenuItem reverse_all_traces_menu_item=null;
 
 	JMenuItem series_options_menu_item=null;
@@ -621,6 +624,17 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 					oe.printStackTrace();
 					JOptionPane.showMessageDialog(null, "File error", "File Path Error", JOptionPane.WARNING_MESSAGE);
 				}
+				repaint();
+		  }
+		} else if ( action_source == crlf_series_menu_item ) {
+		  file_chooser.setMultiSelectionEnabled(false);
+		  FileNameExtensionFilter filter = new FileNameExtensionFilter("Series Files", "ser");
+		  file_chooser.setFileFilter(filter);
+		  int returnVal = file_chooser.showDialog(this, "Convert Series to CRLF");
+		  if ( returnVal == JFileChooser.APPROVE_OPTION ) {
+		    File series_file = file_chooser.getSelectedFile();
+        System.out.println ( "You chose to convert this series: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
+        SeriesClass.convert_series_to_crlf ( series_file );
 				repaint();
 		  }
 		} else if ( action_source == save_series_menu_item ) {
@@ -845,6 +859,12 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
             zp.save_series_menu_item = mi;
             mi.addActionListener(zp);
             series_menu.add ( zp.series_options_menu_item = mi = new JMenuItem("Options...") );
+            mi.addActionListener(zp);
+
+            series_menu.addSeparator();
+
+            series_menu.add ( mi = new JMenuItem("Convert to CRLF") );
+            zp.crlf_series_menu_item = mi;
             mi.addActionListener(zp);
 
             series_menu.addSeparator();
