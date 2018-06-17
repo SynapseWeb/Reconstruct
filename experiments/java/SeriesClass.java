@@ -185,14 +185,14 @@ public class SeriesClass {
 		      w = section_image.getWidth()-1;  // Reconstruct uses w-1 in its Section Files
 		      h = section_image.getHeight()-1; // Reconstruct uses h-1 in its Section Files
 				  DataOutputStream f = new DataOutputStream ( new FileOutputStream ( series_prefix + (i+1) ) );
-				  f.writeBytes ( ReconstructDefaults.default_section_file_string_1 );
-				  f.writeBytes ( image_files[i].getName() );
-				  f.writeBytes ( ReconstructDefaults.default_section_file_string_2 );
-				  f.writeBytes ( "0 0,\n" );
-				  f.writeBytes ( "	  " + w + " 0,\n" );
-				  f.writeBytes ( "	  " + w + " " + h + ",\n" );
-				  f.writeBytes ( "	  0 " + h + ",\n" );
-				  f.writeBytes ( ReconstructDefaults.default_section_file_string_3 );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( ReconstructDefaults.default_section_file_string_1 ) );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( image_files[i].getName() ) );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( ReconstructDefaults.default_section_file_string_2 ) );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( "0 0,\n" ) );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( "	  " + w + " 0,\n" ) );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( "	  " + w + " " + h + ",\n" ) );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( "	  0 " + h + ",\n" ) );
+				  f.writeBytes ( ReconstructDefaults.convert_newlines ( ReconstructDefaults.default_section_file_string_3 ) );
 				  f.close();
 				} catch (Exception e) {
 					System.out.println ( "Error writing to file " + image_files[i] + " into " + series_prefix + (i+1) );

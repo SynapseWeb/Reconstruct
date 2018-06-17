@@ -44,7 +44,6 @@ class MyFileChooser extends JFileChooser {
   }
 }
 
-
 public class Reconstruct extends ZoomPanLib implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
   private static final long serialVersionUID = 1L;
 
@@ -596,7 +595,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
         System.out.println ( "You chose to create this file: " /* + chooser.getCurrentDirectory() + " / " */ + series_file );
 				try {
 		      DataOutputStream f = new DataOutputStream ( new FileOutputStream ( series_file ) );
-		      f.writeBytes ( ReconstructDefaults.default_series_file_string );
+		      f.writeBytes ( ReconstructDefaults.convert_newlines ( ReconstructDefaults.default_series_file_string ) );
 		      f.close();
 		      this.new_series_file_name = series_file.getPath();
 		      this.series = new SeriesClass();
@@ -799,8 +798,10 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			public void run() {
 			  JFrame f = new JFrame("Reconstruct - No Active Series");
 				f.setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
-				
+
         Reconstruct zp = new Reconstruct();
+        ReconstructDefaults.current_newline_string = "\n";  // For Windows this may be set to: "\r\n"
+
         zp.parent_frame = f;
         /* Can't use args in here
         if (args.length > 0) {
