@@ -393,6 +393,52 @@ public class SeriesClass {
     }
   }
 
+  static void convert_file_to_lf ( File f ) {
+    // Convert a CRLF to LF by dropping all CR chars
+    // Note that this could first check for CR/LF pairs (original doesn't do that)
+    // CR = 0x0a = 10 (decimal)
+    // LF = 0x0d = 13 (decimal)
+    System.out.println ( "Converting " + f + " to LF" );
+    final int CR = 13;
+    final int LF = 10;
+    try {
+      byte b[] = Files.readAllBytes(f.toPath());
+      System.out.println ( "  File contains " + b.length + " bytes" );
+      // Count the number of carriage returns
+      int num_cr = 0;
+      for (int i=0; i<b.length; i++) {
+        if (b[i] == CR) {
+          num_cr++;
+        }
+      }
+      System.out.println ( "  Found " + num_cr + " carriage returns" );
+      // Allocate an array to hold the original text minus the CRs to be removed
+      byte lf[] = new byte[b.length - num_cr];
+      // Remove the CR's
+      int o=0;
+      for (int i=0; i<b.length; i++) {
+        if (b[i] != CR) {
+          lf[o] = b[i];
+          o++;
+        }
+      }
+      // Finally, write out the data
+      System.out.println ( "  Writing " + lf.length + " bytes" );
+      DataOutputStream out_stream = new DataOutputStream ( new BufferedOutputStream ( new FileOutputStream ( f ) ) );
+      out_stream.write ( lf, 0, lf.length );
+      out_stream.flush();
+    } catch (FileNotFoundException e) {
+      System.out.println ( "Error: File not found" );
+      e.printStackTrace();
+    } catch (OutOfMemoryError e) {
+      System.out.println ( "Error: Out of memory" );
+      e.printStackTrace();
+    } catch (IOException e) {
+      System.out.println ( "Error: IO Error" );
+      e.printStackTrace();
+    }
+  }
+
 	public static void convert_series_to_crlf ( File series_file ) {
 	  String series_path = series_file.getParent();
     String series_file_name = series_file.getName();
@@ -402,6 +448,18 @@ public class SeriesClass {
     for (int i=0; i<section_file_names.length; i++) {
       File section_file = new File ( series_path + File.separator + section_file_names[i] );
       convert_file_to_crlf ( section_file );
+    }
+	}
+
+	public static void convert_series_to_lf ( File series_file ) {
+	  String series_path = series_file.getParent();
+    String series_file_name = series_file.getName();
+    String section_file_names[] = get_section_file_names ( series_path, series_file_name.substring(0,series_file_name.length()-4) );
+
+    convert_file_to_lf ( series_file );
+    for (int i=0; i<section_file_names.length; i++) {
+      File section_file = new File ( series_path + File.separator + section_file_names[i] );
+      convert_file_to_lf ( section_file );
     }
 	}
 

@@ -3,7 +3,12 @@ class ReconstructDefaults {
   public static String current_newline_string = "\n";  // For Windows this may be set to: "\r\n"
 
   public static String convert_newlines ( String s ) {
-    return ( s.replaceAll ( "\n", current_newline_string ) );
+    // Check to see if the string contains any CR+LF pairs
+    if (s.indexOf("\r\n") >= 0) {
+      return ( s.replaceAll ( "\r\n", current_newline_string ) );
+    } else {
+      return ( s.replaceAll ( "\n", current_newline_string ) );
+    }
   }
 
 
