@@ -44,6 +44,52 @@ class MyFileChooser extends JFileChooser {
   }
 }
 
+class ArrowClass {
+  int pts[][] = null;
+  public void make_arrows ( int l, int w, int n ) {
+    // **** N O T E: ****
+    //   This constructor only works when w = 2 * l !!!
+    //
+    // System.out.println ( "Arctan(1,2) = " + (180*Math.atan2(1,2)/Math.PI) );
+    // w is the width of the arrow at its base
+    // l is the length of the arrow
+    // n is the number of entries
+    pts = new int[n][4];
+    double arrow_angle = Math.atan2 ( w/2.0, l ); // rise, run
+    // System.out.println ( "Arrow Angle = " + (arrow_angle * 180 / Math.PI) );
+    double angle = 0;
+    for (int i=0; i<n; i++) {
+      angle = (2 * Math.PI * i) / n;
+      if (true) {
+        pts[i][0] = -(int) ( l * Math.cos(arrow_angle+angle) );
+        pts[i][2] = -(int) ( l * Math.cos(arrow_angle-angle) );
+        pts[i][1] = -(int) ( (w/2) * Math.sin(arrow_angle+angle) );
+        pts[i][3] =  (int) ( (w/2) * Math.sin(arrow_angle-angle) );
+      } else {
+        pts[i][0] = -l;
+        pts[i][2] = -l;
+        pts[i][1] = -(w/2);
+        pts[i][3] = (w/2);
+      }
+      // System.out.println ( "Angle=" + angle + " -> [ " + pts[i][0] + "," +  pts[i][1] + "," +  pts[i][2] + "," +  pts[i][3] + " ]" );
+    }
+  }
+  /*
+  public ArrowClass ( int l, int n ) {
+    make_arrows ( l, 2*l, n );
+  }
+  */
+  public ArrowClass ( int l ) {
+    make_arrows ( l, 2*l, 360 );
+  }
+  int[] get ( int dx, int dy ) {
+    // Return the deltas appropriate for an arrow from the origin to dx,dy
+    int index = ( pts.length + (int)( pts.length * ( Math.atan2 ( dy, dx ) / (2*Math.PI) ) ) ) % pts.length;
+    return ( pts[index] );
+  }
+}
+
+
 public class Reconstruct extends ZoomPanLib implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
   private static final long serialVersionUID = 1L;
 
@@ -51,6 +97,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	static int w=800, h=600;
 
 	boolean show_points = false;
+	boolean show_arrows = false;
 	boolean drawing_mode = false;
   boolean center_draw = false;
   boolean segment_draw = true;
@@ -58,7 +105,9 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 	boolean stroke_started = false;
   String current_directory = "";
   MyFileChooser file_chooser = null;
-  
+
+  public ArrowClass arrows = new ArrowClass ( 12 );
+
 	int line_padding = 1;
 	int new_trace_color = 0xff0000;
   
@@ -440,6 +489,7 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
   JMenuItem line_menu_1_item = null;
   JMenuItem line_menu_2_item = null;
   JMenuItem show_points_menu_item = null;
+  JMenuItem show_arrows_menu_item = null;
 
   JMenuItem color_menu_red_item = null;
   JMenuItem color_menu_green_item = null;
@@ -695,6 +745,11 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 			System.out.println ( "show_points toggled." );
 		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
 		  show_points = item.getState();
+		  repaint();
+		} else if ( action_source == show_arrows_menu_item ) {
+			System.out.println ( "show_arrows toggled." );
+		  JCheckBoxMenuItem item = (JCheckBoxMenuItem)e.getSource();
+		  show_arrows = item.getState();
 		  repaint();
 		} else if ( action_source == dump_menu_item ) {
       if (this.series != null) {
@@ -1195,6 +1250,8 @@ public class Reconstruct extends ZoomPanLib implements ActionListener, MouseList
 		          bg.add ( mi );
               line_menu.addSeparator();
 		          line_menu.add ( zp.show_points_menu_item = mi = new JCheckBoxMenuItem("Show Points", zp.show_points) );
+		          mi.addActionListener(zp);
+		          line_menu.add ( zp.show_arrows_menu_item = mi = new JCheckBoxMenuItem("Show Arrows", zp.show_arrows) );
 		          mi.addActionListener(zp);
             extras_menu.add ( line_menu );
 

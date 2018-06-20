@@ -596,17 +596,43 @@ default_curve ( p0, p1 ) );
 							g2.setStroke(previous_stroke);
 						}
 
+						if (r.show_arrows) {
+              int x=0, y=0, last_x=0, last_y=0;
+							for (int j=0; j<stroke_points.size(); j++) {
+							  p0 = stroke_points.get(j);
+                last_x = x;
+                last_y = y;
+							  x = r.x_to_pxi(p0[0]-dx);
+							  y = r.y_to_pyi(dy-p0[1]);
+							  if (j > 0) {
+							    // Draw an arrow
+                  int dxdydxdy[] = r.arrows.get ( x-last_x, y-last_y );
+                  g.setColor ( new Color ( 255, 255, 255 ) );
+                  g.drawLine ( dxdydxdy[0]+(int)x, dxdydxdy[1]+(int)y, (int)x, (int)y );
+                  g.drawLine ( dxdydxdy[2]+(int)x, dxdydxdy[3]+(int)y, (int)x, (int)y );
+								} else {
+								  // Draw a box
+                  g.setColor ( new Color ( 255, 255, 255 ) );
+                  int l=8;
+								  g.drawLine ( x-l, y-l, x+l, y-l );
+								  g.drawLine ( x-l, y-l, x-l, y+l );
+								  g.drawLine ( x+l, y+l, x+l, y-l );
+								  g.drawLine ( x+l, y+l, x-l, y+l );
+								}
+							}
+						}
+
 						if (r.show_points) {
 							int l = 4;
 							int x, y;
 							for (int j=0; j<stroke_points.size(); j++) {
-								p0 = stroke_points.get(j);
 								p0 = stroke_points.get(j);
 								x = r.x_to_pxi(p0[0]-dx);
 								y = r.y_to_pyi(dy-p0[1]);
 								g.fillOval ( x-l, y-l, 2*l, 2*l );
 							}
 						}
+
 					}
 
 				}
