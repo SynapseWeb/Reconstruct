@@ -1,5 +1,11 @@
 # Reconstruct Java Experiments
 
+2018_06_20_2004.gif
+
+## Reconstruct.jar can write XML data compatible with Reconstruct.exe (June 20th, 2018)
+
+![SeriesFromJavaAndExe](images/2018_06_20_2004.gif?raw=true "Series with objects traced in both Java and Exe Versions")
+
 ## Reconstruct.jar can read XML data and display images and color traces (May 11th, 2018):
 
 ![ColorTracesFromXML](images/2018_05_11_2303.gif?raw=true "Color Traces from XML")
