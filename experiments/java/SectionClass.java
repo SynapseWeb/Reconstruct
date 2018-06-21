@@ -283,7 +283,7 @@ public class SectionClass {
                 }
                 sf.print ( "hidden=\"false\" closed=\"true\" simplified=\"false\" border=" + contour_color + " fill=" + contour_color + " mode=\"13\"\n" );
                 sf.print ( " points=\"" );
-                for (int j=0; j<s.size(); j++) {
+                for (int j=s.size()-1; j>=0; j+=-1) {
                   double p[] = s.get(j);
                   sf.print ( "  " + p[0] + " " + p[1] + ",\n" );
                 }

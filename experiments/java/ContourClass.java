@@ -53,7 +53,7 @@ public class ContourClass {
       String xy[] = xy_str[xyi].trim().split(" ");
       // double p[] = { (Double.parseDouble(xy[0])*165)-100, (-Double.parseDouble(xy[1])*165)+100 };
       double p[] = { Double.parseDouble(xy[0]), Double.parseDouble(xy[1]) };
-      stroke.add ( p );
+      stroke.add ( 0, p );
       priority_println ( 20, "              " + xy_str[xyi].trim() + " = " + p[0] + "," + p[1] );
     }
     // strokes.add ( stroke );
