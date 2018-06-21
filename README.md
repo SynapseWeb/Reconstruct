@@ -15,8 +15,7 @@ Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
 
 * **[Development Version (64-bit Windows)](https://github.com/SynapseWeb/Reconstruct/blob/master/source/Reconstruct.exe)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/source/sha1sum.txt))
 
-* **[Experimental Version (Java All)](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/Reconstruct.jar)** ([SHA1 sum](https://github.com/SynapseWeb/Reconstruct/blob/master/experiments/java/sha1sum.txt))
-
+* **[Java Version (All Platforms)](https://github.com/SynapseWeb/Reconstruct-Java)**
 
 with Help Manual and example.ser (7.38MB) 
 [Version 1.1.0.0 August 20, 2007]               
@@ -47,7 +46,8 @@ Permission to use, copy, and redistribute Reconstruct is granted without fee und
 
 (This software is distributed in the hope that it will be useful, but without any warranty, including the implied warranty of merchantibility or fitness for any particular purpose. For details read the terms of the GNU General Public License when installing the software.)
 
-* **[Java Experimental Version](experiments/java)**
+* **[Java Version](https://github.com/SynapseWeb/Reconstruct-Java)**
+
 * **[CodeBlocks C++ Experiments](experiments/codeblocks)**
 * **[Blender Experiments](experiments/blender)**
 * **[GitHub Notes](experiments/documents/github)**
