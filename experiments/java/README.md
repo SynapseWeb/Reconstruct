@@ -1,7 +1,5 @@
 # Reconstruct Java Experiments
 
-2018_06_20_2004.gif
-
 ## Reconstruct.jar can write XML data compatible with Reconstruct.exe (June 20th, 2018)
 
 ![SeriesFromJavaAndExe](images/2018_06_20_2004.gif?raw=true "Series with objects traced in both Java and Exe Versions")
