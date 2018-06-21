@@ -1,2 +1,0 @@
-b82bfda06eb8bac506d70b55477a084ad88f803d  Reconstruct.jar
-71a89358788be9a4584c409550dab93d1effd335  BezierTracing.jar
