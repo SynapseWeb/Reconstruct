@@ -4,7 +4,7 @@
 #
 
 # The name of your C compiler:
-CC= cc
+CC= gcc
 
 # You may need to adjust these cc options:
 CFLAGS= -O
