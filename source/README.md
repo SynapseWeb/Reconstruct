@@ -1,8 +1,14 @@
 # Reconstruct 1.2.0.0
 
 ## This version has been modified to be compiled with MinGW 4.9.2
-### This version may be compiled with:  mingw32-make -f makefile_raw
+### This version may be compiled as follows:
+1. Change directory (cd) to gbm/jpeg-6a
+2. mingw32-make -f makeijgo
+3. Change directory back to top level (cd ../..)
+4. mingw32-make
 ### The help system is currently disabled.
+
+-----------
 
 Here at GitHub is the original Source code for Reconstruct - which was last compiled in 2007 and the
 Executible is available at: https://sites.cns.utexas.edu/synapseweb/software-0
